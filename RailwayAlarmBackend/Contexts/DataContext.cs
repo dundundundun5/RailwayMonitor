@@ -15,6 +15,7 @@ public class DataContext:DbContext
     }
     public DbSet<Device> Devices { get; set; }
 
+    public DbSet<AlarmTrace> AlarmTraces { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -40,6 +41,7 @@ public class DataContext:DbContext
         HandleEntityUpdates();
         return await base.SaveChangesAsync(cancellationToken);
     }
+    
 
     /// <summary>
     /// 处理实体更新的全局策略

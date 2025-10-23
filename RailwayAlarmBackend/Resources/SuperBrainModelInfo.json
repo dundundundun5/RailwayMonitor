@@ -1,0 +1,118 @@
+{
+  "dataSetId": 100095303,
+  "description": [
+    {
+      "aiopType": "v1.0",
+      "calibType": 1,
+      "highResolution": 0,
+      "labels": [
+        "1 上半身",
+        "2 头肩"
+      ],
+      "labelsInfo": [
+        {
+          "labelId": "b6379cae9c9e4044a147fa642f99cb7d",
+          "labelName": "上半身",
+          "sortId": 0
+        },
+        {
+          "labelId": "7948e706c0bc4ce68c1fa95d934b48e3",
+          "labelName": "头肩",
+          "sortId": 1
+        }
+      ],
+      "modelId": "51a836ce7a9b43e4a560df58abe76bd3",
+      "modelPrecision": 0,
+      "type": 1
+    },
+    {
+      "aiopType": "v1.0",
+      "calibType": 0,
+      "highResolution": 0,
+      "labels": [
+        "0 是否穿反光衣 2 0 未穿反光衣 1 穿反光衣"
+      ],
+      "labelsInfo": [
+        {
+          "childLabels": [
+            {
+              "childLabels": [
+                {
+                  "labelId": "0152a4fe735a4139982b806ad8bb0658",
+                  "labelName": "未穿反光衣",
+                  "sortId": 0
+                },
+                {
+                  "labelId": "00c0f158e153436ba758e39e4f450294",
+                  "labelName": "穿反光衣",
+                  "sortId": 1
+                }
+              ],
+              "labelId": "c05d395754a8470b887bf5b182543895",
+              "labelName": "是否穿反光衣",
+              "sortId": 0
+            }
+          ],
+          "labelId": "b6379cae9c9e4044a147fa642f99cb7d",
+          "labelName": "上半身",
+          "sortId": 0
+        }
+      ],
+      "modelId": "6893b26fe4b04517a94ac36dca1fbb44",
+      "modelPrecision": 0,
+      "relation": {
+        "label": 1,
+        "modelId": "51a836ce7a9b43e4a560df58abe76bd3"
+      },
+      "type": 2
+    },
+    {
+      "aiopType": "v1.0",
+      "calibType": 0,
+      "highResolution": 0,
+      "labels": [
+        "0 是否戴安全帽 2 0 未戴安全帽 1 戴安全帽"
+      ],
+      "labelsInfo": [
+        {
+          "childLabels": [
+            {
+              "childLabels": [
+                {
+                  "labelId": "d1275de4e5e247098bc1360e3d7e1bd8",
+                  "labelName": "未戴安全帽",
+                  "sortId": 0
+                },
+                {
+                  "labelId": "d66177fc4e704701bc7a6577685605e7",
+                  "labelName": "戴安全帽",
+                  "sortId": 1
+                }
+              ],
+              "labelId": "9b224c788e514d3fa1915da7ca2ebc97",
+              "labelName": "是否戴安全帽",
+              "sortId": 0
+            }
+          ],
+          "labelId": "7948e706c0bc4ce68c1fa95d934b48e3",
+          "labelName": "头肩",
+          "sortId": 1
+        }
+      ],
+      "modelId": "d71a6546b0284384a757935bc889abd6",
+      "modelPrecision": 0,
+      "relation": {
+        "label": 2,
+        "modelId": "51a836ce7a9b43e4a560df58abe76bd3"
+      },
+      "type": 2
+    }
+  ],
+  "key": "ce578aab24279653",
+  "modelUrl": "http://saas-trainningdata-test.oss-cn-hangzhou.aliyuncs.com/alg/1701132121839f0659c73?Expires=1704418232&OSSAccessKeyId=LTAI0nvqaUuErF4G&Signature=%2B7G9f93TgSHJiyPIa%2B1eQC7Lxpc%3D",
+  "protoVersion": "v1.0.0",
+  "trainModelId": "123542",
+  "transformType": "10",
+  "version": "V2",
+  "versionId": "236752"
+}

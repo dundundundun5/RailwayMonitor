@@ -9,7 +9,7 @@ using RailwayAlarmBackend.Models.Enums;
 
 namespace RailwayAlarmBackend.Services;
 
-public class DeviceService(DataContext context, ILogger<DeviceService> logger)
+public class DeviceService(DataContext context, ILogger<DeviceService> logger) : IDeviceService
 {
 
     public async Task<Boolean> AddDeviceAsync(Device device)

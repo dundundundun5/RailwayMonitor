@@ -2,8 +2,9 @@ namespace RailwayAlarmBackend.Models.Enums;
 
 public enum EnumDeviceType
 {
-    Camera,
-    Recorder,
-    Audio,
-    Screen
+    摄像机 = 0,
+    录像机,
+    音柱,
+    屏幕,
+    超脑
 }

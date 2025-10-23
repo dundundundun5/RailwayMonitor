@@ -2,6 +2,6 @@
 
 public enum EnumStatus
 {
-    Disabled=0,
-    Enabled=1
+    停用=0,
+    启用=1
 }

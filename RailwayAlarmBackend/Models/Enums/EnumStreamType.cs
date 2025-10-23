@@ -3,7 +3,5 @@
 public enum EnumStreamType
 {
     主码流 = 0,
-    子码流,
-    码流3,
-    码流4
+    子码流
 }

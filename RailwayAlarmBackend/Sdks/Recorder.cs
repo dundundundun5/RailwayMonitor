@@ -1,8 +1,9 @@
 using System.Runtime.InteropServices;
 using HK.Net.Core;
 using RailwayAlarmBackend.Models.Enums;
-namespace RailwayAlarmBackend.Services;
-public class RecorderService : IDisposable
+
+namespace RailwayAlarmBackend.Sdks;
+public class Recorder : IDisposable
 {
     private Int32 m_lUserID = -1;
     private Int32 m_lPlayHandle = -1;
@@ -27,7 +28,7 @@ public class RecorderService : IDisposable
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 96, ArraySubType = UnmanagedType.U4)]
     private int[] iChannelNum;
 
-    public RecorderService(string ip, string port = "8000", string username = "admin", string password = "11111111a")
+    public Recorder(string ip, string port = "8000", string username = "admin", string password = "11111111a")
     {
         DVRIPAddress = ip;
         DVRPortNumber = short.Parse(port);
@@ -459,7 +460,7 @@ public class RecorderService : IDisposable
         }
     }
 
-    ~RecorderService()
+    ~Recorder()
     {
         Dispose();
     }

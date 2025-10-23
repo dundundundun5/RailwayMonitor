@@ -8,11 +8,11 @@ namespace RailwayAlarmBackend.Models.Dtos;
 public class DeviceCreateDto
 {
     [Required(ErrorMessage = "设备名不可为空")]
-    [DefaultValue("第XX道摄像机")]
+    [DefaultValue("第_道监控")]
     public string Name { get; set; } 
 
     [Required(ErrorMessage = "设备IP不可为空")]
-    [DefaultValue("192.168.114.514")]
+    [DefaultValue("192.168.0.1")]
     public string Ip { get; set; } 
 
     [Required(ErrorMessage = "设备端口不可为空")]
@@ -28,7 +28,7 @@ public class DeviceCreateDto
     public string Password { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "设备类型不可为空")]
-    [DefaultValue(1)] // EnumDeviceType.Camera 的值
+    [DefaultValue(1)] // EnumDeviceType.摄像机 的值
     public int Type { get; set; }
 
     [Required(ErrorMessage = "设备通道不可为空")]

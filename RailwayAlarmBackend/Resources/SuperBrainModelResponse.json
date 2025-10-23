@@ -1,0 +1,76 @@
+{
+  "width": "1280",
+  "height": "720",
+  "targets": [
+    {
+      "obj": {
+        "id": 791,
+        "modelID": "uuid",
+        "type": 2,
+        "confidence": 1000,
+        "valid": 1,
+        "visible": 1,
+        "rect": {
+          "x": "0.100781",
+          "y": "0.002778",
+          "w": "0.142188",
+          "h": "0.320833"
+        }
+      },
+      "properties": [
+        {
+          "modelID": "uuid",
+          "classify": {
+            "attrType": 0,
+            "attrValue": 1,
+            "attrConf": 999
+          }
+        }
+      ]
+    }
+  ],
+  "events": {
+    "alertInfo": [
+      {
+        "target": {
+          "id": 791,
+          "type": 2,
+          "confidence": 999,
+          "region": {
+            "rect": {
+              "x": "0.100781",
+              "y": "0.002778",
+              "w": "0.142188",
+              "h": "0.320833"
+            }
+          }
+        },
+        "ruleInfo": {
+          "ruleID": 1,
+          "triggerType": 1073758209,
+          "movDir": 1,
+          "region": {
+            "polygon": [
+              {
+                "x": "0.000000",
+                "y": "0.000000"
+              },
+              {
+                "x": "1.000000",
+                "y": "0.000000"
+              },
+              {
+                "x": "1.000000",
+                "y": "1.000000"
+              },
+              {
+                "x": "0.000000",
+                "y": "1.000000"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

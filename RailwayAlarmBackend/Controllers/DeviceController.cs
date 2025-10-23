@@ -10,42 +10,42 @@ namespace RailwayAlarmBackend.Controllers;
 [Route("[controller]")]
 public class DeviceController : ControllerBase
 {
-    private readonly DeviceService _deviceService;
+    private readonly IDeviceService _deviceService;
 
-    public DeviceController(DeviceService deviceService)
+    public DeviceController(IDeviceService deviceService)
     {
         _deviceService = deviceService;
     }
 
     [HttpGet("query")]
-    public async Task<ApiResponse<List<Device>>> QueryDevice()
+    public async Task<BaseResponse<List<Device>>> QueryDevice()
     {
         List<Device> devices = await _deviceService.GetAllDevicesAsync();
-        return ApiResponseUtil.OfList(devices);
+        return BaseResponseUtil.OfList(devices);
     }
     
     [HttpGet("query-channel")]
-    public async Task<ApiResponse<List<Channel>>> QueryDeviceChannel()
+    public async Task<BaseResponse<List<Channel>>> QueryDeviceChannel()
     {
         List<Channel> channels = Enum
             .GetValues<EnumChannel>()
             .Select(e => (new Channel { Name = e.ToString(), Value = (int)e }))
             .ToList();
-        return ApiResponseUtil.OfList(channels);
+        return BaseResponseUtil.OfList(channels);
     }
     
     [HttpGet("query-type")]
-    public async Task<ApiResponse<List<DeviceType>>> QueryDeviceType()
+    public async Task<BaseResponse<List<DeviceType>>> QueryDeviceType()
     {
         List<DeviceType> types = Enum
             .GetValues<EnumChannel>()
             .Select(e => (new DeviceType { Name = e.ToString(), Value = (int)e }))
             .ToList();
-        return ApiResponseUtil.OfList(types);
+        return BaseResponseUtil.OfList(types);
     }
 
     [HttpPost("create")]
-    public async Task<ApiResponse<object>> CreateDevice([FromBody] DeviceCreateDto createDto)
+    public async Task<BaseResponse<object>> CreateDevice([FromBody] DeviceCreateDto createDto)
     {
         Device device = new Device
         {
@@ -58,14 +58,14 @@ public class DeviceController : ControllerBase
             Type = createDto.Type,
             CreateDate = DateTime.Now,
             UpdateDate = DateTime.Now,
-            Enabled = (int) EnumStatus.Enabled
+            Enabled = (int) EnumStatus.启用
         };
         await _deviceService.AddDeviceAsync(device);
-        return ApiResponseUtil.Success();
+        return BaseResponseUtil.Success();
     }
     
     [HttpPost("update")]
-    public async Task<ApiResponse<object>> UpdateDevice([FromBody] DeviceUpdateDto updateDto)
+    public async Task<BaseResponse<object>> UpdateDevice([FromBody] DeviceUpdateDto updateDto)
     {
         Device device = new Device
         {
@@ -81,40 +81,40 @@ public class DeviceController : ControllerBase
             // Enabled = (int) EnumStatus.Enabled
         };
         await _deviceService.UpdateDeviceAsync(device);
-        return ApiResponseUtil.Success();
+        return BaseResponseUtil.Success();
     }
     
     [HttpPost("delete/{id:int}")]
-    public async Task<ApiResponse<object>> DeleteDevice([FromRoute] int id)
+    public async Task<BaseResponse<object>> DeleteDevice([FromRoute] int id)
     {
 
         await _deviceService.DeleteDeviceAsync(id);
-        return ApiResponseUtil.Success();
+        return BaseResponseUtil.Success();
     }
     
     [HttpPost("disable/{id:int}")]
-    public async Task<ApiResponse<object>> DiableDevice([FromRoute] int id)
+    public async Task<BaseResponse<object>> DiableDevice([FromRoute] int id)
     {
 
         Device newDevice = new Device()
         {
             Id = id,
-            Enabled = (int)EnumStatus.Disabled
+            Enabled = (int)EnumStatus.停用
         };
         await _deviceService.UpdateDeviceAsync(newDevice);
-        return ApiResponseUtil.Success();
+        return BaseResponseUtil.Success();
     }
     
     [HttpPost("enable/{id:int}")]
-    public async Task<ApiResponse<object>> EnableDevice([FromRoute] int id)
+    public async Task<BaseResponse<object>> EnableDevice([FromRoute] int id)
     {
         Device newDevice = new Device()
         {
             Id = id,
-            Enabled = (int) EnumStatus.Enabled
+            Enabled = (int) EnumStatus.启用
         };
         await _deviceService.UpdateDeviceAsync(newDevice);
-        return ApiResponseUtil.Success();
+        return BaseResponseUtil.Success();
     }
     
 }

@@ -2,12 +2,12 @@
 using HK.Net.Core;
 using RailwayAlarmBackend.Models.Enums;
 
-namespace RailwayAlarmBackend.Services;
+namespace RailwayAlarmBackend.Sdks;
 /// <summary>
 /// 相机接口
 /// InitializeSdk(程序启动) => Login => Dispose => CleanUpSdk(程序结束)
 /// </summary>
-public class CameraService : IDisposable
+public class Camera : IDisposable
 {
     public CHCNetSDK.NET_DVR_USER_LOGIN_INFO LoginInfo { get; set; }
     public CHCNetSDK.NET_DVR_DEVICEINFO_V40 CameraInfo { get; set; }
@@ -23,7 +23,7 @@ public class CameraService : IDisposable
     private string str;
     private CHCNetSDK.REALDATACALLBACK RealData = null;
     
-    public CameraService(string cameraIpAddress, string userName = "admin", string password = "11111111a" , ushort port = 8000, IntPtr realPlayHandle = -1, EnumDeviceType deviceType = EnumDeviceType.Camera)
+    public Camera(string cameraIpAddress, string userName = "admin", string password = "11111111a" , ushort port = 8000, IntPtr realPlayHandle = -1, EnumDeviceType deviceType = EnumDeviceType.摄像机)
     {
         CameraIpAddress = cameraIpAddress;
         RealPlayHandle = realPlayHandle;
@@ -32,7 +32,7 @@ public class CameraService : IDisposable
         Password = password;
         Port = port;
     }
-    ~CameraService()
+    ~Camera()
     {
         Dispose();
     }

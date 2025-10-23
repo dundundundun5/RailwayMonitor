@@ -1,0 +1,67 @@
+2025-10-22 15:08:49.359 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 开始启动...
+2025-10-22 15:08:50.055 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: 正在连接超脑: 192.168.1.100:6900
+2025-10-22 15:08:53.584 [ERR] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 发生严重异常，服务将停止
+System.Exception: 错误码=7, 错误描述=连接设备失败。
+   at RailwayAlarmBackend.Sdks.SuperBrain.Login()
+   at RailwayAlarmBackend.Services.SuperBrainHostService.ExecuteAsync(CancellationToken stoppingToken)
+2025-10-22 15:08:56.403 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-10-22 15:08:56.469 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: 3KaHnHP4oThx_PlkH45iGw
+2025-10-22 15:08:58.434 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: 3KaHnHP4oThx_PlkH45iGw
+2025-10-22 15:09:00.462 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: Uh0tnGvJV6cmTl3oKKzrAQ
+2025-10-22 15:09:00.468 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 Uh0tnGvJV6cmTl3oKKzrAQ 的订阅请求
+2025-10-22 15:09:00.468 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 Uh0tnGvJV6cmTl3oKKzrAQ 已成功订阅告警推送
+2025-10-22 15:09:11.225 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 开始推送测试告警: 192.168.1.100 - 1 - 1
+2025-10-22 15:09:11.235 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 测试告警推送成功
+2025-10-22 15:10:09.503 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 开始推送测试告警: 192.168.1.100 - 1 - 1
+2025-10-22 15:10:09.503 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 测试告警推送成功
+2025-10-22 15:10:38.009 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: Uh0tnGvJV6cmTl3oKKzrAQ
+2025-10-22 15:10:40.353 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: jukF7KwjDbBT5ljL5pA30g
+2025-10-22 15:10:40.356 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 jukF7KwjDbBT5ljL5pA30g 的订阅请求
+2025-10-22 15:10:40.356 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 jukF7KwjDbBT5ljL5pA30g 已成功订阅告警推送
+2025-10-22 15:11:21.983 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 开始推送测试告警: 192.168.1.100 - 1 - 1
+2025-10-22 15:11:21.983 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 测试告警推送成功
+2025-10-22 15:16:34.760 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: jukF7KwjDbBT5ljL5pA30g
+2025-10-22 15:16:37.195 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: _3x2OIw5dRMJnHeA3A067g
+2025-10-22 15:16:37.197 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 _3x2OIw5dRMJnHeA3A067g 的订阅请求
+2025-10-22 15:16:37.197 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 _3x2OIw5dRMJnHeA3A067g 已成功订阅告警推送
+2025-10-22 15:16:43.128 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 开始推送测试告警: 192.168.1.100 - 1 - 1
+2025-10-22 15:16:43.129 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 测试告警推送成功
+2025-10-22 15:18:14.773 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 _3x2OIw5dRMJnHeA3A067g 的取消订阅请求
+2025-10-22 15:18:14.774 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 _3x2OIw5dRMJnHeA3A067g 已成功取消订阅告警推送
+2025-10-22 15:18:14.777 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: _3x2OIw5dRMJnHeA3A067g
+2025-10-22 15:18:14.785 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: _8uZdO3cXiDrMb15qIK41g
+2025-10-22 15:18:14.787 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 _8uZdO3cXiDrMb15qIK41g 的订阅请求
+2025-10-22 15:18:14.788 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 _8uZdO3cXiDrMb15qIK41g 已成功订阅告警推送
+2025-10-22 15:18:31.332 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: _8uZdO3cXiDrMb15qIK41g
+2025-10-22 15:18:31.343 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 正在停止...
+2025-10-22 15:18:31.364 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 已停止
+2025-10-22 15:18:35.637 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 开始启动...
+2025-10-22 15:18:36.324 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: 正在连接超脑: 192.168.1.100:6900
+2025-10-22 15:18:39.844 [ERR] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 发生严重异常，服务将停止
+System.Exception: 错误码=7, 错误描述=连接设备失败。
+   at RailwayAlarmBackend.Sdks.SuperBrain.Login()
+   at RailwayAlarmBackend.Services.SuperBrainHostService.ExecuteAsync(CancellationToken stoppingToken)
+2025-10-22 15:19:01.505 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-10-22 15:19:01.599 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: N1LuDEu15HoTGNYhgACPGg
+2025-10-22 15:19:01.636 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 N1LuDEu15HoTGNYhgACPGg 的订阅请求
+2025-10-22 15:19:01.637 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 N1LuDEu15HoTGNYhgACPGg 已成功订阅告警推送
+2025-10-22 15:19:10.654 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 开始推送测试告警: 192.168.1.100 - 1 - 1
+2025-10-22 15:19:10.660 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 测试告警推送成功
+2025-10-22 15:23:08.270 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: N1LuDEu15HoTGNYhgACPGg
+2025-10-22 15:23:08.278 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 正在停止...
+2025-10-22 15:23:08.300 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 已停止
+2025-10-22 15:23:12.445 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 开始启动...
+2025-10-22 15:23:13.126 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: 正在连接超脑: 192.168.1.100:6900
+2025-10-22 15:23:16.663 [ERR] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 发生严重异常，服务将停止
+System.Exception: 错误码=7, 错误描述=连接设备失败。
+   at RailwayAlarmBackend.Sdks.SuperBrain.Login()
+   at RailwayAlarmBackend.Services.SuperBrainHostService.ExecuteAsync(CancellationToken stoppingToken)
+2025-10-22 15:23:38.474 [WRN] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-10-22 15:23:38.526 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已连接: ygRih5318VCNzA8MclK8oA
+2025-10-22 15:23:38.534 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 开始处理客户端 ygRih5318VCNzA8MclK8oA 的订阅请求
+2025-10-22 15:23:38.534 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端 ygRih5318VCNzA8MclK8oA 已成功订阅告警推送
+2025-10-22 15:24:12.429 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 开始推送测试告警: 192.168.1.100 - 1 - 1
+2025-10-22 15:24:12.437 [INF] RailwayAlarmBackend.Controllers.WebSocketTestController: 测试告警推送成功 alarmData=RailwayAlarmBackend.Models.Entities.AlarmTrace
+2025-10-22 15:25:24.193 [INF] RailwayAlarmBackend.Hubs.AlarmHub: 客户端已断开: ygRih5318VCNzA8MclK8oA
+2025-10-22 15:28:19.740 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 正在停止...
+2025-10-22 15:28:19.768 [INF] RailwayAlarmBackend.Services.SuperBrainHostService: SuperBrainHostService 已停止

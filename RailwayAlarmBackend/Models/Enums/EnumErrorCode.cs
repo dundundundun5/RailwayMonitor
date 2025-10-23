@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace RailwayAlarmBackend.Models.Enums;
 
 public static class EnumErrorCode

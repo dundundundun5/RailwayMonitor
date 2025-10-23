@@ -23,7 +23,7 @@ public class DeviceUpdateDto
     [DefaultValue("")] 
     public String Password { get; set; }
 
-    [DefaultValue((int)EnumDeviceType.Camera)]
+    [DefaultValue((int)EnumDeviceType.摄像机)]
     public int Type { get; set; }
 
     [DefaultValue((int)EnumChannel.通道1)] 

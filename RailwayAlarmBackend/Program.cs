@@ -1,9 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using RailwayAlarmBackend.Contexts;
 using RailwayAlarmBackend.Services;
-using RailwayAlarmBackend.Handlers; // 引入全局异常处理命名空间
+using RailwayAlarmBackend.Handlers;
+using RailwayAlarmBackend.Hubs;
+using RailwayAlarmBackend.Interfaces;
+using RailwayAlarmBackend.Models.Configs; // 引入全局异常处理命名空间
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// 配置Serilog日志
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .Enrich.FromLogContext());
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
@@ -27,9 +36,46 @@ builder.Services.AddDbContext<DataContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     ));
 
+// 配置SuperBrain
+builder.Services.Configure<SuperBrainConfig>(builder.Configuration.GetSection("SuperBrain"));
+
 // 注册自定义服务 - 之前的问题：缺少服务类注册，导致控制器注入失败
 // 修复前：DeviceTypeService等服务没有在DI容器中注册，控制器构造函数注入时得到null
-builder.Services.AddScoped<DeviceService>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<IAlarmTraceService, AlarmTraceService>();
+
+// 注册SignalR服务
+builder.Services.AddSignalR();
+
+// 配置CORS - 允许所有跨域请求
+builder.Services.AddCors(options =>
+{
+    // 策略1：允许任何来源（不支持凭证）
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .AllowAnyOrigin()     // 允许任何来源
+            .AllowAnyMethod()     // 允许任何HTTP方法
+            .AllowAnyHeader();    // 允许任何请求头
+        // 注意：AllowAnyOrigin() 和 AllowCredentials() 不能同时使用
+    });
+
+    // 策略2：允许特定来源（支持凭证）
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173", "https://localhost:5173",
+                         "http://localhost:8081", "https://localhost:8081") // 明确指定前端地址
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();  // 允许凭证
+    });
+});
+
+
+// 注册托管服务 
+// TODO: 托管服务的一异常处理，有别于控制器？
+builder.Services.AddHostedService<SuperBrainHostService>();
 // ===============================================
 // 全局异常处理配置
 // ===============================================
@@ -55,6 +101,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+// 启用CORS中间件 - 必须在路由之后，控制器映射之前
+app.UseCors("AllowSpecificOrigins");
+
 // ===============================================
 // 启用全局异常处理中间件
 // ===============================================
@@ -68,4 +117,6 @@ app.UseExceptionHandler();
 // 修复前：虽然控制器存在，但没有调用app.MapControllers()，API端点无法注册
 app.MapControllers();
 
+// 映射SignalR Hub路由
+app.MapHub<AlarmHub>("/alarmHub");
 app.Run();

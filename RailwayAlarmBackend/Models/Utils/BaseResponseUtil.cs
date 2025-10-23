@@ -3,11 +3,11 @@ using RailwayAlarmBackend.Models.Dtos;
 
 namespace RailwayAlarmBackend.Models.Utils;
 
-public class ApiResponseUtil
+public static class BaseResponseUtil
 {
-    public static  ApiResponse<List<T>> OfList<T>(List<T> entities)
+    public static  BaseResponse<List<T>> OfList<T>(List<T> entities)
     {
-        return new ApiResponse<List<T>>()
+        return new BaseResponse<List<T>>()
         {
             Code = 200,
             Message = "",
@@ -15,9 +15,9 @@ public class ApiResponseUtil
         };
     }
 
-    public static ApiResponse<T> OfData<T>(T data)
+    public static BaseResponse<T> OfData<T>(T data)
     {
-        return new ApiResponse<T>()
+        return new BaseResponse<T>()
         {
             Code = 200,
             Message = "",
@@ -25,9 +25,9 @@ public class ApiResponseUtil
         };
     }
 
-    public static ApiResponse<object> Failed(string message)
+    public static BaseResponse<object> Failed(string message)
     {
-        return new ApiResponse<object>()
+        return new BaseResponse<object>()
         {
             Code = 500,
             Message = message,
@@ -35,9 +35,9 @@ public class ApiResponseUtil
         };
     } 
     
-    public static ApiResponse<object> Success()
+    public static BaseResponse<object> Success()
     {
-        return new ApiResponse<object>()
+        return new BaseResponse<object>()
         {
             Code = 200,
             Message = "",

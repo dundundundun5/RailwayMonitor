@@ -54,7 +54,7 @@ public class GlobalExceptionHandler : IExceptionHandler
 
         // 步骤2：使用ApiResultUtil.Failed方法包装异常消息
         // 确保错误响应格式与正常API响应格式保持一致
-        var result = ApiResponseUtil.Failed(exception.Message);
+        var result = BaseResponseUtil.Failed(exception.Message);
 
         // 步骤3：设置HTTP响应
         // 返回500状态码表示服务器内部错误
