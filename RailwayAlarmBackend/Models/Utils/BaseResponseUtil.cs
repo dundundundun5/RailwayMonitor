@@ -1,15 +1,31 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using RailwayAlarmBackend.Models.Dtos;
+using RailwayAlarmBackend.Models.Entities;
 
 namespace RailwayAlarmBackend.Models.Utils;
 
 public static class BaseResponseUtil
 {
+    private const int SuccessCode = 200;
+    private const int FailedCode = 500;
+
+    public static BaseResponse<Page<T>> OfPage<T>(Page<T> entities)
+    {
+        return new BaseResponse<Page<T>>()
+        {
+            Code = SuccessCode,
+            Message = "",
+            Data = entities
+        };
+    }
+    
+    
     public static  BaseResponse<List<T>> OfList<T>(List<T> entities)
     {
         return new BaseResponse<List<T>>()
         {
-            Code = 200,
+            Code = SuccessCode,
             Message = "",
             Data = entities
         };
@@ -19,7 +35,7 @@ public static class BaseResponseUtil
     {
         return new BaseResponse<T>()
         {
-            Code = 200,
+            Code = SuccessCode,
             Message = "",
             Data = data
         };
@@ -29,7 +45,7 @@ public static class BaseResponseUtil
     {
         return new BaseResponse<object>()
         {
-            Code = 500,
+            Code = FailedCode,
             Message = message,
             Data = null
         };
@@ -39,9 +55,10 @@ public static class BaseResponseUtil
     {
         return new BaseResponse<object>()
         {
-            Code = 200,
+            Code = SuccessCode,
             Message = "",
             Data = null
         };
     } 
+    
 }

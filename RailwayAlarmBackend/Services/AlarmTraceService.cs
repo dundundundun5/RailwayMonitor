@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RailwayAlarmBackend.Contexts;
 using RailwayAlarmBackend.Hubs;
@@ -10,9 +11,9 @@ using RailwayAlarmBackend.Models.Utils;
 
 namespace RailwayAlarmBackend.Services;
 
-public class AlarmTraceService(DataContext context, ILogger<DeviceService> logger, IHubContext<AlarmHub> hubContext) : IAlarmTraceService
+public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> logger, IHubContext<AlarmTraceHub> hubContext) : IAlarmTraceService
 {
-    public async Task<bool> AddAlarmTraceAsync(string deviceIp, int channel, int alarmType, string imagePath, DateTime alarmDate,
+    public async Task AddAlarmTraceAsync(string deviceIp, int channel, int alarmType, string imagePath, DateTime alarmDate,
         string alarmModelResponse)
     {
         AlarmTrace trace = new AlarmTrace()
@@ -26,51 +27,52 @@ public class AlarmTraceService(DataContext context, ILogger<DeviceService> logge
             CreateDate = DateTime.Now,
             UpdateDate = DateTime.Now
         };
-        await context.AlarmTraces.AddAsync(trace);
-        await context.SaveChangesAsync();
-
-        // 推送告警数据到WebSocket客户端
-        await PushAlarmToClientsAsync(trace);
-
-        return true;
+        logger.LogInformation(alarmModelResponse);
+        await AddAlarmTraceAsync(trace);
     }
 
-    public async Task<bool> DeleteAlarmTraceAsync(long id)
+    public async Task AddAlarmTraceAsync(AlarmTrace alarmTrace)
+    {
+        await context.AlarmTraces.AddAsync(alarmTrace);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAlarmTraceAsync(long id)
     {
         var trace = await context.AlarmTraces.FindAsync(id);
         if (trace is null)
-            return false;
+            return;
         context.AlarmTraces.Remove(trace);
         await context.SaveChangesAsync();
-        return true;
     }
 
-    public async Task<bool> HandleAlarmTraceAsync(AlarmTraceHandleDto dto)
+    public async Task HandleAlarmTraceAsync(AlarmTraceHandleDto dto)
     {
         var trace = await context.AlarmTraces.FindAsync(dto.Id);
         if (trace is null)
-            return false;
+            return;
         trace.AlarmStatus = dto.AlarmHandleStatus;
         context.AlarmTraces.Update(trace);
         await context.SaveChangesAsync();
-        return true;
     }
 
-    public async Task<PageResponse<AlarmTrace>> GetAlarmTracePageAsync(AlarmTraceQueryDto dto)
+    public async Task<Page<AlarmTrace>> GetAlarmTracePageAsync(AlarmTraceQueryDto dto)
     {
         IQueryable<AlarmTrace> alarmTraces = context.AlarmTraces.OrderBy(trace => trace.Id);
         long totalCount = await alarmTraces.LongCountAsync();
         var skip = (dto.PageIndex - 1) * dto.PageSize;
         var items = await alarmTraces.Skip(skip).Take(dto.PageSize).ToListAsync();
-
-        return PageResponseUtil.OfPage(items, dto.PageIndex, dto.PageSize, totalCount);
+        Page<AlarmTrace> alarmPage = new()
+        {
+            Data = alarmTraces.ToList(),
+            PageIndex = dto.PageIndex,
+            PageSize = dto.PageSize,
+            TotalCount = totalCount
+        };
+        return alarmPage;
     }
-
-    /// <summary>
-    /// 推送告警数据到所有订阅的WebSocket客户端
-    /// </summary>
-    /// <param name="alarmTrace">告警数据</param>
-    private async Task PushAlarmToClientsAsync(AlarmTrace alarmTrace)
+    
+    public async Task PushAlarmTraceAsync(AlarmTrace alarmTrace)
     {
         try
         {

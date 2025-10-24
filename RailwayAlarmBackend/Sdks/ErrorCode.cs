@@ -1,6 +1,6 @@
-namespace RailwayAlarmBackend.Models.Enums;
+namespace RailwayAlarmBackend.Sdks;
 
-public static class EnumErrorCode
+public static class ErrorCode
 {
     private static readonly Dictionary<int, string> Errors = new()
     {

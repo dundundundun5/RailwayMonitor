@@ -1,6 +1,6 @@
-﻿namespace RailwayAlarmBackend.Models.Entities;
+﻿namespace RailwayAlarmBackend.Models.Dtos;
 
-public class Channel
+public class EnumResponse
 {
     public string Name { get; set; }
     public int Value { get; set; }

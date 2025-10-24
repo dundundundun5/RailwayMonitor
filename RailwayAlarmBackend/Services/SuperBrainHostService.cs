@@ -28,7 +28,6 @@ public class SuperBrainHostService : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("SuperBrainHostService 开始启动...");
-
         try
         {
             // 验证配置
@@ -49,7 +48,8 @@ public class SuperBrainHostService : BackgroundService
                 ip: _config.Ip,
                 port: _config.Port,
                 username: _config.Username,
-                password: _config.Password
+                password: _config.Password,
+                alarmImageFolder: _config.ImageFolder
             );
 
             _logger.LogInformation("正在连接超脑: {Ip}:{Port}", _config.Ip, _config.Port);

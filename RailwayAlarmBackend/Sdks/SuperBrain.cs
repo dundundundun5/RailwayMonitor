@@ -14,18 +14,15 @@ class CheckResult
     public string? Result { get; set; }
 
 }
-// TODO 检查注入是否成功，program.cs记得注册服务
-public class SuperBrain : IDisposable
+public class SuperBrain(
+    IAlarmTraceService alarmTraceService,
+    string ip,
+    string port,
+    string username,
+    string password,
+    string alarmImageFolder)
+    : IDisposable
 {
-    public SuperBrain(IAlarmTraceService alarmTraceService, string ip, string port = "8000", string username = "admin", string password = "11111111a")
-    {
-        AlarmTraceService = alarmTraceService;
-        Ip = ip;
-        Port = port;
-        Username = username;
-        Password = password;
-    }
-    
     ~SuperBrain()
     {
         Dispose();
@@ -37,19 +34,34 @@ public class SuperBrain : IDisposable
         CHCNetSDK.NET_DVR_Cleanup();
     }
 
-    private IAlarmTraceService AlarmTraceService { get; set; }
-    private string Ip { get; set; } 
-    private string Port { get; set; } 
-    private string Username { get; set; } 
-    private string Password { get; set; } 
+    private IAlarmTraceService AlarmTraceService { get; set; } = alarmTraceService;
+    private string Ip { get; set; } = ip;
+    private string Port { get; set; } = port;
+    private string Username { get; set; } = username;
+    private string Password { get; set; } = password;
+
+    private string AlarmImageFolder { get; set; } = alarmImageFolder;
     private int _userId = -1;
     private int _iFileNumber = 0;
     private CHCNetSDK.MSGCallBack_V31 AlarmCallBack = null;
+
+
+    public static void GetModels()
+    {
+        
+    }
+    
+    
     public string Error()
     {
         int code = (int) CHCNetSDK.NET_DVR_GetLastError();
-        return $"错误码={code}, 错误描述={EnumErrorCode.GetDescription(code)}";
+        return $"错误码={code}, 错误描述={ErrorCode.GetDescription(code)}";
     }
+    
+    
+    
+    
+    
     /// 1 初始化
     /// 2 设置回调函数
     /// 3 登录
@@ -152,7 +164,8 @@ public class SuperBrain : IDisposable
             type = EnumAlarmType.均未穿戴;
         
         //保存图片
-        string filePath = $"./{strIP}_{channel}_{type}.jpg"; //TODO: filepath可配置
+        string filename = $"{strIP}_{channel}_{type}.jpg";
+        string filePath = Path.Combine(AlarmImageFolder, filename);
         if ((struAIOPVideo.dwPictureSize != 0) && (struAIOPVideo.pBufferPicture != IntPtr.Zero))
         {
             FileStream fsPic = new FileStream(filePath, FileMode.Create);
@@ -219,11 +232,7 @@ public class SuperBrain : IDisposable
             
         }
     
-    private void ProcessCommAlarm_AIOPVideo(ref CHCNetSDK.NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser)
-    {
-        
-        
-    }
+    
 
     private CheckResult AnalyzeSuperBrainResponse(string data, string typeKey)
     {
@@ -268,44 +277,7 @@ public class SuperBrain : IDisposable
             return null;
         
     }
-
-    public void txtCreate(string path, string content)
-    {
-        try
-        {
-            if (File.Exists(path + "\\log_y.txt"))
-            {
-                StreamWriter sw = new StreamWriter(path + "\\log_y.txt", true, Encoding.Default);
-                sw.WriteLine(content);
-                sw.Flush();
-                sw.Close();
-            }
-            else
-            {
-                try
-                {
-                    Directory.CreateDirectory(path);
-
-                    FileStream fs = new FileStream(path + "\\log_y.txt", FileMode.OpenOrCreate, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(fs, Encoding.Default);
-                    sw.Flush();
-                    sw.BaseStream.Seek(0, SeekOrigin.Begin);
-                    sw.WriteLine(content);
-                    sw.Flush();
-                    sw.Close();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-
-        }
-
-    }
+    
 
 
     // 设置布防

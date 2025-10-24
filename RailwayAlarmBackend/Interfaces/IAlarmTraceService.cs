@@ -5,12 +5,16 @@ namespace RailwayAlarmBackend.Interfaces;
 
 public interface IAlarmTraceService
 {
-    Task<bool> AddAlarmTraceAsync(string deviceIp, int channel, int alarmType,string imagePath, DateTime alarmDate, string alarmModelResponse);
+    Task AddAlarmTraceAsync(string deviceIp, int channel, int alarmType,string imagePath, DateTime alarmDate, string alarmModelResponse);
+
+    Task AddAlarmTraceAsync(AlarmTrace alarmTrace);
     
-    Task<PageResponse<AlarmTrace>> GetAlarmTracePageAsync(AlarmTraceQueryDto dto);
+    Task<Page<AlarmTrace>> GetAlarmTracePageAsync(AlarmTraceQueryDto dto);
     
-    Task<bool> HandleAlarmTraceAsync(AlarmTraceHandleDto dto);
+    Task HandleAlarmTraceAsync(AlarmTraceHandleDto dto);
     
-    Task<bool> DeleteAlarmTraceAsync(long id);
+    Task DeleteAlarmTraceAsync(long id);
+
+    Task PushAlarmTraceAsync(AlarmTrace alarmTrace);
 
 }

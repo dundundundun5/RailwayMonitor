@@ -24,4 +24,6 @@ public class SuperBrainConfig
     /// 密码
     /// </summary>
     public string Password { get; set; }
+    
+    public string ImageFolder { get; set; }
 }

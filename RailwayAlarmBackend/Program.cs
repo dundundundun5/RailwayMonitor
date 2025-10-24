@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using RailwayAlarmBackend.Contexts;
 using RailwayAlarmBackend.Services;
@@ -6,6 +7,7 @@ using RailwayAlarmBackend.Hubs;
 using RailwayAlarmBackend.Interfaces;
 using RailwayAlarmBackend.Models.Configs; // 引入全局异常处理命名空间
 using Serilog;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +38,7 @@ builder.Services.AddDbContext<DataContext>(options =>
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     ));
 
-// 配置SuperBrain
-builder.Services.Configure<SuperBrainConfig>(builder.Configuration.GetSection("SuperBrain"));
+
 
 // 注册自定义服务 - 之前的问题：缺少服务类注册，导致控制器注入失败
 // 修复前：DeviceTypeService等服务没有在DI容器中注册，控制器构造函数注入时得到null
@@ -72,10 +73,15 @@ builder.Services.AddCors(options =>
     });
 });
 
+var config = builder.Configuration.GetSection("SuperBrain");
+var alarmImageFolder = config.GetSection("ImageFolder").Value  ?? "image";
+if (!Directory.Exists(alarmImageFolder))
+    Directory.CreateDirectory(alarmImageFolder);
 
+// 配置SuperBrain
+builder.Services.Configure<SuperBrainConfig>(config);
 // 注册托管服务 
-// TODO: 托管服务的一异常处理，有别于控制器？
-builder.Services.AddHostedService<SuperBrainHostService>();
+// builder.Services.AddHostedService<SuperBrainHostService>();
 // ===============================================
 // 全局异常处理配置
 // ===============================================
@@ -88,7 +94,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 //    - 提供标准化的错误响应格式
 //    - 与异常处理程序配合使用，确保错误响应格式统一
 builder.Services.AddProblemDetails();
-
+Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -100,6 +106,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+// 配置静态文件服务 - 允许前端访问告警追踪图片
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), alarmImageFolder)),
+    RequestPath = $"/{alarmImageFolder}"
+});
 
 // 启用CORS中间件 - 必须在路由之后，控制器映射之前
 app.UseCors("AllowSpecificOrigins");
@@ -118,5 +132,5 @@ app.UseExceptionHandler();
 app.MapControllers();
 
 // 映射SignalR Hub路由
-app.MapHub<AlarmHub>("/alarmHub");
+app.MapHub<AlarmTraceHub>("/alarmHub");
 app.Run();

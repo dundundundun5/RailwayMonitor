@@ -7,11 +7,11 @@ namespace RailwayAlarmBackend.Hubs;
 /// 告警WebSocket Hub
 /// 用于向前端实时推送告警数据
 /// </summary>
-public class AlarmHub : Hub
+public class AlarmTraceHub : Hub
 {
-    private readonly ILogger<AlarmHub> _logger;
+    private readonly ILogger<AlarmTraceHub> _logger;
 
-    public AlarmHub(ILogger<AlarmHub> logger)
+    public AlarmTraceHub(ILogger<AlarmTraceHub> logger)
     {
         _logger = logger;
     }
@@ -35,7 +35,7 @@ public class AlarmHub : Hub
     }
 
     /// <summary>
-    /// 客户端订阅告警主题
+    /// 客户端订阅告警主题 客户端也装个SignalR包，（不支持C++），可以调用这个方法
     /// </summary>
     public async Task SubscribeToAlarms()
     {
@@ -73,21 +73,5 @@ public class AlarmHub : Hub
             throw; // 重新抛出异常，让前端知道调用失败
         }
     }
-
-    /// <summary>
-    /// 测试方法 - 用于验证Hub连接是否正常
-    /// </summary>
-    public async Task<string> TestConnection()
-    {
-        try
-        {
-            _logger.LogInformation("收到客户端 {ConnectionId} 的连接测试请求", Context.ConnectionId);
-            return $"连接正常 - 客户端ID: {Context.ConnectionId}";
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "测试连接时发生异常");
-            throw;
-        }
-    }
+    
 }

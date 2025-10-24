@@ -3,6 +3,7 @@ using RailwayAlarmBackend.Models.Dtos;
 using RailwayAlarmBackend.Models.Entities;
 using RailwayAlarmBackend.Models.Enums;
 using RailwayAlarmBackend.Models.Utils;
+using RailwayAlarmBackend.Sdks;
 using RailwayAlarmBackend.Services;
 
 namespace RailwayAlarmBackend.Controllers;
@@ -17,31 +18,32 @@ public class DeviceController : ControllerBase
         _deviceService = deviceService;
     }
 
-    [HttpGet("query")]
-    public async Task<BaseResponse<List<Device>>> QueryDevice()
+    [HttpPost("query")]
+    public async Task<BaseResponse<List<Device>>> QueryDevice([FromBody] DeviceQueryDto dto)
     {
-        List<Device> devices = await _deviceService.GetAllDevicesAsync();
+        List<Device> devices = await _deviceService.GetAllDevicesByQueryAsync(dto);
         return BaseResponseUtil.OfList(devices);
     }
     
     [HttpGet("query-channel")]
-    public async Task<BaseResponse<List<Channel>>> QueryDeviceChannel()
+    public async Task<BaseResponse<List<EnumResponse>>> QueryDeviceChannel()
     {
-        List<Channel> channels = Enum
-            .GetValues<EnumChannel>()
-            .Select(e => (new Channel { Name = e.ToString(), Value = (int)e }))
-            .ToList();
+        List<EnumResponse> channels = await Task.Run(EnumResponseUtil.ToList<EnumChannel>); 
         return BaseResponseUtil.OfList(channels);
     }
     
     [HttpGet("query-type")]
-    public async Task<BaseResponse<List<DeviceType>>> QueryDeviceType()
+    public async Task<BaseResponse<List<EnumResponse>>> QueryDeviceType()
     {
-        List<DeviceType> types = Enum
-            .GetValues<EnumChannel>()
-            .Select(e => (new DeviceType { Name = e.ToString(), Value = (int)e }))
-            .ToList();
+        List<EnumResponse> types = await Task.Run(EnumResponseUtil.ToList<EnumDeviceType>);
         return BaseResponseUtil.OfList(types);
+    }
+
+    [HttpGet("query-status")]
+    public async Task<BaseResponse<List<EnumResponse>>> QueryDeviceStatus()
+    {
+        var statusList = await Task.Run(EnumResponseUtil.ToList<EnumStatus>);
+        return BaseResponseUtil.OfList(statusList);
     }
 
     [HttpPost("create")]
@@ -114,6 +116,20 @@ public class DeviceController : ControllerBase
             Enabled = (int) EnumStatus.启用
         };
         await _deviceService.UpdateDeviceAsync(newDevice);
+        return BaseResponseUtil.Success();
+    }
+
+    [HttpGet("/test-recorder")]
+    public BaseResponse<object> TestRecorder()
+    {
+        Recorder recorder = new Recorder("192.168.122.20");
+        recorder.Login();
+        return BaseResponseUtil.Success();
+    }
+    
+    [HttpGet("/test-superbrain")]
+    public  BaseResponse<object> TestSuperBrain()
+    {
         return BaseResponseUtil.Success();
     }
     

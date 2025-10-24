@@ -9,8 +9,8 @@ namespace RailwayAlarmBackend.Sdks;
 /// </summary>
 public class Camera : IDisposable
 {
-    public CHCNetSDK.NET_DVR_USER_LOGIN_INFO LoginInfo { get; set; }
-    public CHCNetSDK.NET_DVR_DEVICEINFO_V40 CameraInfo { get; set; }
+    private CHCNetSDK.NET_DVR_USER_LOGIN_INFO LoginInfo { get; set; }
+    private CHCNetSDK.NET_DVR_DEVICEINFO_V40 DeviceInfo { get; set; }
     public EnumDeviceType DeviceType { get; set; }
     public int UserId { get; set; } = -1;
     private IntPtr RealPlayHandle { get; set; }= -1;
@@ -45,7 +45,7 @@ public class Camera : IDisposable
     }
     public string RtspAddress()
     {
-        return $"rtsp://{UserName}:{Password}@{CameraIpAddress}:554/h264/ch01/main/av_stream";
+        return $"rtsp://{UserName}:{Password}@{CameraIpAddress}:554/h264/ch1/main/av_stream";
     }
     public void Login()   
     {
@@ -81,7 +81,7 @@ public class Camera : IDisposable
         LoginInfo = loginInfo;
         
         var deviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V40();
-        CameraInfo = deviceInfo;
+        DeviceInfo = deviceInfo;
         UserId = CHCNetSDK.NET_DVR_Login_V40(ref loginInfo, ref deviceInfo);
         
         if (UserId == -1)
@@ -159,7 +159,7 @@ public class Camera : IDisposable
         CHCNetSDK.NET_DVR_JPEGPARA outJpegParam = new();
         byte[] buffer = new byte[1024 * 1024 * 50];// 50M
         uint size = 0;
-        bool ok = CHCNetSDK.NET_DVR_CaptureJPEGPicture_NEW(UserId, CameraInfo.struDeviceV30.byStartChan, ref outJpegParam, buffer,
+        bool ok = CHCNetSDK.NET_DVR_CaptureJPEGPicture_NEW(UserId, DeviceInfo.struDeviceV30.byStartChan, ref outJpegParam, buffer,
             (uint)buffer.Length, ref size);
         if (!ok) throw new Exception(Error());
         byte[] ret = new byte[size];
@@ -184,6 +184,6 @@ public class Camera : IDisposable
     public string Error()
     {
         int code = (int) CHCNetSDK.NET_DVR_GetLastError();
-        return $"错误码={code}, 错误描述={EnumErrorCode.GetDescription(code)}";
+        return $"错误码={code}, 错误描述={ErrorCode.GetDescription(code)}";
     }
 }

@@ -1,25 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RailwayAlarmBackend.Models.Entities;
 
 namespace RailwayAlarmBackend.Contexts;
 
-public class DataContext:DbContext
+public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
-    {
-
-    }
     public DbSet<Device> Devices { get; set; }
 
     public DbSet<AlarmTrace> AlarmTraces { get; set; }
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-    }
 
     /// <summary>
     /// 重写SaveChanges方法，在保存前执行全局更新策略
@@ -58,7 +46,7 @@ public class DataContext:DbContext
         {
             // 全局更新策略：只更新非null字段
             var originalValues = entry.OriginalValues;  // 数据库中的原始值
-            var currentValues = entry.CurrentValues;    // 当前要设置的值
+            // var currentValues = entry.CurrentValues;    // 当前要设置的值
 
             // 遍历实体的所有属性
             foreach (var property in entry.Properties)
