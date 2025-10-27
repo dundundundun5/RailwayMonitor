@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RailwayAlarmBackend.Contexts;
 using RailwayAlarmBackend.Hubs;
@@ -7,7 +6,6 @@ using RailwayAlarmBackend.Interfaces;
 using RailwayAlarmBackend.Models.Dtos;
 using RailwayAlarmBackend.Models.Entities;
 using RailwayAlarmBackend.Models.Enums;
-using RailwayAlarmBackend.Models.Utils;
 
 namespace RailwayAlarmBackend.Services;
 

@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using HK.Net.Core;
-using RailwayAlarmBackend.Models.Enums;
 
 namespace RailwayAlarmBackend.Sdks;
 public class Recorder : IDisposable
@@ -14,10 +13,10 @@ public class Recorder : IDisposable
     private CHCNetSDK.NET_DVR_IPPARACFG_V40 IpConfigInfo { get; set; }
     private CHCNetSDK.NET_DVR_GET_STREAM_UNION StreamConfigInfo { get; set; }
     private uint DigitalChannelTotalNumber { get; set; } = 0;
-    private string Ip { get; set; } //设备IP地址或者域名
-    private ushort Port { get; set; }//设备服务端口号
-    private string UserName { get; set; }//设备登录用户名
-    private string Password { get; set; }//设备登录密码
+    public string Ip { get; set; } //设备IP地址或者域名
+    public ushort Port { get; set; }//设备服务端口号
+    public string UserName { get; set; }//设备登录用户名
+    public string Password { get; set; }//设备登录密码
 
     public Recorder(string ip, ushort port = 8000, string username = "admin", string password = "11111111a")
     {
@@ -64,19 +63,22 @@ public class Recorder : IDisposable
             DeviceInfo = deviceInfo;
             
             DigitalChannelTotalNumber = DeviceInfo.struDeviceV30.byIPChanNum + 256 * (uint)DeviceInfo.struDeviceV30.byHighDChanNum;
-            if (DigitalChannelTotalNumber > 0)
-                GetIpChannels();
+            
         }
     }
     
 
     
-    private void GetIpChannels()
+    public List<(string, string)> GetAssociatedIpList()
     {
+        List<(string, string)> ipList = new List<(string, string)>();
+        if (DigitalChannelTotalNumber <= 0)
+            return ipList;
+        
         uint dwSize = (uint)Marshal.SizeOf(IpConfigInfo);
         IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
         Marshal.StructureToPtr(IpConfigInfo, ptrIpParaCfgV40, false);
-
+        
         uint dwReturn = 0;
         int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
         if (!CHCNetSDK.NET_DVR_GetDVRConfig(UserId, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
@@ -98,7 +100,7 @@ public class Recorder : IDisposable
                 StreamConfigInfo = IpConfigInfo.struStreamMode[i].uGetStream;
                 var associateDeviceInfo = IpConfigInfo.struIPDevInfo[i];
 
-                string associateDeviceIp = System.Text.Encoding.GetEncoding("GBK").GetString(associateDeviceInfo.struIP.sIpV4);
+                string associateDeviceIp = System.Text.Encoding.GetEncoding("GBK").GetString(associateDeviceInfo.struIP.sIpV4).Trim('\0');
                 string result = "";
                 if (byStreamType != 0)
                     continue;
@@ -119,9 +121,10 @@ public class Recorder : IDisposable
                 else
                 {
                     ChannelImageInfo = (CHCNetSDK.NET_DVR_PICCFG_V40)Marshal.PtrToStructure(ptrPicCfg, typeof(CHCNetSDK.NET_DVR_PICCFG_V40));
-                    result = System.Text.Encoding.GetEncoding("GBK").GetString(ChannelImageInfo.sChanName);
+                    result = System.Text.Encoding.GetEncoding("GBK").GetString(ChannelImageInfo.sChanName).Trim('\0');
                 }
-                Console.WriteLine($"通道{i + 1}, IP{associateDeviceIp}, 名字{result}");
+                Console.WriteLine($"{Ip}-通道{i + 1}- {associateDeviceIp}-{result}");
+                ipList.Add((associateDeviceIp, result));
                 Marshal.FreeHGlobal(ptrPicCfg);
                 
                 
@@ -130,6 +133,7 @@ public class Recorder : IDisposable
             }
         }
         Marshal.FreeHGlobal(ptrIpParaCfgV40);
+        return ipList;
     }
     
  

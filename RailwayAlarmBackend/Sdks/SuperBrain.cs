@@ -15,12 +15,12 @@ class CheckResult
 
 }
 public class SuperBrain(
-    IAlarmTraceService alarmTraceService,
     string ip,
     string port,
     string username,
     string password,
-    string alarmImageFolder)
+    string alarmImageFolder,
+    IAlarmTraceService? alarmTraceService = null)
     : IDisposable
 {
     ~SuperBrain()
@@ -34,7 +34,7 @@ public class SuperBrain(
         CHCNetSDK.NET_DVR_Cleanup();
     }
 
-    private IAlarmTraceService AlarmTraceService { get; set; } = alarmTraceService;
+    private IAlarmTraceService? AlarmTraceService { get; set; } = alarmTraceService;
     private string Ip { get; set; } = ip;
     private string Port { get; set; } = port;
     private string Username { get; set; } = username;
@@ -43,12 +43,49 @@ public class SuperBrain(
     private string AlarmImageFolder { get; set; } = alarmImageFolder;
     private int _userId = -1;
     private int _iFileNumber = 0;
-    private CHCNetSDK.MSGCallBack_V31 AlarmCallBack = null;
+    private CHCNetSDK.MSGCallBack_V31 AlarmCallBack { get; set; }= null;
 
 
-    public static void GetModels()
+    public string GetModelInfo()
     {
-        
+        string strRequestUrl = "GET /ISAPI/Intelligent/AIOpenPlatform/algorithmModel/management?format=json";
+        CHCNetSDK.NET_DVR_XML_CONFIG_INPUT pInputXml = new CHCNetSDK.NET_DVR_XML_CONFIG_INPUT();
+            Int32 nInSize = Marshal.SizeOf(pInputXml);
+            pInputXml.dwSize = (uint)nInSize;
+
+            
+            uint dwRequestUrlLen = (uint)strRequestUrl.Length;
+            pInputXml.lpRequestUrl = Marshal.StringToHGlobalAnsi(strRequestUrl);
+            pInputXml.dwRequestUrlLen = dwRequestUrlLen;
+
+            string strInputParam = ""; // 如果是模型下发和任务下发会用到
+            byte[] byInputParam = Encoding.UTF8.GetBytes(strInputParam);
+
+            int iXMLInputLen = byInputParam.Length;
+            pInputXml.lpInBuffer = Marshal.AllocHGlobal(iXMLInputLen);
+            Marshal.Copy(byInputParam, 0, pInputXml.lpInBuffer, iXMLInputLen);
+            pInputXml.dwInBufferSize = (uint)byInputParam.Length;
+
+            CHCNetSDK.NET_DVR_XML_CONFIG_OUTPUT pOutputXml = new CHCNetSDK.NET_DVR_XML_CONFIG_OUTPUT();
+            pOutputXml.dwSize = (uint)Marshal.SizeOf(pInputXml);
+            pOutputXml.lpOutBuffer = Marshal.AllocHGlobal(3 * 1024 * 1024);
+            pOutputXml.dwOutBufferSize = 3 * 1024 * 1024;
+            pOutputXml.lpStatusBuffer = Marshal.AllocHGlobal(4096 * 4);
+            pOutputXml.dwStatusSize = 4096 * 4;
+
+            if (!CHCNetSDK.NET_DVR_STDXMLConfig(_userId, ref pInputXml, ref pOutputXml))
+                throw new Exception(Error());
+
+            uint iXMSize = pOutputXml.dwReturnedXMLSize;
+            byte[] managedArray = new byte[iXMSize];
+            Marshal.Copy(pOutputXml.lpOutBuffer, managedArray, 0, (int)iXMSize);
+            string outXml = Encoding.UTF8.GetString(managedArray); 
+            string outStatus = Marshal.PtrToStringAnsi(pOutputXml.lpStatusBuffer);
+
+            Marshal.FreeHGlobal(pInputXml.lpRequestUrl);
+            Marshal.FreeHGlobal(pOutputXml.lpOutBuffer);
+            Marshal.FreeHGlobal(pOutputXml.lpStatusBuffer);
+            return outXml;
     }
     
     
@@ -73,6 +110,7 @@ public class SuperBrain(
         CHCNetSDK.NET_DVR_Init();
         //2. 配置透传报警信息类型 （可选）
         CHCNetSDK.NET_DVR_LOCAL_GENERAL_CFG struLocalCfg = new CHCNetSDK.NET_DVR_LOCAL_GENERAL_CFG();
+        // 这样设置之后SDK底层会自动将报警事件信息数据（XML或者JSON格式的字符串）和图片数据（二进制数据）分离之后返回。如果不调用该接口设置byAlarmJsonPictureSeparate或者设置为0，默认直接以HTTP协议表单格式的报文数据返回即报警信息字符串和图片二进制数据一起返回，在同一个内存里面，需要自行解析。建议设置报警分离模式.
         struLocalCfg.byAlarmJsonPictureSeparate = 1;//控制JSON透传报警数据和图片是否分离，0-不分离(COMM_VCA_ALARM返回)，1-分离（分离后走COMM_ISAPI_ALARM回调返回）
         Int32 nSize = Marshal.SizeOf(struLocalCfg);
         IntPtr ptrLocalCfg = Marshal.AllocHGlobal(nSize);
@@ -176,8 +214,9 @@ public class SuperBrain(
             fsPic.Close();
         }
         
+        if (AlarmTraceService is not null)
         //添加告警记录
-        AlarmTraceService.AddAlarmTraceAsync(strIP, channel, (int) type, filePath, alarmTime, data);
+            AlarmTraceService.AddAlarmTraceAsync(strIP, channel, (int) type, filePath, alarmTime, data);
         
         return true; //回调函数需要有返回，表示正常接收到数据
     }

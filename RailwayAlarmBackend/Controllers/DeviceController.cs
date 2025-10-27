@@ -9,19 +9,12 @@ using RailwayAlarmBackend.Services;
 namespace RailwayAlarmBackend.Controllers;
 [ApiController]
 [Route("[controller]")]
-public class DeviceController : ControllerBase
+public class DeviceController(IDeviceService deviceService, ILogger<DeviceController> logger) : ControllerBase
 {
-    private readonly IDeviceService _deviceService;
-
-    public DeviceController(IDeviceService deviceService)
-    {
-        _deviceService = deviceService;
-    }
-
     [HttpPost("query")]
     public async Task<BaseResponse<List<Device>>> QueryDevice([FromBody] DeviceQueryDto dto)
     {
-        List<Device> devices = await _deviceService.GetAllDevicesByQueryAsync(dto);
+        List<Device> devices = await deviceService.GetAllDevicesByQueryAsync(dto);
         return BaseResponseUtil.OfList(devices);
     }
     
@@ -62,7 +55,7 @@ public class DeviceController : ControllerBase
             UpdateDate = DateTime.Now,
             Enabled = (int) EnumStatus.启用
         };
-        await _deviceService.AddDeviceAsync(device);
+        await deviceService.AddDeviceAsync(device);
         return BaseResponseUtil.Success();
     }
     
@@ -82,7 +75,7 @@ public class DeviceController : ControllerBase
             UpdateDate = DateTime.Now,
             // Enabled = (int) EnumStatus.Enabled
         };
-        await _deviceService.UpdateDeviceAsync(device);
+        await deviceService.UpdateDeviceAsync(device);
         return BaseResponseUtil.Success();
     }
     
@@ -90,7 +83,7 @@ public class DeviceController : ControllerBase
     public async Task<BaseResponse<object>> DeleteDevice([FromRoute] int id)
     {
 
-        await _deviceService.DeleteDeviceAsync(id);
+        await deviceService.DeleteDeviceAsync(id);
         return BaseResponseUtil.Success();
     }
     
@@ -103,7 +96,7 @@ public class DeviceController : ControllerBase
             Id = id,
             Enabled = (int)EnumStatus.停用
         };
-        await _deviceService.UpdateDeviceAsync(newDevice);
+        await deviceService.UpdateDeviceAsync(newDevice);
         return BaseResponseUtil.Success();
     }
     
@@ -115,19 +108,24 @@ public class DeviceController : ControllerBase
             Id = id,
             Enabled = (int) EnumStatus.启用
         };
-        await _deviceService.UpdateDeviceAsync(newDevice);
+        await deviceService.UpdateDeviceAsync(newDevice);
         return BaseResponseUtil.Success();
     }
 
-    [HttpGet("/test-recorder")]
-    public BaseResponse<object> TestRecorder()
+    [HttpPost("/test-recorder")]
+    public BaseResponse<string> TestRecorder(DeviceLoginDto dto)
     {
-        Recorder recorder = new Recorder("192.168.122.20");
+        logger.LogInformation("TestRecorder Login");
+        Recorder recorder = new Recorder(dto.Ip, dto.Port, dto.Username, dto.Password);
         recorder.Login();
-        return BaseResponseUtil.Success();
+        List<(string, string)> associatedIpList = recorder.GetAssociatedIpList();
+        string ips = string.Join("", associatedIpList);
+        string result = $"{recorder.Ip}接了{associatedIpList.Count}路={ips}";
+        logger.LogInformation(result);
+        return BaseResponseUtil.OfData(result);
     }
     
-    [HttpGet("/test-superbrain")]
+    [HttpPost("/test-superbrain")]
     public  BaseResponse<object> TestSuperBrain()
     {
         return BaseResponseUtil.Success();

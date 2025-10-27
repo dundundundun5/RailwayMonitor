@@ -43,14 +43,7 @@ public class SuperBrainHostService : BackgroundService
             var alarmTraceService = scope.ServiceProvider.GetRequiredService<IAlarmTraceService>();
 
             // 创建SuperBrain实例
-            _superBrain = new SuperBrain(
-                alarmTraceService: alarmTraceService,
-                ip: _config.Ip,
-                port: _config.Port,
-                username: _config.Username,
-                password: _config.Password,
-                alarmImageFolder: _config.ImageFolder
-            );
+            _superBrain = new SuperBrain(ip: _config.Ip, port: _config.Port, username: _config.Username, password: _config.Password, alarmImageFolder: _config.ImageFolder, alarmTraceService: alarmTraceService);
 
             _logger.LogInformation("正在连接超脑: {Ip}:{Port}", _config.Ip, _config.Port);
 
@@ -58,6 +51,11 @@ public class SuperBrainHostService : BackgroundService
             _superBrain.Login();
             _logger.LogInformation("SuperBrain登录成功");
 
+            _logger.LogInformation("SuperBrain透传协议-尝试获取模型描述文件");
+            string? modelInfo = _superBrain.GetModelInfo();
+            string filePath = "modelInfo.json";
+            await File.WriteAllTextAsync(filePath, modelInfo, stoppingToken);
+            
             // 设置布防
             _superBrain.SetupAlarm();
             _logger.LogInformation("SuperBrain布防设置成功");
@@ -75,8 +73,7 @@ public class SuperBrainHostService : BackgroundService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "SuperBrainHostService 发生严重异常，服务将停止");
-            // throw; // 抛出异常让.NET知道服务失败
+            _logger.LogError(ex, "SuperBrainHostService异常，服务停止");
         }
     }
 
