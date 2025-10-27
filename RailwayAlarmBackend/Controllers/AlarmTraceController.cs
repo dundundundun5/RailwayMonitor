@@ -49,7 +49,7 @@ public class AlarmTraceController(IAlarmTraceService alarmTraceService) : Contro
         // 创建测试告警数据
         var testAlarm = new AlarmTrace
         {
-            DeivceIp = deviceIp,
+            DeviceIp = deviceIp,
             SuperBrainChannel = channel,
             AlarmType = alarmType,
             AlarmDate = DateTime.Now,

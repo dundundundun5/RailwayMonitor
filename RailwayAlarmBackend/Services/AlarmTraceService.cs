@@ -16,7 +16,7 @@ public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> l
     {
         AlarmTrace trace = new AlarmTrace()
         {
-            DeivceIp = deviceIp,
+            DeviceIp = deviceIp,
             SuperBrainChannel = channel,
             AlarmType = alarmType,
             AlarmDate = alarmDate,
@@ -74,7 +74,7 @@ public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> l
     {
         try
         {
-            logger.LogInformation("推送告警数据到WebSocket客户端: {AlarmType} - {DeviceIp}", alarmTrace.AlarmType, alarmTrace.DeivceIp);
+            logger.LogInformation("推送告警数据到WebSocket客户端: {AlarmType} - {DeviceIp}", alarmTrace.AlarmType, alarmTrace.DeviceIp);
 
             // 向所有订阅了告警主题的客户端推送消息
             // 消息主题为 "alarm"，内容为完整的AlarmTrace对象
