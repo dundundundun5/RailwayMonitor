@@ -26,7 +26,7 @@ public class Recorder : IDisposable
         Password = password;
     }
 
-    public void Login()
+    public string Login()
     {
         if (!CHCNetSDK.NET_DVR_Init())
             throw new Exception(Error());
@@ -63,8 +63,11 @@ public class Recorder : IDisposable
             DeviceInfo = deviceInfo;
             
             DigitalChannelTotalNumber = DeviceInfo.struDeviceV30.byIPChanNum + 256 * (uint)DeviceInfo.struDeviceV30.byHighDChanNum;
-            
+            if (UserId >= 0)
+                return "";
         }
+
+        return Error();
     }
     
 

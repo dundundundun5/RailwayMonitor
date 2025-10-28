@@ -96,6 +96,7 @@
       <None Update="HCNetSDKCom\SystemTransform.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Remove="Logs\log-20251028.txt" />
     </ItemGroup>
 
 </Project>

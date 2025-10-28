@@ -22,6 +22,8 @@ public interface IDeviceService
     /// <returns>操作结果</returns>
     Task UpdateDeviceAsync(Device device);
 
+    public Task UpdateDeviceStatusAsync(int id, int status);
+
     /// <summary>
     /// 获取所有设备
     /// </summary>
@@ -36,4 +38,6 @@ public interface IDeviceService
     /// <param name="id">设备ID</param>
     /// <returns>操作结果</returns>
     Task DeleteDeviceAsync(int id);
+    
+    
 }

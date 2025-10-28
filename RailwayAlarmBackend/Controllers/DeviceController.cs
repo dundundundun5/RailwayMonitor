@@ -64,6 +64,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
     {
         Device device = new Device
         {
+            Id = updateDto.Id,
             Name = updateDto.Name,
             Ip = updateDto.Ip,
             Port = updateDto.Port,
@@ -91,29 +92,20 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
     public async Task<BaseResponse<object>> DiableDevice([FromRoute] int id)
     {
 
-        Device newDevice = new Device()
-        {
-            Id = id,
-            Enabled = (int)EnumStatus.停用
-        };
-        await deviceService.UpdateDeviceAsync(newDevice);
+        await deviceService.UpdateDeviceStatusAsync(id, (int)EnumStatus.停用);
         return BaseResponseUtil.Success();
     }
     
     [HttpPost("enable/{id:int}")]
     public async Task<BaseResponse<object>> EnableDevice([FromRoute] int id)
     {
-        Device newDevice = new Device()
-        {
-            Id = id,
-            Enabled = (int) EnumStatus.启用
-        };
-        await deviceService.UpdateDeviceAsync(newDevice);
+    
+        await deviceService.UpdateDeviceStatusAsync(id, (int)EnumStatus.启用);
         return BaseResponseUtil.Success();
     }
 
-    [HttpPost("/test-recorder")]
-    public BaseResponse<string> TestRecorder(DeviceLoginDto dto)
+    [HttpPost("test-recorder")]
+    public BaseResponse<string> TestRecorder([FromBody] DeviceLoginDto dto)
     {
         logger.LogInformation("TestRecorder Login");
         Recorder recorder = new Recorder(dto.Ip, dto.Port, dto.Username, dto.Password);
@@ -125,8 +117,17 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
         return BaseResponseUtil.OfData(result);
     }
     
-    [HttpPost("/test-superbrain")]
-    public  BaseResponse<object> TestSuperBrain()
+    [HttpPost("test-connection")]
+    public BaseResponse<string> TestLogin([FromBody] DeviceLoginDto dto)
+    {
+        logger.LogInformation("TestRecorder Login");
+        Recorder recorder = new Recorder(dto.Ip, dto.Port, dto.Username, dto.Password);
+        string result =  recorder.Login();
+        return BaseResponseUtil.OfData(result);
+    }
+    
+    [HttpGet("test-superbrain")]
+    public async Task<BaseResponse<object>> TestSuperBrain()
     {
         return BaseResponseUtil.Success();
     }
