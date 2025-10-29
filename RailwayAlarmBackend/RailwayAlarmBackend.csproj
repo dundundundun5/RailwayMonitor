@@ -30,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="alarmTraceImage\" />
       <Folder Include="Handlers\" />
       <Folder Include="Logs\" />
     </ItemGroup>
