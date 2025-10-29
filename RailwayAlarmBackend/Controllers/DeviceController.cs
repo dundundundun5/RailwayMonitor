@@ -15,28 +15,28 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
     public async Task<BaseResponse<List<Device>>> QueryDevice([FromBody] DeviceQueryDto dto)
     {
         List<Device> devices = await deviceService.GetAllDevicesByQueryAsync(dto);
-        return BaseResponseUtil.OfList(devices);
+        return ResponseUtil.OfList(devices);
     }
     
     [HttpGet("query-channel")]
     public async Task<BaseResponse<List<EnumResponse>>> QueryDeviceChannel()
     {
         List<EnumResponse> channels = await Task.Run(EnumResponseUtil.ToList<EnumChannel>); 
-        return BaseResponseUtil.OfList(channels);
+        return ResponseUtil.OfList(channels);
     }
     
     [HttpGet("query-type")]
     public async Task<BaseResponse<List<EnumResponse>>> QueryDeviceType()
     {
         List<EnumResponse> types = await Task.Run(EnumResponseUtil.ToList<EnumDeviceType>);
-        return BaseResponseUtil.OfList(types);
+        return ResponseUtil.OfList(types);
     }
 
     [HttpGet("query-status")]
     public async Task<BaseResponse<List<EnumResponse>>> QueryDeviceStatus()
     {
         var statusList = await Task.Run(EnumResponseUtil.ToList<EnumStatus>);
-        return BaseResponseUtil.OfList(statusList);
+        return ResponseUtil.OfList(statusList);
     }
 
     [HttpPost("create")]
@@ -56,7 +56,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
             Enabled = (int) EnumStatus.启用
         };
         await deviceService.AddDeviceAsync(device);
-        return BaseResponseUtil.Success();
+        return ResponseUtil.Success();
     }
     
     [HttpPost("update")]
@@ -77,7 +77,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
             // Enabled = (int) EnumStatus.Enabled
         };
         await deviceService.UpdateDeviceAsync(device);
-        return BaseResponseUtil.Success();
+        return ResponseUtil.Success();
     }
     
     [HttpPost("delete/{id:int}")]
@@ -85,7 +85,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
     {
 
         await deviceService.DeleteDeviceAsync(id);
-        return BaseResponseUtil.Success();
+        return ResponseUtil.Success();
     }
     
     [HttpPost("disable/{id:int}")]
@@ -93,7 +93,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
     {
 
         await deviceService.UpdateDeviceStatusAsync(id, (int)EnumStatus.停用);
-        return BaseResponseUtil.Success();
+        return ResponseUtil.Success();
     }
     
     [HttpPost("enable/{id:int}")]
@@ -101,7 +101,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
     {
     
         await deviceService.UpdateDeviceStatusAsync(id, (int)EnumStatus.启用);
-        return BaseResponseUtil.Success();
+        return ResponseUtil.Success();
     }
 
     [HttpPost("test-recorder")]
@@ -114,7 +114,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
         string ips = string.Join("", associatedIpList);
         string result = $"{recorder.Ip}接了{associatedIpList.Count}路={ips}";
         logger.LogInformation(result);
-        return BaseResponseUtil.OfData(result);
+        return ResponseUtil.OfData(result);
     }
     
     [HttpPost("test-connection")]
@@ -123,13 +123,13 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
         logger.LogInformation("TestRecorder Login");
         Recorder recorder = new Recorder(dto.Ip, dto.Port, dto.Username, dto.Password);
         string result =  recorder.Login();
-        return BaseResponseUtil.OfData(result);
+        return ResponseUtil.OfData(result);
     }
     
     [HttpGet("test-superbrain")]
     public async Task<BaseResponse<object>> TestSuperBrain()
     {
-        return BaseResponseUtil.Success();
+        return ResponseUtil.Success();
     }
     
 }

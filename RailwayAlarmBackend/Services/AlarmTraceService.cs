@@ -50,7 +50,7 @@ public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> l
         if (trace is null)
             return;
         trace.AlarmStatus = dto.AlarmHandleStatus;
-        context.AlarmTraces.Update(trace);
+        
         await context.SaveChangesAsync();
     }
 

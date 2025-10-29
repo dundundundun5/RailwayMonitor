@@ -5,20 +5,12 @@ using RailwayAlarmBackend.Models.Entities;
 
 namespace RailwayAlarmBackend.Models.Utils;
 
-public static class BaseResponseUtil
+public static class ResponseUtil
 {
     private const int SuccessCode = 200;
     private const int FailedCode = 500;
 
-    public static BaseResponse<Page<T>> OfPage<T>(Page<T> entities)
-    {
-        return new BaseResponse<Page<T>>()
-        {
-            Code = SuccessCode,
-            Message = "",
-            Data = entities
-        };
-    }
+    
     
     
     public static  BaseResponse<List<T>> OfList<T>(List<T> entities)
@@ -59,6 +51,21 @@ public static class BaseResponseUtil
             Message = "",
             Data = null
         };
+    }
+
+    public static PageResponse<T> OfPage<T>(List<T> data, long pageSize, long pageIndex, long totalCount)
+    {
+        return new PageResponse<T>()
+        {
+            Code = SuccessCode,
+            Data = data,
+            Message = "",
+            PageIndex = pageIndex,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     } 
+    
+    
     
 }
