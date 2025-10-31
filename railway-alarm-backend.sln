@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailwayAlarmBackend", "RailwayAlarmBackend\RailwayAlarmBackend.csproj", "{2435A9A7-22F4-4F84-A83D-193C14DE3143}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikvisionWPF", "HikvisionWPF\HikvisionWPF.csproj", "{8EFC3CD7-079C-4846-9FD2-4BEAFBA405C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{2435A9A7-22F4-4F84-A83D-193C14DE3143}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2435A9A7-22F4-4F84-A83D-193C14DE3143}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2435A9A7-22F4-4F84-A83D-193C14DE3143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EFC3CD7-079C-4846-9FD2-4BEAFBA405C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EFC3CD7-079C-4846-9FD2-4BEAFBA405C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EFC3CD7-079C-4846-9FD2-4BEAFBA405C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EFC3CD7-079C-4846-9FD2-4BEAFBA405C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
