@@ -11,6 +11,7 @@ namespace RailwayAlarmBackend.Services;
 
 public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> logger, IHubContext<AlarmTraceHub> hubContext) : IAlarmTraceService
 {
+    private readonly SemaphoreSlim _dbSemaphore = new SemaphoreSlim(1, 1); // 数据库操作锁
     public async Task AddAlarmTraceAsync(string deviceIp, int channel, int alarmType, string imagePath, DateTime alarmDate,
         string alarmModelResponse)
     {
@@ -31,8 +32,19 @@ public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> l
 
     public async Task AddAlarmTraceAsync(AlarmTrace alarmTrace)
     {
-        await context.AlarmTraces.AddAsync(alarmTrace);
-        await context.SaveChangesAsync();
+        await _dbSemaphore.WaitAsync();
+        try
+        {
+            await context.AlarmTraces.AddAsync(alarmTrace);
+            await context.SaveChangesAsync();
+
+            // 推送告警数据到WebSocket
+            await PushAlarmTraceAsync(alarmTrace);
+        }
+        finally
+        {
+            _dbSemaphore.Release();
+        }
     }
 
     public async Task DeleteAlarmTraceAsync(long id)

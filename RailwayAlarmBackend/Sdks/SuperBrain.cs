@@ -222,55 +222,6 @@ public class SuperBrain(
     }
     
     
-    private void ProcessCommAlarm_AIOPVideoRaw(ref CHCNetSDK.NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser)
-        {
-            CHCNetSDK.NET_AIOP_VIDEO_HEAD struAIOPVideo = new CHCNetSDK.NET_AIOP_VIDEO_HEAD();
-            uint dwSize = (uint)Marshal.SizeOf(struAIOPVideo);
-            struAIOPVideo = (CHCNetSDK.NET_AIOP_VIDEO_HEAD)Marshal.PtrToStructure(pAlarmInfo, typeof(CHCNetSDK.NET_AIOP_VIDEO_HEAD));
-
-            //报警设备struAIOPPic地址
-            string strIP = System.Text.Encoding.UTF8.GetString(pAlarmer.sDeviceIP).TrimEnd('\0');
-
-            //报警时间：年月日时分秒
-            string strTimeYear = (struAIOPVideo.struTime.wYear).ToString();
-            string strTimeMonth = (struAIOPVideo.struTime.wMonth).ToString("d2");
-            string strTimeDay = (struAIOPVideo.struTime.wDay).ToString("d2");
-            string strTimeHour = (struAIOPVideo.struTime.wHour).ToString("d2");
-            string strTimeMinute = (struAIOPVideo.struTime.wMinute).ToString("d2");
-            string strTimeSecond = (struAIOPVideo.struTime.wSecond).ToString("d2");
-            string strTime = strTimeYear + "-" + strTimeMonth + "-" + strTimeDay + " " + strTimeHour + ":" + strTimeMinute + ":" + strTimeSecond;
-
-            string stringAlarm = "AI开放平台视频检测报警上传，szTaskID：" + System.Text.Encoding.UTF8.GetString(struAIOPVideo.szTaskID).TrimEnd('\0')
-                + ",报警触发时间：" + strTime;
-
-            //保存AIOPData数据  
-            if ((struAIOPVideo.dwAIOPDataSize != 0) && (struAIOPVideo.pBufferAIOPData != IntPtr.Zero))
-            {
-                string str = ".\\picture\\AiopData[" + strIP + "]_lUerID_[" + pAlarmer.lUserID + "]" + _iFileNumber + ".txt";
-                FileStream fs = new FileStream(str, FileMode.Create);
-                int iLen = (int)struAIOPVideo.dwAIOPDataSize;
-                byte[] by = new byte[iLen];
-                Marshal.Copy(struAIOPVideo.pBufferAIOPData, by, 0, iLen);
-                fs.Write(by, 0, iLen);
-                fs.Close();
-                _iFileNumber++;
-            }
-            //保存图片数据
-            if ((struAIOPVideo.dwPictureSize != 0) && (struAIOPVideo.pBufferPicture != IntPtr.Zero))
-            {
-                string strPic = ".\\picture\\AiopPicture[" + strIP + "]_lUerID_[" + pAlarmer.lUserID + "]" +
-                     _iFileNumber + ".jpg";
-                FileStream fsPic = new FileStream(strPic, FileMode.Create);
-                int iPicLen = (int)struAIOPVideo.dwPictureSize;
-                byte[] byPic = new byte[iPicLen];
-                Marshal.Copy(struAIOPVideo.pBufferPicture, byPic, 0, iPicLen);
-                fsPic.Write(byPic, 0, iPicLen);
-                fsPic.Close();
-                _iFileNumber++;
-            }
-            
-        }
-    
     
 
     private CheckResult AnalyzeSuperBrainResponse(string data, string typeKey)
@@ -316,8 +267,6 @@ public class SuperBrain(
             return null;
         
     }
-    
-
 
     // 设置布防
     public void SetupAlarm()

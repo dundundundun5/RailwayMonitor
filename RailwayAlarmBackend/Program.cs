@@ -37,7 +37,12 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection")!,
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection")),
+        mysqlOptions => mysqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null
+        )
     ));
 
 
@@ -118,4 +123,5 @@ app.MapControllers();
 
 // 映射SignalR Hub路由
 app.MapHub<AlarmTraceHub>("/alarmHub");
-app.Run();
+// 显式指定端口
+app.Run("http://localhost:8081");
