@@ -85,7 +85,7 @@ if (!Directory.Exists(alarmImageFolder))
 
 
 builder.Services.Configure<SuperBrainConfig>(config);
-
+builder.Services.AddHostedService<SuperBrainHostService>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 

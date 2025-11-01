@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+        <RootNamespace>RailwayAlarmBackend</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -30,7 +31,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="alarmTraceImage\" />
       <Folder Include="Handlers\" />
       <Folder Include="Logs\" />
     </ItemGroup>

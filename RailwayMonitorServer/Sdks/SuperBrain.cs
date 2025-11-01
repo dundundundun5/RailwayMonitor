@@ -40,11 +40,15 @@ public class SuperBrain(
     private string Username { get; set; } = username;
     private string Password { get; set; } = password;
 
+    private CHCNetSDK.NET_DVR_PICCFG_V40 ChannelImageInfo { get; set; }
+    private CHCNetSDK.NET_DVR_IPPARACFG_V40 IpConfigInfo { get; set; }
+    private CHCNetSDK.NET_DVR_GET_STREAM_UNION StreamConfigInfo { get; set; }
+    private uint DigitalChannelTotalNumber { get; set; } = 0;
     private string AlarmImageFolder { get; set; } = alarmImageFolder;
     private int _userId = -1;
     private int _iFileNumber = 0;
     private CHCNetSDK.MSGCallBack_V31 AlarmCallBack { get; set; }= null;
-
+    private readonly SemaphoreSlim _dbSemaphore = new SemaphoreSlim(1, 1);
 
     public string GetModelInfo()
     {
@@ -151,13 +155,84 @@ public class SuperBrain(
         CHCNetSDK.NET_DVR_DEVICEINFO_V40 DeviceInfo = new CHCNetSDK.NET_DVR_DEVICEINFO_V40();
         //登录设备 Login the device
         _userId = CHCNetSDK.NET_DVR_Login_V40(ref struLogInfo, ref DeviceInfo);
+        DigitalChannelTotalNumber = DeviceInfo.struDeviceV30.byIPChanNum + 256 * (uint)DeviceInfo.struDeviceV30.byHighDChanNum;
         if (_userId < 0)
             throw new Exception(Error());
     }
 
-    private bool SuperBrainAlarmCallBack(int lCommand, ref CHCNetSDK.NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser)
+    
+    public void GetAssociatedIpList(ref List<String> ips, ref List<String> names)
     {
         
+        ips = new List<string>();
+        names = new List<string>();
+        if (DigitalChannelTotalNumber <= 0)
+            return;
+        
+        uint dwSize = (uint)Marshal.SizeOf(IpConfigInfo);
+        IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
+        Marshal.StructureToPtr(IpConfigInfo, ptrIpParaCfgV40, false);
+        
+        uint dwReturn = 0;
+        int iGroupNo = 0; //该Demo仅获取第一组64个通道，如果设备IP通道大于64路，需要按组号0~i多次调用NET_DVR_GET_IPPARACFG_V40获取
+        if (!CHCNetSDK.NET_DVR_GetDVRConfig(_userId, CHCNetSDK.NET_DVR_GET_IPPARACFG_V40, iGroupNo, ptrIpParaCfgV40, dwSize, ref dwReturn))
+            throw new Exception(Error());
+        else
+        {
+            // succ
+            IpConfigInfo = (CHCNetSDK.NET_DVR_IPPARACFG_V40)Marshal.PtrToStructure(ptrIpParaCfgV40, typeof(CHCNetSDK.NET_DVR_IPPARACFG_V40));
+            
+            uint actualDigitalTotalNumber = 64;
+            if (DigitalChannelTotalNumber < 64)
+                actualDigitalTotalNumber = DigitalChannelTotalNumber; //如果设备IP通道小于64路，按实际路数获取
+            
+
+            for (int i = 0; i < actualDigitalTotalNumber; i++)
+            {
+              
+                var byStreamType = IpConfigInfo.struStreamMode[i].byGetStreamType;
+                StreamConfigInfo = IpConfigInfo.struStreamMode[i].uGetStream;
+                var associateDeviceInfo = IpConfigInfo.struIPDevInfo[i];
+
+                string associateDeviceIp = System.Text.Encoding.GetEncoding("GBK").GetString(associateDeviceInfo.struIP.sIpV4).Trim('\0');
+                string result = "";
+                if (byStreamType != 0)
+                    continue;
+                //目前NVR仅支持0- 直接从设备取流一种方式
+                dwSize = (uint)Marshal.SizeOf(StreamConfigInfo);
+                IntPtr ptrChanInfo = Marshal.AllocHGlobal((Int32)dwSize);
+                Marshal.StructureToPtr(StreamConfigInfo, ptrChanInfo, false);
+                var ipChannelInfo = (CHCNetSDK.NET_DVR_IPCHANINFO)Marshal.PtrToStructure(ptrChanInfo, typeof(CHCNetSDK.NET_DVR_IPCHANINFO));
+                
+                if (ipChannelInfo.byEnable == 0)
+                    continue;
+                dwReturn = 0;
+                Int32 nSize = Marshal.SizeOf(ChannelImageInfo);
+                IntPtr ptrPicCfg = Marshal.AllocHGlobal(nSize);
+                Marshal.StructureToPtr(ChannelImageInfo, ptrPicCfg, false);
+                if (!CHCNetSDK.NET_DVR_GetDVRConfig(_userId, CHCNetSDK.NET_DVR_GET_PICCFG_V40, i + (int)IpConfigInfo.dwStartDChan, ptrPicCfg, (UInt32)nSize, ref dwReturn))
+                    throw new Exception(Error());
+                else
+                {
+                    ChannelImageInfo = (CHCNetSDK.NET_DVR_PICCFG_V40)Marshal.PtrToStructure(ptrPicCfg, typeof(CHCNetSDK.NET_DVR_PICCFG_V40));
+                    result = System.Text.Encoding.GetEncoding("GBK").GetString(ChannelImageInfo.sChanName).Trim('\0');
+                }
+                Console.WriteLine($"{Ip}-通道{i + 1}- {associateDeviceIp}-{result}");
+                ips.Add(associateDeviceIp);
+                names.Add(result);
+                Marshal.FreeHGlobal(ptrPicCfg);
+                
+                
+                Marshal.FreeHGlobal(ptrChanInfo);
+            
+            }
+        }
+        Marshal.FreeHGlobal(ptrIpParaCfgV40);
+        return;
+    }
+    private bool SuperBrainAlarmCallBack(int lCommand, ref CHCNetSDK.NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser)
+    {
+        _dbSemaphore.Wait(1500);
         //设备支持AI开放平台接入，处理媒体类型是 实时视频流
         if (lCommand != CHCNetSDK.COMM_UPLOAD_AIOP_VIDEO)
             return false;
@@ -191,8 +266,9 @@ public class SuperBrain(
         CheckResult result_1 = AnalyzeSuperBrainResponse(data, "dc00279fa260418891c88fd7a4179295");// 反光衣
         //CheckResult result_2 = AnalyzeSuperBrainResponse(data, "d71a6546b0284384a757935bc889abd6");// 帽子
         CheckResult result_2 = AnalyzeSuperBrainResponse(data, "7dfb0893d6e94d0cbe0bf60ef53fccc8");// 帽子
-        
-        
+
+        if (result_1.Result == null || result_2.Result == null)
+            return false;
         EnumAlarmType type = EnumAlarmType.均穿戴;
         if (result_1.Result == "yes" && result_2.Result == "no")
             type = EnumAlarmType.未戴安全帽;
@@ -202,7 +278,7 @@ public class SuperBrain(
             type = EnumAlarmType.均未穿戴;
         
         //保存图片
-        string filename = $"{strIP}_{channel}_{type}.jpg";
+        string filename = $"{strIP}_{channel}_{nameof(type)}.jpg";
         string filePath = Path.Combine(AlarmImageFolder, filename);
         if ((struAIOPVideo.dwPictureSize != 0) && (struAIOPVideo.pBufferPicture != IntPtr.Zero))
         {
@@ -217,7 +293,7 @@ public class SuperBrain(
         if (AlarmTraceService is not null)
         //添加告警记录
             AlarmTraceService.AddAlarmTraceAsync(strIP, channel, (int) type, filePath, alarmTime, data);
-        
+        _dbSemaphore.Release();
         return true; //回调函数需要有返回，表示正常接收到数据
     }
     

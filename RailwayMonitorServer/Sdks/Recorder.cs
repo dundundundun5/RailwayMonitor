@@ -7,6 +7,8 @@ public class Recorder : IDisposable
 {
     private Int32 UserId { get; set; }= -1;
     private Int32 IsDownloading { get; set; }= -1;
+
+    private Int32 m_lPlayHandle { get; set; } = -1;
     private CHCNetSDK.NET_DVR_USER_LOGIN_INFO LoginInfo { get; set; }
     private CHCNetSDK.NET_DVR_DEVICEINFO_V40 DeviceInfo { get; set; }
     private CHCNetSDK.NET_DVR_PICCFG_V40 ChannelImageInfo { get; set; }
@@ -18,7 +20,7 @@ public class Recorder : IDisposable
     public string UserName { get; set; }//设备登录用户名
     public string Password { get; set; }//设备登录密码
 
-    public Recorder(string ip, ushort port = 8000, string username = "admin", string password = "11111111a")
+    public Recorder(string ip, ushort port ,string username = "admin", string password = "11111111a")
     {
         Ip = ip;
         Port = port;
@@ -28,8 +30,7 @@ public class Recorder : IDisposable
 
     public string Login()
     {
-        if (!CHCNetSDK.NET_DVR_Init())
-            throw new Exception(Error());
+        CHCNetSDK.NET_DVR_Init();
         if (UserId < 0)
         {
             byte[] bytesUserName = Encoding.Default.GetBytes(UserName);
@@ -72,11 +73,13 @@ public class Recorder : IDisposable
     
 
     
-    public List<(string, string)> GetAssociatedIpList()
+    public void GetAssociatedIpList(ref List<String> ips, ref List<String> names)
     {
-        List<(string, string)> ipList = new List<(string, string)>();
+        
+        ips = new List<string>();
+        names = new List<string>();
         if (DigitalChannelTotalNumber <= 0)
-            return ipList;
+            return;
         
         uint dwSize = (uint)Marshal.SizeOf(IpConfigInfo);
         IntPtr ptrIpParaCfgV40 = Marshal.AllocHGlobal((Int32)dwSize);
@@ -127,7 +130,8 @@ public class Recorder : IDisposable
                     result = System.Text.Encoding.GetEncoding("GBK").GetString(ChannelImageInfo.sChanName).Trim('\0');
                 }
                 Console.WriteLine($"{Ip}-通道{i + 1}- {associateDeviceIp}-{result}");
-                ipList.Add((associateDeviceIp, result));
+                ips.Add(associateDeviceIp);
+                names.Add(result);
                 Marshal.FreeHGlobal(ptrPicCfg);
                 
                 
@@ -136,58 +140,88 @@ public class Recorder : IDisposable
             }
         }
         Marshal.FreeHGlobal(ptrIpParaCfgV40);
-        return ipList;
+        return;
     }
     
- 
-    public void StartDownload(int channel, DateTime start, DateTime end, string rootPath)
+ public void StartPlayback(IntPtr handle, DateTime start, DateTime end, uint channel)
     {
-        if (IsDownloading >= 0)
+        
+        
+        
+        // CHCNetSDK.NET_DVR_SetPlayDataCallBack()
+        if (m_lPlayHandle >= 0)
         {
-            throw new Exception(Error());//正在下载，请先停止下载
+            //如果已经正在回放，先停止回放
+            if (!CHCNetSDK.NET_DVR_StopPlayBack(m_lPlayHandle))
+            {
+                Console.WriteLine(Error());
+                return;
+            }
+            
+
+            m_lPlayHandle = -1;
+
+            // PlaybackprogressBar.Value = 0;回放进度条
+        }
+
+        CHCNetSDK.NET_DVR_VOD_PARA struVodPara = new CHCNetSDK.NET_DVR_VOD_PARA();
+        struVodPara.dwSize = (uint)Marshal.SizeOf(struVodPara);
+        struVodPara.struIDInfo.dwChannel = (uint)(32 + channel) ; //通道号 Channel number  
+        struVodPara.hWnd = handle;//回放窗口句柄
+        //设置回放的开始时间 Set the starting time to search video files
+        struVodPara.struBeginTime.dwYear = start.Year;
+        struVodPara.struBeginTime.dwMonth = start.Month;
+        struVodPara.struBeginTime.dwDay = start.Day;
+        struVodPara.struBeginTime.dwHour = start.Hour;
+        struVodPara.struBeginTime.dwMinute = start.Minute;
+        struVodPara.struBeginTime.dwSecond = start.Second;
+
+        //设置回放的结束时间 Set the stopping time to search video files
+        struVodPara.struEndTime.dwYear = end.Year;
+        struVodPara.struEndTime.dwMonth = end.Month;
+        struVodPara.struEndTime.dwDay = end.Day;
+        struVodPara.struEndTime.dwHour = end.Hour;
+        struVodPara.struEndTime.dwMinute = end.Minute;
+        struVodPara.struEndTime.dwSecond = end.Second;
+        //按时间回放 Playback by time
+        m_lPlayHandle = CHCNetSDK.NET_DVR_PlayBackByTime_V40(UserId, ref struVodPara);
+        if (m_lPlayHandle < 0)
+        {
+            Console.WriteLine(Error());
             return;
         }
 
-        CHCNetSDK.NET_DVR_PLAYCOND struDownPara = new CHCNetSDK.NET_DVR_PLAYCOND();
-        struDownPara.dwChannel = (uint)channel; //通道号 Channel number  
-
-        //设置下载的开始时间 Set the starting time
-        struDownPara.struStartTime.dwYear = start.Year;
-        struDownPara.struStartTime.dwMonth = start.Month;
-        struDownPara.struStartTime.dwDay = start.Day;
-        struDownPara.struStartTime.dwHour = start.Hour;
-        struDownPara.struStartTime.dwMinute = start.Minute;
-        struDownPara.struStartTime.dwSecond = start.Second;
-
-        //设置下载的结束时间 Set the stopping time
-        struDownPara.struStopTime.dwYear = end.Year;
-        struDownPara.struStopTime.dwMonth = end.Month;
-        struDownPara.struStopTime.dwDay = end.Day;
-        struDownPara.struStopTime.dwHour = end.Hour;
-        struDownPara.struStopTime.dwMinute = end.Minute;
-        struDownPara.struStopTime.dwSecond = end.Second;
-
-        string sVideoFileName;  //录像文件保存路径和文件名 the path and file name to save      
-        sVideoFileName = rootPath + struDownPara.dwChannel+".mp4";
-
-        //按时间下载 Download by time
-        IsDownloading = CHCNetSDK.NET_DVR_GetFileByTime_V40(UserId, sVideoFileName, ref struDownPara);
-        if (IsDownloading < 0)
-            throw new Exception(Error());
-            
-
         uint iOutValue = 0;
-        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(IsDownloading, CHCNetSDK.NET_DVR_PLAYSTART, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
-            throw new Exception(Error());
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYSTART, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            Console.WriteLine(Error());
+            return;
+        }
+        // timerPlayback.Interval = 1000; 用于定时更新UI线程中视频进度条的定时器
+        // timerPlayback.Enabled = true;
     }
-    public void StopDownload()
+    public void StopPlayback()
     {
-        if(IsDownloading<0)
-            return;            
-        if (!CHCNetSDK.NET_DVR_StopGetFile(IsDownloading))
-            throw new Exception(Error());
-        IsDownloading = -1;
+        if (m_lPlayHandle < 0)
+        {
+            return;
+        }
+
+        //停止回放
+        if (!CHCNetSDK.NET_DVR_StopPlayBack(m_lPlayHandle))
+        {
+            Console.WriteLine(Error());
+            return;
+        }
+
+        // PlaybackprogressBar.Value = 0;
+        // timerPlayback.Stop();
+            
+        m_lPlayHandle = -1;
+        // VideoPlayWnd.Invalidate();//刷新窗口    
+   
     }
+    
     
     
     public string Error()

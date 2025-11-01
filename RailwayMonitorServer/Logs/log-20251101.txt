@@ -1,0 +1,214 @@
+2025-11-01 12:20:54.642 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 12:20:54.875 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: jKeDWgMwz863b0tkgGBg8A
+2025-11-01 12:20:54.909 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 jKeDWgMwz863b0tkgGBg8A 的订阅请求
+2025-11-01 12:20:54.909 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 jKeDWgMwz863b0tkgGBg8A 已成功订阅告警推送
+2025-11-01 12:21:59.309 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 12:21:59.319 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 12:27:05.536 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: jKeDWgMwz863b0tkgGBg8A
+2025-11-01 12:27:27.524 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: udToBBjfmc7m7U2eUAgEXA
+2025-11-01 12:27:27.663 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 udToBBjfmc7m7U2eUAgEXA 的订阅请求
+2025-11-01 12:27:27.664 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 udToBBjfmc7m7U2eUAgEXA 已成功订阅告警推送
+2025-11-01 12:27:36.157 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 12:27:36.158 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 12:27:46.131 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 12:27:46.132 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 12:31:05.829 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: udToBBjfmc7m7U2eUAgEXA
+2025-11-01 12:31:16.400 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: jLEGYR44sg-bhDEAKX1H2A
+2025-11-01 12:31:16.481 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 jLEGYR44sg-bhDEAKX1H2A 的订阅请求
+2025-11-01 12:31:16.481 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 jLEGYR44sg-bhDEAKX1H2A 已成功订阅告警推送
+2025-11-01 12:31:39.112 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 12:31:39.113 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 12:32:38.468 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: jLEGYR44sg-bhDEAKX1H2A
+2025-11-01 12:35:46.352 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: K27EFTxhwCdFoUeAhxB6QQ
+2025-11-01 12:35:46.432 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 K27EFTxhwCdFoUeAhxB6QQ 的订阅请求
+2025-11-01 12:35:46.432 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 K27EFTxhwCdFoUeAhxB6QQ 已成功订阅告警推送
+2025-11-01 12:35:56.449 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 12:35:56.451 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 12:36:36.464 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: K27EFTxhwCdFoUeAhxB6QQ
+2025-11-01 12:37:05.628 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: EXS_eLoRj20qSF4_H-kaEw
+2025-11-01 12:40:07.952 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: EXS_eLoRj20qSF4_H-kaEw
+2025-11-01 13:11:46.427 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 13:11:46.741 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: Hr6NAh5NYh_2SgvTWa8QOw
+2025-11-01 13:11:46.777 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 Hr6NAh5NYh_2SgvTWa8QOw 的订阅请求
+2025-11-01 13:11:46.777 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 Hr6NAh5NYh_2SgvTWa8QOw 已成功订阅告警推送
+2025-11-01 13:30:33.080 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: Hr6NAh5NYh_2SgvTWa8QOw
+2025-11-01 13:34:23.439 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 13:34:23.805 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: C2BXt3RkjGzRVymLwWXK2A
+2025-11-01 13:34:23.855 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 C2BXt3RkjGzRVymLwWXK2A 的订阅请求
+2025-11-01 13:34:23.855 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 C2BXt3RkjGzRVymLwWXK2A 已成功订阅告警推送
+2025-11-01 13:34:49.422 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: C2BXt3RkjGzRVymLwWXK2A
+2025-11-01 13:36:36.253 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: S2d_Sa5ertyrKEVQrCglsQ
+2025-11-01 13:36:36.316 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 S2d_Sa5ertyrKEVQrCglsQ 的订阅请求
+2025-11-01 13:36:36.317 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 S2d_Sa5ertyrKEVQrCglsQ 已成功订阅告警推送
+2025-11-01 13:38:31.295 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: S2d_Sa5ertyrKEVQrCglsQ
+2025-11-01 13:50:28.495 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 13:50:28.769 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: xEq-Ws9bvMfPLIlaWzZhvQ
+2025-11-01 13:50:28.801 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 xEq-Ws9bvMfPLIlaWzZhvQ 的订阅请求
+2025-11-01 13:50:28.802 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 xEq-Ws9bvMfPLIlaWzZhvQ 已成功订阅告警推送
+2025-11-01 13:52:00.197 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: xEq-Ws9bvMfPLIlaWzZhvQ
+2025-11-01 13:56:42.551 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: o_3kiWEwmvTQ3P-ao-D8qg
+2025-11-01 13:56:42.606 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 o_3kiWEwmvTQ3P-ao-D8qg 的订阅请求
+2025-11-01 13:56:42.606 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 o_3kiWEwmvTQ3P-ao-D8qg 已成功订阅告警推送
+2025-11-01 13:57:29.597 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: o_3kiWEwmvTQ3P-ao-D8qg
+2025-11-01 14:00:10.147 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 14:00:10.504 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: A-5ZIp-ebsWg_q1-wC8EXw
+2025-11-01 14:00:10.575 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 A-5ZIp-ebsWg_q1-wC8EXw 的订阅请求
+2025-11-01 14:00:10.575 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 A-5ZIp-ebsWg_q1-wC8EXw 已成功订阅告警推送
+2025-11-01 14:01:17.797 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: A-5ZIp-ebsWg_q1-wC8EXw
+2025-11-01 14:01:54.495 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: fneXb0I7xUA6bF5jngA1BQ
+2025-11-01 14:03:43.793 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: fneXb0I7xUA6bF5jngA1BQ
+2025-11-01 14:08:00.057 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: QzUIgS5sEzQnuPD_qhhZvQ
+2025-11-01 14:10:20.569 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: QzUIgS5sEzQnuPD_qhhZvQ
+2025-11-01 14:48:45.183 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 14:48:45.419 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: vKNddjmBBNWGw8YSmMqLIA
+2025-11-01 14:48:45.453 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 vKNddjmBBNWGw8YSmMqLIA 的订阅请求
+2025-11-01 14:48:45.453 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 vKNddjmBBNWGw8YSmMqLIA 已成功订阅告警推送
+2025-11-01 14:49:06.993 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: vKNddjmBBNWGw8YSmMqLIA
+2025-11-01 14:49:19.209 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: 55g0U-RcQxy3lH-BOn7FRQ
+2025-11-01 14:49:19.281 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 55g0U-RcQxy3lH-BOn7FRQ 的订阅请求
+2025-11-01 14:49:19.281 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 55g0U-RcQxy3lH-BOn7FRQ 已成功订阅告警推送
+2025-11-01 14:50:05.510 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: 55g0U-RcQxy3lH-BOn7FRQ
+2025-11-01 14:50:41.582 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: dqvGbPceInmGDblFcLBqpQ
+2025-11-01 14:50:41.656 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 dqvGbPceInmGDblFcLBqpQ 的订阅请求
+2025-11-01 14:50:41.657 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 dqvGbPceInmGDblFcLBqpQ 已成功订阅告警推送
+2025-11-01 14:51:12.511 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: dqvGbPceInmGDblFcLBqpQ
+2025-11-01 15:49:05.515 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 15:49:05.801 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: Y7V6g7D2d2UJYabTSpBn0Q
+2025-11-01 15:49:05.840 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 Y7V6g7D2d2UJYabTSpBn0Q 的订阅请求
+2025-11-01 15:49:05.840 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 Y7V6g7D2d2UJYabTSpBn0Q 已成功订阅告警推送
+2025-11-01 15:51:31.266 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: Y7V6g7D2d2UJYabTSpBn0Q
+2025-11-01 15:51:38.007 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: lP6cFNZWG2PRs-X4Kj2c8w
+2025-11-01 15:51:38.071 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 lP6cFNZWG2PRs-X4Kj2c8w 的订阅请求
+2025-11-01 15:51:38.071 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 lP6cFNZWG2PRs-X4Kj2c8w 已成功订阅告警推送
+2025-11-01 15:51:46.229 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: lP6cFNZWG2PRs-X4Kj2c8w
+2025-11-01 15:56:50.497 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: lOXEdmDjjIEEvWsYWjgdKQ
+2025-11-01 15:56:52.867 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 lOXEdmDjjIEEvWsYWjgdKQ 的订阅请求
+2025-11-01 15:56:52.868 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 lOXEdmDjjIEEvWsYWjgdKQ 已成功订阅告警推送
+2025-11-01 15:57:01.344 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: lOXEdmDjjIEEvWsYWjgdKQ
+2025-11-01 15:57:01.373 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: I0dwrUFlX3m1349ZDiKNlA
+2025-11-01 15:57:01.392 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: I0dwrUFlX3m1349ZDiKNlA
+2025-11-01 15:57:10.146 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: MtUaxKlkE05UCc5ynitiUg
+2025-11-01 15:57:12.306 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 MtUaxKlkE05UCc5ynitiUg 的订阅请求
+2025-11-01 15:57:12.306 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 MtUaxKlkE05UCc5ynitiUg 已成功订阅告警推送
+2025-11-01 15:57:50.386 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: MtUaxKlkE05UCc5ynitiUg
+2025-11-01 15:59:21.276 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: n4mBBDla_JaGLZ2abko_Xw
+2025-11-01 15:59:23.283 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 n4mBBDla_JaGLZ2abko_Xw 的订阅请求
+2025-11-01 15:59:23.283 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 n4mBBDla_JaGLZ2abko_Xw 已成功订阅告警推送
+2025-11-01 15:59:32.333 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: n4mBBDla_JaGLZ2abko_Xw
+2025-11-01 16:00:44.143 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: H_Ii-I36WqG6GFYAbzpzvg
+2025-11-01 16:00:44.236 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 H_Ii-I36WqG6GFYAbzpzvg 的订阅请求
+2025-11-01 16:00:44.236 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 H_Ii-I36WqG6GFYAbzpzvg 已成功订阅告警推送
+2025-11-01 16:00:52.006 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: H_Ii-I36WqG6GFYAbzpzvg
+2025-11-01 16:00:58.078 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: 20p5bLezl2VTmbG5NUBkrw
+2025-11-01 16:00:58.145 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 20p5bLezl2VTmbG5NUBkrw 的订阅请求
+2025-11-01 16:00:58.145 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 20p5bLezl2VTmbG5NUBkrw 已成功订阅告警推送
+2025-11-01 16:01:07.886 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: 20p5bLezl2VTmbG5NUBkrw
+2025-11-01 16:01:34.473 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: Z4dqlPVT9ryqIehGFheoZA
+2025-11-01 16:01:34.544 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 Z4dqlPVT9ryqIehGFheoZA 的订阅请求
+2025-11-01 16:01:34.544 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 Z4dqlPVT9ryqIehGFheoZA 已成功订阅告警推送
+2025-11-01 16:06:42.974 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: Z4dqlPVT9ryqIehGFheoZA
+2025-11-01 16:06:52.720 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: LXAUeVNK4G89EEiyeHc1kg
+2025-11-01 16:06:52.786 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 LXAUeVNK4G89EEiyeHc1kg 的订阅请求
+2025-11-01 16:06:52.786 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 LXAUeVNK4G89EEiyeHc1kg 已成功订阅告警推送
+2025-11-01 16:07:14.713 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: LXAUeVNK4G89EEiyeHc1kg
+2025-11-01 16:20:34.806 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 16:20:35.177 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: Wq5SxcUVvmO_0YBK7nvtOA
+2025-11-01 16:20:35.238 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 Wq5SxcUVvmO_0YBK7nvtOA 的订阅请求
+2025-11-01 16:20:35.238 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 Wq5SxcUVvmO_0YBK7nvtOA 已成功订阅告警推送
+2025-11-01 16:24:08.226 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: Wq5SxcUVvmO_0YBK7nvtOA
+2025-11-01 16:24:16.084 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: xMeVJ_-MpYWGUh5PS04idQ
+2025-11-01 16:24:16.147 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 xMeVJ_-MpYWGUh5PS04idQ 的订阅请求
+2025-11-01 16:24:16.147 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 xMeVJ_-MpYWGUh5PS04idQ 已成功订阅告警推送
+2025-11-01 16:30:18.520 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: xMeVJ_-MpYWGUh5PS04idQ
+2025-11-01 16:47:03.450 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 16:47:03.843 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: DX68onM8xX0WcnXLrxGfnA
+2025-11-01 16:47:03.908 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 DX68onM8xX0WcnXLrxGfnA 的订阅请求
+2025-11-01 16:47:03.909 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 DX68onM8xX0WcnXLrxGfnA 已成功订阅告警推送
+2025-11-01 16:48:27.452 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: DX68onM8xX0WcnXLrxGfnA
+2025-11-01 16:50:23.302 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: 4mhfmzdUq0kdc0yA8uSbtA
+2025-11-01 16:50:23.387 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 4mhfmzdUq0kdc0yA8uSbtA 的订阅请求
+2025-11-01 16:50:23.387 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 4mhfmzdUq0kdc0yA8uSbtA 已成功订阅告警推送
+2025-11-01 16:50:53.668 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: 4mhfmzdUq0kdc0yA8uSbtA
+2025-11-01 16:52:41.906 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: eekAeow0HU75cxr79StyoQ
+2025-11-01 16:52:41.991 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 eekAeow0HU75cxr79StyoQ 的订阅请求
+2025-11-01 16:52:41.991 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 eekAeow0HU75cxr79StyoQ 已成功订阅告警推送
+2025-11-01 16:54:16.816 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: eekAeow0HU75cxr79StyoQ
+2025-11-01 17:25:08.693 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 17:25:09.057 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: lIHfbTgo9AjeVcP5ne9ImQ
+2025-11-01 17:25:09.112 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 lIHfbTgo9AjeVcP5ne9ImQ 的订阅请求
+2025-11-01 17:25:09.113 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 lIHfbTgo9AjeVcP5ne9ImQ 已成功订阅告警推送
+2025-11-01 17:28:26.312 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: lIHfbTgo9AjeVcP5ne9ImQ
+2025-11-01 17:31:45.454 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 17:31:45.824 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: Zmaxz8ib7UxPEU5CB-Z-ig
+2025-11-01 17:31:45.887 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 Zmaxz8ib7UxPEU5CB-Z-ig 的订阅请求
+2025-11-01 17:31:45.887 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 Zmaxz8ib7UxPEU5CB-Z-ig 已成功订阅告警推送
+2025-11-01 17:32:27.897 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: Zmaxz8ib7UxPEU5CB-Z-ig
+2025-11-01 17:33:12.004 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 17:33:12.291 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: eYCgKdY3A6Cm2H2My2tdBQ
+2025-11-01 17:33:12.341 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 eYCgKdY3A6Cm2H2My2tdBQ 的订阅请求
+2025-11-01 17:33:12.341 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 eYCgKdY3A6Cm2H2My2tdBQ 已成功订阅告警推送
+2025-11-01 17:36:27.146 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: eYCgKdY3A6Cm2H2My2tdBQ
+2025-11-01 17:36:44.966 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: daqTaDcszU4YWBRbO17bqA
+2025-11-01 17:36:45.037 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 daqTaDcszU4YWBRbO17bqA 的订阅请求
+2025-11-01 17:36:45.037 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 daqTaDcszU4YWBRbO17bqA 已成功订阅告警推送
+2025-11-01 17:37:15.950 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: daqTaDcszU4YWBRbO17bqA
+2025-11-01 17:40:50.866 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: jirokm5uFKlxWKUpa1LmJA
+2025-11-01 17:40:50.956 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 jirokm5uFKlxWKUpa1LmJA 的订阅请求
+2025-11-01 17:40:50.956 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 jirokm5uFKlxWKUpa1LmJA 已成功订阅告警推送
+2025-11-01 17:42:27.380 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 17:42:27.385 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 17:42:48.983 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: jirokm5uFKlxWKUpa1LmJA
+2025-11-01 17:48:09.600 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: oL5Inuz7Vt8V1QoRcJpDaQ
+2025-11-01 17:48:09.679 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 oL5Inuz7Vt8V1QoRcJpDaQ 的订阅请求
+2025-11-01 17:48:09.679 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 oL5Inuz7Vt8V1QoRcJpDaQ 已成功订阅告警推送
+2025-11-01 17:48:30.388 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: oL5Inuz7Vt8V1QoRcJpDaQ
+2025-11-01 17:48:50.164 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 17:48:50.426 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: k94zzGXbSwB_OvMG5ZE5mw
+2025-11-01 17:48:50.471 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 k94zzGXbSwB_OvMG5ZE5mw 的订阅请求
+2025-11-01 17:48:50.471 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 k94zzGXbSwB_OvMG5ZE5mw 已成功订阅告警推送
+2025-11-01 17:48:51.501 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: k94zzGXbSwB_OvMG5ZE5mw
+2025-11-01 17:48:58.339 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: t8qTQitVeUM_LQ5_KAY00w
+2025-11-01 17:48:58.415 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 t8qTQitVeUM_LQ5_KAY00w 的订阅请求
+2025-11-01 17:48:58.415 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 t8qTQitVeUM_LQ5_KAY00w 已成功订阅告警推送
+2025-11-01 17:52:05.563 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: t8qTQitVeUM_LQ5_KAY00w
+2025-11-01 17:52:13.591 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: uQNpeXt7rAOskQMi0i4Ung
+2025-11-01 17:52:13.660 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 uQNpeXt7rAOskQMi0i4Ung 的订阅请求
+2025-11-01 17:52:13.660 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 uQNpeXt7rAOskQMi0i4Ung 已成功订阅告警推送
+2025-11-01 17:52:28.959 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: uQNpeXt7rAOskQMi0i4Ung
+2025-11-01 17:58:32.644 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 17:58:32.935 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: 8mI_FAx-kwHprDRtI3mQzw
+2025-11-01 17:58:32.992 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 8mI_FAx-kwHprDRtI3mQzw 的订阅请求
+2025-11-01 17:58:32.993 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 8mI_FAx-kwHprDRtI3mQzw 已成功订阅告警推送
+2025-11-01 17:59:27.031 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 推送告警数据到WebSocket客户端: 1 - 192.168.100.100
+2025-11-01 17:59:27.037 [INFORMATIO] RailwayAlarmBackend.Services.AlarmTraceService: 告警数据推送成功，告警ID: 0
+2025-11-01 18:01:00.984 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: 8mI_FAx-kwHprDRtI3mQzw
+2025-11-01 18:05:22.185 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: buI162RTcRLAQw6pnxmRmA
+2025-11-01 18:05:22.240 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 buI162RTcRLAQw6pnxmRmA 的订阅请求
+2025-11-01 18:05:22.241 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 buI162RTcRLAQw6pnxmRmA 已成功订阅告警推送
+2025-11-01 18:05:52.589 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: buI162RTcRLAQw6pnxmRmA
+2025-11-01 18:09:07.807 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 18:09:08.135 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: K2PqU4ziCP0EclcmNlY2fw
+2025-11-01 18:09:08.195 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 K2PqU4ziCP0EclcmNlY2fw 的订阅请求
+2025-11-01 18:09:08.195 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 K2PqU4ziCP0EclcmNlY2fw 已成功订阅告警推送
+2025-11-01 18:11:03.802 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: K2PqU4ziCP0EclcmNlY2fw
+2025-11-01 18:12:19.181 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: c_-6JFR-SWtSLHpGCKu4uw
+2025-11-01 18:12:19.275 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 c_-6JFR-SWtSLHpGCKu4uw 的订阅请求
+2025-11-01 18:12:19.275 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 c_-6JFR-SWtSLHpGCKu4uw 已成功订阅告警推送
+2025-11-01 18:13:12.937 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: c_-6JFR-SWtSLHpGCKu4uw
+2025-11-01 18:13:50.329 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: c0PWwfegRAJXvz7dU755yg
+2025-11-01 18:13:50.396 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 c0PWwfegRAJXvz7dU755yg 的订阅请求
+2025-11-01 18:13:50.396 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 c0PWwfegRAJXvz7dU755yg 已成功订阅告警推送
+2025-11-01 18:18:29.470 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: c0PWwfegRAJXvz7dU755yg
+2025-11-01 18:22:36.176 [WARNING] Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware: Failed to determine the https port for redirect.
+2025-11-01 18:22:36.524 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: efWLNjMaVwijCkw0vahTpg
+2025-11-01 18:22:36.583 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 efWLNjMaVwijCkw0vahTpg 的订阅请求
+2025-11-01 18:22:36.583 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 efWLNjMaVwijCkw0vahTpg 已成功订阅告警推送
+2025-11-01 18:23:33.292 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: efWLNjMaVwijCkw0vahTpg
+2025-11-01 18:23:40.611 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: ixIse3cEANTmVDrJAf2R3g
+2025-11-01 18:23:40.684 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 ixIse3cEANTmVDrJAf2R3g 的订阅请求
+2025-11-01 18:23:40.684 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 ixIse3cEANTmVDrJAf2R3g 已成功订阅告警推送
+2025-11-01 18:24:26.750 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: ixIse3cEANTmVDrJAf2R3g
+2025-11-01 18:26:48.055 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已连接: oJqB8bFril007kqyb0AM9g
+2025-11-01 18:26:48.146 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 开始处理客户端 oJqB8bFril007kqyb0AM9g 的订阅请求
+2025-11-01 18:26:48.146 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端 oJqB8bFril007kqyb0AM9g 已成功订阅告警推送
+2025-11-01 18:27:38.364 [INFORMATIO] RailwayAlarmBackend.Hubs.AlarmTraceHub: 客户端已断开: oJqB8bFril007kqyb0AM9g

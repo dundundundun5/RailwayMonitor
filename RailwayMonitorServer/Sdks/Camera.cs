@@ -47,12 +47,9 @@ public class Camera : IDisposable
     {
         return $"rtsp://{UserName}:{Password}@{CameraIpAddress}:554/h264/ch1/main/av_stream";
     }
-    public void Login()   
+    public void Login()
     {
-        if (!CHCNetSDK.NET_DVR_Init())
-        {
-            throw new Exception(Error());
-        }
+        CHCNetSDK.NET_DVR_Init();
         CHCNetSDK.NET_DVR_SetConnectTime(2000, 1);//设置超时时间
         CHCNetSDK.NET_DVR_SetReconnect(10000, 1);//设置重连时
         byte[] bytesUserName = Encoding.Default.GetBytes(UserName);
@@ -95,7 +92,7 @@ public class Camera : IDisposable
 
     
     
-    public void StartPreview(EnumChannel channel = EnumChannel.通道1, EnumStreamType streamType = EnumStreamType.主码流, EnumLinkMode linkMode = EnumLinkMode.TCP, EnumBlockMode blockMode = EnumBlockMode.阻塞取流)
+    public void StartPreview(int channel = 1, EnumStreamType streamType = EnumStreamType.主码流, EnumLinkMode linkMode = EnumLinkMode.TCP, EnumBlockMode blockMode = EnumBlockMode.阻塞取流)
     {
         if (RealPlayHandle != -1)
         {
@@ -146,7 +143,6 @@ public class Camera : IDisposable
     /// </summary>
     public void StopPreview()
     {
-       
         CHCNetSDK.NET_DVR_StopRealPlay((int)RealPlayHandle);
         RealPlayHandle = -1;
     }

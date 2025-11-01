@@ -104,18 +104,18 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
         return ResponseUtil.Success();
     }
 
-    [HttpPost("test-recorder")]
-    public BaseResponse<string> TestRecorder([FromBody] DeviceLoginDto dto)
-    {
-        logger.LogInformation("TestRecorder Login");
-        Recorder recorder = new Recorder(dto.Ip, dto.Port, dto.Username, dto.Password);
-        recorder.Login();
-        List<(string, string)> associatedIpList = recorder.GetAssociatedIpList();
-        string ips = string.Join("", associatedIpList);
-        string result = $"{recorder.Ip}接了{associatedIpList.Count}路={ips}";
-        logger.LogInformation(result);
-        return ResponseUtil.OfData(result);
-    }
+    // [HttpPost("test-recorder")]
+    // public BaseResponse<string> TestRecorder([FromBody] DeviceLoginDto dto)
+    // {
+    //     logger.LogInformation("TestRecorder Login");
+    //     Recorder recorder = new Recorder(dto.Ip, dto.Port, dto.Username, dto.Password);
+    //     recorder.Login();
+    //     List<(string, string)> associatedIpList = recorder.GetAssociatedIpList();
+    //     string ips = string.Join("", associatedIpList);
+    //     string result = $"{recorder.Ip}接了{associatedIpList.Count}路={ips}";
+    //     logger.LogInformation(result);
+    //     return ResponseUtil.OfData(result);
+    // }
     
     [HttpPost("test-connection")]
     public BaseResponse<string> TestLogin([FromBody] DeviceLoginDto dto)
