@@ -16,7 +16,7 @@
 
         <!-- 系统标题 -->
         <TextBlock Grid.Column="0"
-                   Text="铁路报警监控系统"
+                   Text="监控系统"
                    Foreground="White"
                    FontSize="18"
                    FontWeight="Bold"
