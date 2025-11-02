@@ -12,7 +12,6 @@ using RailwayAlarmBackend.Models.Dtos;
 using RailwayAlarmBackend.Models.Entities;
 using RailwayAlarmBackend.Models.Enums;
 using RailwayAlarmBackend.Sdks;
-using RailwayMonitorClient.Controls;
 using RailwayMonitorClient.Services;
 using RailwayMonitorClient.Views;
 using MessageBox = System.Windows.MessageBox;
@@ -54,6 +53,8 @@ public partial class MainWindow
             await InitializeCameraWindowsWithHttp();
             // 摄像头窗口初始化完成后启动预览
             StartPreviewAll();
+            // 启用刷新监控按钮
+            Dispatcher.Invoke(() => NavigationBar.EnableRefreshMonitorButton());
         });
         InitializeSignalR();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -125,7 +126,7 @@ public partial class MainWindow
             await _alarmHubService.StopAsync();
         }
     }
-    //TODO: 后端没起来就点刷新监控会报错
+    
     
     private void InitializeCameraWindows()
     {
@@ -295,7 +296,7 @@ public partial class MainWindow
 
             // 登录和启动预览可以在后台线程执行
             camera.Login();
-            camera.StartPreview(channel: channel, streamType:EnumStreamType.子码流, linkMode:EnumLinkMode.TCP);
+            camera.StartPreview(channel: channel, streamType:EnumStreamType.子码流, linkMode:EnumLinkMode.RTSP);
 
             // 在UI线程中设置别名
             await Dispatcher.InvokeAsync(() =>

@@ -6,7 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RailwayMonitorClient"
-        xmlns:controls="clr-namespace:RailwayMonitorClient.Controls"
+        xmlns:views="clr-namespace:RailwayMonitorClient.Views"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="监控" Height="1080" Width="1920"
@@ -24,7 +24,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- 导航栏 -->
-        <controls:AutoHideNavigationBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+        <views:AutoHideNavigationBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
                                        x:Name="NavigationBar"
                                        NavigationRequested="NavigationBar_NavigationRequested"/>
 

@@ -14,6 +14,7 @@
 
     <hc:Window.Resources>
         <converters:AlarmTypeConverter x:Key="AlarmTypeConverter"/>
+        <converters:AlarmStatusToVisibilityConverter x:Key="AlarmStatusToVisibilityConverter"/>
     </hc:Window.Resources>
 
     <Border Background="#FFF5F5F5"
@@ -116,6 +117,27 @@
 
             <!-- 操作按钮 -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <!-- 处理状态下拉框 - 仅当AlarmStatus为未处理时显示 -->
+                <ComboBox x:Name="CmbAlarmStatus"
+                          Width="100"
+                          ItemsSource="{Binding AlarmStatusList}"
+                          SelectedValue="{Binding SelectedAlarmStatus}"
+                          SelectedValuePath="Value"
+                          DisplayMemberPath="Name"
+                          Margin="0,0,5,0"
+                          Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
+
+                <!-- 处理按钮 - 仅当AlarmStatus为未处理时显示 -->
+                <Button x:Name="BtnHandle"
+                        Content="处理"
+                        Style="{StaticResource ButtonDanger}"
+                        Click="BtnHandle_Click"
+                        Margin="0,0,10,0"
+                        Width="60"
+                        Height="35"
+                        FontSize="14"
+                        Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
+
                 <Button x:Name="BtnViewDetail"
                         Content="查看详情"
                         Style="{StaticResource ButtonPrimary}"

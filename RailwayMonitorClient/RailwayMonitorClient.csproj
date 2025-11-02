@@ -33,4 +33,17 @@
       <ProjectReference Include="..\RailwayMonitorServer\RailwayMonitorServer.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="Views\AutoHideNavigationBar.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Views\LiveView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
 </Project>

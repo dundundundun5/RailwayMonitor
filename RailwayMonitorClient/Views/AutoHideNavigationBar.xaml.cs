@@ -1,10 +1,7 @@
-using System;
 using System.Windows;
-using System.Windows.Controls;
-using RailwayMonitorClient.Views;
 using UserControl = System.Windows.Controls.UserControl;
 
-namespace RailwayMonitorClient.Controls;
+namespace RailwayMonitorClient.Views;
 
 /// <summary>
 /// 导航栏
@@ -97,6 +94,7 @@ public partial class AutoHideNavigationBar : UserControl
 
     private void BtnRefreshMonitor_Click(object sender, RoutedEventArgs e)
     {
+        //TODO: Mainwindow监控页面刷新完毕才允许点击
         NavigationRequested?.Invoke("RefreshMonitor");
     }
 
@@ -108,5 +106,13 @@ public partial class AutoHideNavigationBar : UserControl
         {
             mainWindow.WindowState = WindowState.Minimized;
         }
+    }
+
+    /// <summary>
+    /// 启用刷新监控按钮
+    /// </summary>
+    public void EnableRefreshMonitorButton()
+    {
+        BtnRefreshMonitor.IsEnabled = true;
     }
 }

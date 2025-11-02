@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Forms.Integration;
-using System.Windows.Forms;
 using RailwayAlarmBackend.Sdks;
 using Color = System.Windows.Media.Color;
 using ToolTip = System.Windows.Controls.ToolTip;
 using WinForms = System.Windows.Forms;
 using WinInput = System.Windows.Input;
 
-namespace RailwayMonitorClient.Controls
+namespace RailwayMonitorClient.Views
 {
     /// <summary>
     /// LiveView控件 - 3行4列PictureBox，支持别名显示

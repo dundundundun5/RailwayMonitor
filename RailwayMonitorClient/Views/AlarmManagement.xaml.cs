@@ -18,8 +18,6 @@ namespace RailwayMonitorClient.Views;
 /// </summary>
 public partial class AlarmManagement : HandyControl.Controls.Window
 {
-    //TODO: 翻页要修复
-    //TODO: 倒序查询
     //TODO: 处理过了就隐藏处理按钮
     private readonly AlarmTraceHttpService _alarmTraceHttpService;
     private int _currentPage = 1;
@@ -183,7 +181,7 @@ public partial class AlarmManagement : HandyControl.Controls.Window
 
                         if (response.Code == 200)
                         {
-                            System.Windows.MessageBox.Show("处理成功", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                            // System.Windows.MessageBox.Show("处理成功", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
                             await LoadAlarmData(); // 刷新数据
                         }
                         else
@@ -226,20 +224,19 @@ public partial class AlarmManagement : HandyControl.Controls.Window
     {
         if (sender is System.Windows.Controls.ComboBox comboBox)
         {
-            if ((int)comboBox.SelectedValue != (int)EnumAlarmStatus.未处理)
+            if (comboBox.SelectedValue != null && (int)comboBox.SelectedValue != (int)EnumAlarmStatus.未处理)
             {
                 var dataGridRow = FindParent<DataGridRow>(comboBox);
-                    // 查找处理按钮
+                
+                // 查找处理按钮
                 var handleButton = FindChild<Button>(dataGridRow, "BtnHandle");
                 if (handleButton != null)
                 {
                     // 直接使用绑定到AlarmStatus的值来判断
-                        handleButton.IsEnabled = true;
+                    handleButton.IsEnabled = true;
                 }
                 
             }
-            // 查找父级DataGridRow
-            
         }
     }
 
@@ -286,6 +283,9 @@ public partial class AlarmManagement : HandyControl.Controls.Window
     /// </summary>
     private static T FindParent<T>(DependencyObject child) where T : DependencyObject
     {
+        if (child == null)
+            return null;
+
         var parent = VisualTreeHelper.GetParent(child);
 
         if (parent == null)
@@ -314,6 +314,7 @@ public class DisplayAlarmTrace : INotifyPropertyChanged
         DisplayImagePath = ConvertImagePath(alarmTrace.ImagePath);
     }
 
+    
     public long Id { get; set; }
     public string DeviceIp { get; set; }
     public int SuperBrainChannel { get; set; }
@@ -346,18 +347,35 @@ public class DisplayAlarmTrace : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
+    
+    //TODO: 图片路径转换逻辑 OK
+    public static string BaseURL = "http://localhost:8081";
     /// <summary>
     /// 转换图片路径
     /// </summary>
-    private static string ConvertImagePath(string originalPath)
+    /// 
+    private static string ConvertImagePath(string path)
     {
-        if (string.IsNullOrEmpty(originalPath))
-            return null;
+        if (string.IsNullOrEmpty(path))
+            return string.Empty;
 
-        // 将 "alarmTraceImage\\xxx.jpg" 转换为 "http://localhost:8081/alarmTraceImage/xxx.jpg"
-        var fileName = System.IO.Path.GetFileName(originalPath);
-        return $"http://localhost:8081/alarmTraceImage/{fileName}";
+        // 处理本地路径：./xxx/xxx.jpg -> xxx/xxx.jpg
+        if (path.StartsWith("./"))
+        {
+            path = path.Substring(2);
+        }
+
+        // 处理超脑告警路径：xxx\xxx.jpg -> xxx/xxx.jpg
+        path = path.Replace('\\', '/');
+
+        // 移除开头的斜杠（如果有）
+        if (path.StartsWith("/"))
+        {
+            path = path.Substring(1);
+        }
+
+        // 拼接BaseURL
+        return $"{BaseURL}/{path}";
     }
 
     /// <summary>

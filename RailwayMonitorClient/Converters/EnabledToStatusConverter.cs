@@ -23,7 +23,7 @@ public class EnabledToStatusConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        return value;
     }
 }
 
@@ -43,7 +43,7 @@ public class EnabledToBrushConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        return value;
     }
 }
 
@@ -63,7 +63,7 @@ public class EnabledToStatusTextConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        return value;
     }
 }
 
@@ -85,6 +85,6 @@ public class EnabledToButtonStyleConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        return value;
     }
 }

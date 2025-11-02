@@ -30,6 +30,7 @@ public partial class PlayBack : HandyControl.Controls.Window
     {
         // 在后台线程中自动登录并加载设备列表
         Task.Run(async () => await AutoLoginAndLoadDevices());
+        
     }
 
     /// <summary>
@@ -56,7 +57,7 @@ public partial class PlayBack : HandyControl.Controls.Window
                 });
                 return;
             }
-            
+
             // 解析IP地址和端口信息，格式：192.168.18.37:8000
             string ipAddress = recorderIpAddress;
             ushort port = 8000; // 默认端口8000
@@ -104,6 +105,10 @@ public partial class PlayBack : HandyControl.Controls.Window
                 TbLoginStatus.Text = $"自动登录异常: {ex.Message}";
                 TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
             });
+        }
+        finally
+        {
+            Dispatcher.Invoke(() => { CmbDevices.IsEnabled = true; });
         }
     }
 

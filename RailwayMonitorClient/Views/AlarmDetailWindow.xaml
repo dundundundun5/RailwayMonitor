@@ -10,6 +10,7 @@
 
     <hc:Window.Resources>
         <converters:ChannelToPointConverter x:Key="ChannelToPointConverter"/>
+        <converters:AlarmStatusToVisibilityConverter x:Key="AlarmStatusToVisibilityConverter"/>
     </hc:Window.Resources>
 
     <Grid Margin="10">
@@ -31,6 +32,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- 第一行 -->
@@ -44,6 +46,28 @@
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding AlarmDate, StringFormat=yyyy-MM-dd HH:mm:ss}" Margin="5" VerticalAlignment="Center"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" Text="预警状态：" Margin="5" VerticalAlignment="Center"/>
                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding AlarmStatusText}" Margin="5" VerticalAlignment="Center"/>
+
+                <!-- 第三行：处理控件 - 仅当AlarmStatus为未处理时显示 -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="处理状态：" Margin="5" VerticalAlignment="Center"
+                          Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
+                <ComboBox Grid.Row="2" Grid.Column="1"
+                         x:Name="CmbAlarmStatus"
+                         Width="120"
+                         ItemsSource="{Binding AlarmStatusList}"
+                         SelectedValue="{Binding SelectedAlarmStatus}"
+                         SelectedValuePath="Value"
+                         DisplayMemberPath="Name"
+                         Margin="5"
+                         Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
+                <Button Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2"
+                        x:Name="BtnHandle"
+                        Content="处理"
+                        Style="{StaticResource ButtonDanger}"
+                        Click="BtnHandle_Click"
+                        Width="80"
+                        Margin="5"
+                        HorizontalAlignment="Left"
+                        Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
             </Grid>
         </GroupBox>
 

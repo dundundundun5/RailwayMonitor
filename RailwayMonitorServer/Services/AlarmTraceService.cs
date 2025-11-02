@@ -68,13 +68,20 @@ public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> l
 
     public async Task<Page<AlarmTrace>> GetAlarmTracePageAsync(AlarmTraceQueryDto dto)
     {
-        IQueryable<AlarmTrace> alarmTraces = context.AlarmTraces.OrderBy(trace => trace.Id);
+        //TODO: 分页倒序查询
+        IQueryable<AlarmTrace> alarmTraces;
+        if (dto.Ascending)
+            alarmTraces = context.AlarmTraces.OrderBy(trace => trace.Id);
+        else 
+            alarmTraces = context.AlarmTraces.OrderByDescending(trace => trace.Id);
+        
         long totalCount = await alarmTraces.LongCountAsync();
         var skip = (dto.PageIndex - 1) * dto.PageSize;
         var items = await alarmTraces.Skip(skip).Take(dto.PageSize).ToListAsync();
         Page<AlarmTrace> alarmPage = new()
         {
-            Data = alarmTraces.ToList(),
+            //TODO: 分页返回翻页后的数据
+            Data = items,
             PageIndex = dto.PageIndex,
             PageSize = dto.PageSize,
             TotalCount = totalCount

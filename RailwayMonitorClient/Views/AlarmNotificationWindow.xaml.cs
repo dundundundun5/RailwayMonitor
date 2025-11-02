@@ -1,9 +1,12 @@
-using System;
-using System.Threading.Tasks;
+
 using System.Windows;
 using System.Windows.Threading;
 using RailwayAlarmBackend.Models.Entities;
+using RailwayAlarmBackend.Models.Dtos;
+using RailwayAlarmBackend.Models.Enums;
+using RailwayAlarmBackend.Models.Utils;
 using RailwayMonitorClient.Converters;
+using RailwayMonitorClient.Services;
 
 namespace RailwayMonitorClient.Views;
 
@@ -112,6 +115,52 @@ public partial class AlarmNotificationWindow : HandyControl.Controls.Window
     }
 
     /// <summary>
+    /// 处理按钮点击事件
+    /// </summary>
+    private async void BtnHandle_Click(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is AlarmNotificationViewModel viewModel)
+        {
+            if (viewModel.SelectedAlarmStatus == 0)
+            {
+                System.Windows.MessageBox.Show("请先选择处理状态", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                var alarmTraceHttpService = new AlarmTraceHttpService();
+                var handleDto = new AlarmTraceHandleDto
+                {
+                    Id = _alarmTrace.Id,
+                    AlarmHandleStatus = viewModel.SelectedAlarmStatus
+                };
+
+                var response = await alarmTraceHttpService.HandleAlarmTraceAsync(handleDto);
+
+                if (response.Code == 200)
+                {
+                    // System.Windows.MessageBox.Show("处理成功", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // 停止定时器
+                    _timer.Stop();
+
+                    // 关闭窗口
+                    Close();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show(response.Message ?? "处理失败", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"处理预警时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    /// <summary>
     /// 窗口加载完成事件
     /// </summary>
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -144,24 +193,61 @@ public class AlarmNotificationViewModel
 
         AlarmTime = alarmTrace.AlarmDate.ToString("yyyy-MM-dd HH:mm:ss");
         DisplayImagePath = ConvertImagePath(alarmTrace.ImagePath);
+
+        // 预警状态
+        AlarmStatus = alarmTrace.AlarmStatus;
+
+        // 初始化状态下拉框列表
+        AlarmStatusList = EnumResponseUtil.ToList<EnumAlarmStatus>().Where(response => response.Value > 0).ToList();
+        SelectedAlarmStatus = 0; // 默认选择第一个选项
     }
 
     public int AlarmType { get; set; }
     public string DeviceInfo { get; set; }
     public string AlarmTime { get; set; }
     public string DisplayImagePath { get; set; }
+    public int AlarmStatus { get; set; }
+
+    /// <summary>
+    /// 预警状态下拉框列表
+    /// </summary>
+    public List<EnumResponse> AlarmStatusList { get; set; }
+
+    /// <summary>
+    /// 选中的预警状态
+    /// </summary>
+    public int SelectedAlarmStatus { get; set; }
 
     /// <summary>
     /// 转换图片路径
     /// </summary>
-    private static string ConvertImagePath(string originalPath)
+    public static string BaseURL = "http://localhost:8081";
+    /// <summary>
+    /// 转换图片路径
+    /// </summary>
+    /// 
+    private static string ConvertImagePath(string path)
     {
-        if (string.IsNullOrEmpty(originalPath))
-            return null;
+        if (string.IsNullOrEmpty(path))
+            return string.Empty;
 
-        // 将 "alarmTraceImage\\xxx.jpg" 转换为 "http://localhost:8081/alarmTraceImage/xxx.jpg"
-        var fileName = System.IO.Path.GetFileName(originalPath);
-        return $"http://localhost:8081/alarmTraceImage/{fileName}";
+        // 处理本地路径：./xxx/xxx.jpg -> xxx/xxx.jpg
+        if (path.StartsWith("./"))
+        {
+            path = path.Substring(2);
+        }
+
+        // 处理超脑告警路径：xxx\xxx.jpg -> xxx/xxx.jpg
+        path = path.Replace('\\', '/');
+
+        // 移除开头的斜杠（如果有）
+        if (path.StartsWith("/"))
+        {
+            path = path.Substring(1);
+        }
+
+        // 拼接BaseURL
+        return $"{BaseURL}/{path}";
     }
 
 }

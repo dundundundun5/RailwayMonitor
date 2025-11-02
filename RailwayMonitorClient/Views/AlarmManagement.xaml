@@ -12,6 +12,7 @@
     <hc:Window.Resources>
         <converters:AlarmTypeConverter x:Key="AlarmTypeConverter"/>
         <converters:ChannelToPointConverter x:Key="ChannelToPointConverter"/>
+        <converters:AlarmStatusToVisibilityConverter x:Key="AlarmStatusToVisibilityConverter"/>
     </hc:Window.Resources>
 
     <Grid Margin="10">
@@ -63,17 +64,18 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <!-- 处理状态下拉框 -->
+                                <!-- 处理状态下拉框 - 仅当AlarmStatus为未处理时显示 -->
                                 <ComboBox x:Name="CmbAlarmStatus"
                                           Width="100"
                                           ItemsSource="{x:Static local:AlarmManagement.AlarmStatusList}"
-                                          SelectedValue="{Binding AlarmStatus, Mode=TwoWay}"
+                                         
                                           SelectedValuePath="Value"
                                           DisplayMemberPath="Name"
                                           SelectionChanged="CmbAlarmStatus_SelectionChanged"
-                                          Margin="0,0,5,0"/>
+                                          Margin="0,0,5,0"
+                                          Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
 
-                                <!-- 处理按钮 -->
+                                <!-- 处理按钮 - 仅当AlarmStatus为未处理时显示 -->
                                 <Button x:Name="BtnHandle"
                                         Content="处理"
                                         Style="{StaticResource ButtonDanger}"
@@ -81,7 +83,8 @@
                                         Tag="{Binding Id}"
                                         Margin="0,0,5,0"
                                         Width="60"
-                                        IsEnabled="False"/>
+                                        IsEnabled="False"
+                                        Visibility="{Binding AlarmStatus, Converter={StaticResource AlarmStatusToVisibilityConverter}}"/>
 
                                 <!-- 查看详情按钮 -->
                                 <Button x:Name="BtnViewDetail"

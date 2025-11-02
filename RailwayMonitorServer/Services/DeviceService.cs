@@ -53,8 +53,8 @@ public class DeviceService(DataContext context, ILogger<DeviceService> logger) :
     public async Task<List<Device>> GetAllDevicesByQueryAsync(DeviceQueryDto dto)
     {
         List<Device> devices;
-        if (dto.HasChannel == true)
-            devices = await context.Devices.Where(device => device.Channel > 0).Where(device => device.Type == (int) EnumDeviceType.摄像机 || device.Type == (int) EnumDeviceType.录像机).Where(device => device.Enabled == (int)EnumStatus.启用).ToListAsync();
+        if (dto.HasChannel)
+            devices = await context.Devices.Where(device => device.Channel > 0).Where(device => device.Enabled == (int)EnumStatus.启用).ToListAsync();
         else
             devices = await context.Devices.ToListAsync();
         return devices;

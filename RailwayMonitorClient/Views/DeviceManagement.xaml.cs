@@ -113,7 +113,7 @@ public partial class DeviceManagement : HandyControl.Controls.Window
                     if (response.Code == 200)
                     {
                         await LoadDevicesAsync();
-                        HandyControl.Controls.MessageBox.Success("操作成功", "成功");
+                        // HandyControl.Controls.MessageBox.Success("操作成功", "成功");
                     }
                     else
                     {

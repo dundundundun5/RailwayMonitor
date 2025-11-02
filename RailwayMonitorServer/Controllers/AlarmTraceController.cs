@@ -60,7 +60,7 @@ public class AlarmTraceController(IAlarmTraceService alarmTraceService) : Contro
             SuperBrainChannel = channel,
             AlarmType = alarmType,
             AlarmDate = DateTime.Now,
-            ImagePath = $@"./alarmTraceImage/laoda.jpg",
+            ImagePath = $@"alarmTraceImage\laoda.jpg",
             AlarmStatus = (int)EnumAlarmStatus.未处理,
             CreateDate = DateTime.Now,
             UpdateDate = DateTime.Now

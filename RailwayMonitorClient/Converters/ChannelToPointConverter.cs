@@ -22,7 +22,8 @@ public class ChannelToPointConverter : IValueConverter
 
         _superBrainChannelNames = configuration.GetSection("SuperBrainChannelName")
             .GetChildren()
-            .Select(x => int.Parse(x.Value))
+            .Select(x => int.TryParse(x.Value, out int result) ? result : 0)
+            .Where(x => x > 0)
             .ToArray();
     }
 
@@ -59,7 +60,7 @@ public class ChannelToPointConverter : IValueConverter
     /// </summary>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        return value;
     }
 
     /// <summary>

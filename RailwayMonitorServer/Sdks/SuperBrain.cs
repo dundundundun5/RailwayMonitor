@@ -255,6 +255,7 @@ public class SuperBrain(
         string strTimeHour = (struAIOPVideo.struTime.wHour).ToString("d2");
         string strTimeMinute = (struAIOPVideo.struTime.wMinute).ToString("d2");
         string strTimeSecond = (struAIOPVideo.struTime.wSecond).ToString("d2");
+        string strTimeMiliSecond = (struAIOPVideo.struTime.wMilliSec).ToString("d3");
         string strTime = $"{strTimeYear}-{strTimeMonth}-{strTimeDay} {strTimeHour}:{strTimeMinute}:{strTimeSecond}";
 
         DateTime alarmTime = DateTime.Parse(strTime);
@@ -278,7 +279,8 @@ public class SuperBrain(
             type = EnumAlarmType.均未穿戴;
         
         //保存图片
-        string filename = $"{strIP}_{channel}_{nameof(type)}.jpg";
+        strTime = $"{strTimeYear}-{strTimeMonth}-{strTimeDay}_{strTimeHour}-{strTimeMinute}-{strTimeSecond}-{strTimeMiliSecond}";
+        string filename = $"{strIP}_{channel}_{nameof(type)}_{strTime}.jpg";
         string filePath = Path.Combine(AlarmImageFolder, filename);
         if ((struAIOPVideo.dwPictureSize != 0) && (struAIOPVideo.pBufferPicture != IntPtr.Zero))
         {
