@@ -267,9 +267,17 @@ public class SuperBrain(
         CheckResult result_1 = AnalyzeSuperBrainResponse(data, "dc00279fa260418891c88fd7a4179295");// 反光衣
         //CheckResult result_2 = AnalyzeSuperBrainResponse(data, "d71a6546b0284384a757935bc889abd6");// 帽子
         CheckResult result_2 = AnalyzeSuperBrainResponse(data, "7dfb0893d6e94d0cbe0bf60ef53fccc8");// 帽子
-
-        if (result_1.Result == null || result_2.Result == null)
+        try
+        {
+            if (result_1 == null || result_2 == null)
+                return false;
+            if (result_1.Result == null || result_2.Result == null)
+                return false;
+        }
+        catch (Exception e)
+        {
             return false;
+        }
         EnumAlarmType type = EnumAlarmType.均穿戴;
         if (result_1.Result == "yes" && result_2.Result == "no")
             type = EnumAlarmType.未戴安全帽;
