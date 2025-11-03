@@ -59,8 +59,8 @@
             <!-- 密码 -->
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="密码" FontWeight="Bold" Margin="0,0,0,5"/>
-                <hc:TextBox x:Name="TbPassword"
-                           Text="{Binding DevicePassword, Mode=TwoWay}"
+                <hc:PasswordBox x:Name="TbPassword" IsSafeEnabled="False"
+                           UnsafePassword="{Binding DevicePassword, Mode=TwoWay}"
                            hc:InfoElement.Placeholder="请输入密码"/>
             </StackPanel>
 

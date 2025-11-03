@@ -28,4 +28,6 @@ public class SuperBrainConfig
     public string ImageFolder { get; set; }
     
     public int AlarmInterval { get; set; }
+    
+    public bool RecognizeHat { get; set; }
 }

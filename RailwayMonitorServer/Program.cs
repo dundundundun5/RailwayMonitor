@@ -36,7 +36,7 @@ builder.Services.AddControllers();
 // 修复前：DataContext没有在DI容器中注册，DeviceTypeService无法获取有效的DbContext实例
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection")!,
+        builder.Configuration.GetConnectionString("DevConnection")!, //现场是 DefaultConnection
         new MySqlServerVersion(new Version(8, 0, 35)), //TODO: 现场是5,7,29
         mysqlOptions => mysqlOptions.EnableRetryOnFailure(
             maxRetryCount: 10,

@@ -23,7 +23,8 @@ public class SuperBrain(
     string password,
     string alarmImageFolder,
     IAlarmTraceService? alarmTraceService = null,
-    int second = 60)
+    int second = 60,
+    bool recognizeHat = false)
     : IDisposable
 {
     ~SuperBrain()
@@ -316,8 +317,18 @@ public class SuperBrain(
             type = EnumAlarmType.未穿反光衣;
         else if (result_1.Result == "no" && result_2.Result == "no")
             type = EnumAlarmType.均未穿戴;
+        if (!recognizeHat)
+        {
+            if (type is EnumAlarmType.未戴安全帽)
+                return true;
+            if (type is EnumAlarmType.均未穿戴 or EnumAlarmType.未穿反光衣)
+                type = EnumAlarmType.未穿反光衣;
+        }
+        
         if (type == EnumAlarmType.均穿戴)
             return true;
+        
+        
         //告警去重
         int idx = channel - 33 >= Mytimers.Length ? 0 : channel - 33;
         if ((int)type == PreviousType[idx])

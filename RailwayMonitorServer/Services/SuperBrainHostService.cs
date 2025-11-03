@@ -43,7 +43,7 @@ public class SuperBrainHostService : BackgroundService
             var alarmTraceService = scope.ServiceProvider.GetRequiredService<IAlarmTraceService>();
             
             // 创建SuperBrain实例
-            _superBrain = new SuperBrain(ip: _config.Ip, port: _config.Port, username: _config.Username, password: _config.Password, alarmImageFolder: _config.ImageFolder, alarmTraceService: alarmTraceService, _config.AlarmInterval);
+            _superBrain = new SuperBrain(ip: _config.Ip, port: _config.Port, username: _config.Username, password: _config.Password, alarmImageFolder: _config.ImageFolder, alarmTraceService: alarmTraceService, _config.AlarmInterval, _config.RecognizeHat);
 
             _logger.LogInformation("正在连接超脑: {Ip}:{Port}", _config.Ip, _config.Port);
 
@@ -51,10 +51,10 @@ public class SuperBrainHostService : BackgroundService
             _superBrain.Login();
             _logger.LogInformation("SuperBrain登录成功");
 
-            _logger.LogInformation("SuperBrain透传协议-尝试获取模型描述文件");
-            string? modelInfo = _superBrain.GetModelInfo();
-            string filePath = "modelInfo.json";
-            await File.WriteAllTextAsync(filePath, modelInfo, stoppingToken);
+            // _logger.LogInformation("SuperBrain透传协议-尝试获取模型描述文件");
+            // string? modelInfo = _superBrain.GetModelInfo();
+            // string filePath = "modelInfo.json";
+            // await File.WriteAllTextAsync(filePath, modelInfo, stoppingToken);
             
             // 设置布防
             _superBrain.SetupAlarm();

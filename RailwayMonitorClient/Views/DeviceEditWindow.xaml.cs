@@ -13,14 +13,17 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
     private readonly DeviceHttpService _deviceService;
     private readonly bool _isEditMode;
     private readonly Device? _originalDevice;
-
+    
     public DeviceEditWindow()
     {
         InitializeComponent();
         _deviceService = new DeviceHttpService();
         _isEditMode = false;
+        
         DataContext = this;
         Loaded += async (s, e) => await InitializeDataAsync();
+        if (!_isEditMode)
+            Dispatcher.Invoke(() => { TbPassword.ShowEyeButton = true; });
     }
 
     public DeviceEditWindow(Device device)
@@ -51,7 +54,8 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
         8,
         9,
         10,
-        11
+        11,
+        12
     };
 
     private string _selectedDeviceName = "01号点位";
@@ -276,7 +280,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
                 var response = await _deviceService.UpdateDeviceAsync(updateDto);
                 if (response.Code == 200)
                 {
-                    HandyControl.Controls.MessageBox.Success("设备更新成功", "成功");
+                    // HandyControl.Controls.MessageBox.Success("设备更新成功", "成功");
                     DialogResult = true;
                     Close();
                 }
@@ -303,7 +307,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
                 var response = await _deviceService.CreateDeviceAsync(createDto);
                 if (response.Code == 200)
                 {
-                    HandyControl.Controls.MessageBox.Success("设备创建成功", "成功");
+                    // HandyControl.Controls.MessageBox.Success("设备创建成功", "成功");
                     DialogResult = true;
                     Close();
                 }

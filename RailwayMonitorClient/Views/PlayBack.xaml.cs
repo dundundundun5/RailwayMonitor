@@ -184,7 +184,7 @@ public partial class PlayBack : HandyControl.Controls.Window
             // 开始回放（使用选中的通道）
             _recorder.StartPlayback(handle, startTime, endTime, channel);
 
-            System.Windows.MessageBox.Show($"回放已开始: {selectedDevice} (通道{channel})", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            // System.Windows.MessageBox.Show($"回放已开始: {selectedDevice} (通道{channel})", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
@@ -210,7 +210,7 @@ public partial class PlayBack : HandyControl.Controls.Window
             // 清空PictureBox
             PictureBoxPlayback.Image = null;
 
-            System.Windows.MessageBox.Show("回放已停止", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            // System.Windows.MessageBox.Show("回放已停止", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
