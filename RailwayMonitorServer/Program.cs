@@ -39,8 +39,8 @@ builder.Services.AddDbContext<DataContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")!,
         new MySqlServerVersion(new Version(8, 0, 35)), //TODO: 现场是5,7,29
         mysqlOptions => mysqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
+            maxRetryCount: 10,
+            maxRetryDelay: TimeSpan.FromSeconds(3),
             errorNumbersToAdd: null
         )
     ));
