@@ -39,6 +39,12 @@ public partial class MainWindow
     private List<CameraWindowData> _cameraData;
     private AlarmHubService _alarmHubService;
 
+    // 录像机管理相关属性
+    private Recorder? _recorder;
+    private List<string> _deviceList;
+    private List<string> _ips;
+    private bool _isRecorderInitialized = false;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -58,6 +64,9 @@ public partial class MainWindow
         });
         InitializeSignalR();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+        // 初始化录像机
+        Task.Run(async () => await InitializeRecorderAsync());
     }
 
     /// <summary>
@@ -214,7 +223,7 @@ public partial class MainWindow
                 // 按设备名称从小到大排序
                 var devices = response.Data
                     .Where(d => d.Enabled == 1 && !string.IsNullOrEmpty(d.Ip))
-                    .OrderBy(d => d.Name)
+                    .OrderBy(d => d.Index)
                     .ToList();
 
                 // 在UI线程中创建和添加控件
@@ -380,10 +389,7 @@ public partial class MainWindow
                 // 可以在这里添加实时监控的特定逻辑
                 break;
             case "Playback":
-                // 录像回放
-                // var playbackWindow = new RecorderWindow();
-                // playbackWindow.Owner = this;
-                // playbackWindow.Show();
+                // 录像回放 - 已经在导航栏中处理
                 break;
             case "DeviceManagement":
                 // 设备管理 - 已经在导航栏中处理
@@ -446,10 +452,121 @@ public partial class MainWindow
         }
     }
 
+    #region 录像机管理
 
+    /// <summary>
+    /// 初始化录像机
+    /// </summary>
+    private async Task InitializeRecorderAsync()
+    {
+        try
+        {
+            // 从appsettings.json获取RecorderIpAddress
+            var recorderIpAddress = Configuration["RecorderIpAddress"];
 
+            if (string.IsNullOrEmpty(recorderIpAddress))
+            {
+                Console.WriteLine("配置文件中未找到RecorderIpAddress");
+                return;
+            }
 
-    
+            // 解析IP地址和端口信息，格式：192.168.18.37:8000
+            string ipAddress = recorderIpAddress;
+            ushort port = 8000; // 默认端口8000
 
-    
+            if (recorderIpAddress.Contains(":"))
+            {
+                var parts = recorderIpAddress.Split(':');
+                if (parts.Length == 2 && ushort.TryParse(parts[1], out ushort parsedPort))
+                {
+                    ipAddress = parts[0]; // 提取IP地址部分
+                    port = parsedPort; // 提取端口号
+                }
+            }
+
+            // 创建录像机实例
+            _recorder = new Recorder(ipAddress, port);
+            _deviceList = new List<string>();
+            _ips = new List<string>();
+
+            // 登录设备
+            var result = _recorder.Login();
+
+            if (string.IsNullOrEmpty(result))
+            {
+                Console.WriteLine($"录像机自动登录成功: {ipAddress}:{port}");
+
+                // 获取关联设备列表
+                LoadAssociatedDevices();
+                _isRecorderInitialized = true;
+            }
+            else
+            {
+                Console.WriteLine($"录像机自动登录失败: {result}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"录像机初始化异常: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 加载关联设备列表
+    /// </summary>
+    private void LoadAssociatedDevices()
+    {
+        try
+        {
+            if (_recorder == null)
+            {
+                Console.WriteLine("录像机实例未初始化");
+                return;
+            }
+
+            _recorder.GetAssociatedIpList(ref _ips, ref _deviceList);
+
+            // 调试信息：检查获取到的数据
+            Console.WriteLine($"获取到 {_ips?.Count ?? 0} 个IP地址");
+            Console.WriteLine($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"获取设备列表失败: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 获取录像机实例
+    /// </summary>
+    public Recorder? GetRecorder()
+    {
+        return _recorder;
+    }
+
+    /// <summary>
+    /// 获取设备列表
+    /// </summary>
+    public List<string>? GetDeviceList()
+    {
+        return _deviceList;
+    }
+
+    /// <summary>
+    /// 获取IP列表
+    /// </summary>
+    public List<string>? GetIpList()
+    {
+        return _ips;
+    }
+
+    /// <summary>
+    /// 检查录像机是否已初始化
+    /// </summary>
+    public bool IsRecorderInitialized()
+    {
+        return _isRecorderInitialized;
+    }
+
+    #endregion
 }

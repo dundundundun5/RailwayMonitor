@@ -24,6 +24,7 @@ public class DeviceService(DataContext context, ILogger<DeviceService> logger) :
 
         // Update only the properties that are provided in newDevice
         existingDevice.Name = newDevice.Name ?? existingDevice.Name;
+        existingDevice.Index = newDevice.Index;
         existingDevice.Ip = newDevice.Ip ?? existingDevice.Ip;
         existingDevice.Port = newDevice.Port;
         existingDevice.Username = newDevice.Username ?? existingDevice.Username;

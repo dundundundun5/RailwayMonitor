@@ -10,6 +10,8 @@ public class DeviceCreateDto
     [Required(ErrorMessage = "设备名不可为空")]
     [DefaultValue("第_道监控")]
     public string Name { get; set; } 
+    
+    public int Index { get; set; }
 
     [Required(ErrorMessage = "设备IP不可为空")]
     [DefaultValue("192.168.0.1")]

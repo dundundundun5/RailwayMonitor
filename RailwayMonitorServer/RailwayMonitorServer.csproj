@@ -38,13 +38,7 @@
 
     <ItemGroup>
       <Content Remove="Resources\SuperBrainModelInfo.json" />
-      <None Include="Resources\SuperBrainModelInfo.json">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </None>
       <Content Remove="Resources\SuperBrainModelResponse.json" />
-      <None Include="Resources\SuperBrainModelResponse.json">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </None>
       <None Update="HCNetSDKCom\AnalyzeData.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

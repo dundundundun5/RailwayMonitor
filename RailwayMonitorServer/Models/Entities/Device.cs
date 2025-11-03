@@ -10,6 +10,9 @@ public class Device
     public int Id { get; set; }
     [Column("name")]
     public string? Name { get; set; }
+    
+    [Column("index")]
+    public int Index { get; set; }
     [Column("ip")]
     public string? Ip { get; set; }
     [Column("port")]

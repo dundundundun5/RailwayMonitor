@@ -18,9 +18,17 @@
             <!-- 设备名称 -->
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="设备名称" FontWeight="Bold" Margin="0,0,0,5"/>
-                <ComboBox x:Name="CbDeviceName"
-                         ItemsSource="{Binding DeviceNameList}"
-                         SelectedValue="{Binding SelectedDeviceName, Mode=TwoWay}"
+                <hc:TextBox x:Name="TbDeviceName"
+                           Text="{Binding SelectedDeviceName, Mode=TwoWay}"
+                           hc:InfoElement.Placeholder="请输入设备名称"/>
+            </StackPanel>
+
+            <!-- 监控顺位 -->
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="监控顺位" FontWeight="Bold" Margin="0,0,0,5"/>
+                <ComboBox x:Name="CbDeviceIndex"
+                         ItemsSource="{Binding DeviceIndexList}"
+                         SelectedValue="{Binding SelectedDeviceIndex, Mode=TwoWay}"
                          SelectedIndex="0"/>
             </StackPanel>
 

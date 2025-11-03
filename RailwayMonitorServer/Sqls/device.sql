@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `device` (
     `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
     `name` varchar(100) NOT NULL COMMENT '设备名称',
+    `index` int(11) NOT NULL COMMENT '监控顺位',
     `ip` varchar(15) NOT NULL COMMENT 'IP地址',
     `port` int(11) NOT NULL COMMENT '端口号',
     `username` varchar(50) DEFAULT NULL COMMENT '用户名',

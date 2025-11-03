@@ -37,19 +37,21 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
 
     public string WindowTitle => _isEditMode ? "编辑设备" : "添加设备";
 
-    public string[] DeviceNameList => new[]
+    // 设备名称改为自由输入，不再使用预定义列表
+    
+    public int[] DeviceIndexList => new[]
     {
-        "01号点位",
-        "02号点位",
-        "03号点位",
-        "04号点位",
-        "05号点位",
-        "06号点位",
-        "07号点位",
-        "08号点位",
-        "09号点位",
-        "10号点位",
-        "11号球机"
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
     };
 
     private string _selectedDeviceName = "01号点位";
@@ -59,6 +61,17 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
         set
         {
             _selectedDeviceName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private int _selectedDeviceIndex = 1;
+    public int SelectedDeviceIndex
+    {
+        get => _selectedDeviceIndex;
+        set
+        {
+            _selectedDeviceIndex = value;
             OnPropertyChanged();
         }
     }
@@ -177,6 +190,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
             if (_isEditMode && _originalDevice != null)
             {
                 SelectedDeviceName = _originalDevice.Name;
+                SelectedDeviceIndex = _originalDevice.Index;
                 DeviceIp = _originalDevice.Ip;
                 DevicePort = _originalDevice.Port;
                 DeviceUsername = _originalDevice.Username;
@@ -250,6 +264,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
                 {
                     Id = _originalDevice.Id,
                     Name = SelectedDeviceName,
+                    Index = SelectedDeviceIndex,
                     Ip = DeviceIp,
                     Port = DevicePort,
                     Username = DeviceUsername,
@@ -276,6 +291,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
                 var createDto = new DeviceCreateDto
                 {
                     Name = SelectedDeviceName,
+                    Index = SelectedDeviceIndex,
                     Ip = DeviceIp,
                     Port = DevicePort,
                     Username = DeviceUsername,
@@ -323,8 +339,8 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
     {
         if (string.IsNullOrWhiteSpace(SelectedDeviceName))
         {
-            HandyControl.Controls.MessageBox.Warning("请选择设备名称", "提示");
-            CbDeviceName.Focus();
+            HandyControl.Controls.MessageBox.Warning("请输入设备名称", "提示");
+            TbDeviceName.Focus();
             return false;
         }
 

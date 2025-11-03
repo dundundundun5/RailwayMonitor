@@ -26,10 +26,17 @@ public partial class AutoHideNavigationBar : UserControl
 
     private void BtnPlayback_Click(object sender, RoutedEventArgs e)
     {
+        var mainWindow = Window.GetWindow(this) as MainWindow;
+        if (mainWindow == null)
+        {
+            System.Windows.MessageBox.Show("无法获取主窗口引用", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            return;
+        }
+
         if (_playBackWindow == null || !_playBackWindow.IsLoaded)
         {
-            _playBackWindow = new PlayBack();
-            _playBackWindow.Owner = Window.GetWindow(this);
+            _playBackWindow = new PlayBack(mainWindow);
+            _playBackWindow.Owner = mainWindow;
             _playBackWindow.Closed += (s, args) => _playBackWindow = null;
             _playBackWindow.Show();
         }

@@ -45,6 +45,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
         Device device = new Device
         {
             Name = createDto.Name,
+            Index = createDto.Index,
             Ip = createDto.Ip,
             Port = createDto.Port,
             Username = createDto.Username,
@@ -66,6 +67,7 @@ public class DeviceController(IDeviceService deviceService, ILogger<DeviceContro
         {
             Id = updateDto.Id,
             Name = updateDto.Name,
+            Index = updateDto.Index,
             Ip = updateDto.Ip,
             Port = updateDto.Port,
             Username = updateDto.Username,

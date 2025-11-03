@@ -42,8 +42,29 @@ public class SuperBrain(
     private string Port { get; set; } = port;
     private string Username { get; set; } = username;
     private string Password { get; set; } = password;
-    private static int PreviousType = -1;
-    private System.Timers.Timer Mytimer { get; set; } = new Timer(second * 1000);
+    private static int[] PreviousType = [
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1,
+        -1
+    ];
+
+    private System.Timers.Timer[] Mytimers { get; set; } =
+    [
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+        new Timer(second * 1000),
+    ]; 
+        
     private CHCNetSDK.NET_DVR_PICCFG_V40 ChannelImageInfo { get; set; }
     private CHCNetSDK.NET_DVR_IPPARACFG_V40 IpConfigInfo { get; set; }
     private CHCNetSDK.NET_DVR_GET_STREAM_UNION StreamConfigInfo { get; set; }
@@ -110,11 +131,16 @@ public class SuperBrain(
     /// <exception cref="Exception"></exception>
     public void Login()
     {
-        Mytimer.AutoReset = false;
-        Mytimer.Elapsed += (sender, args) =>
+        for(int i = 0; i <= Mytimers.Length; i++)
         {
-            PreviousType = -1;
-        };
+            Mytimers[i].AutoReset = false;
+            Mytimers[i].Elapsed += (sender, args) =>
+            {
+                PreviousType[i] = -1;
+            };
+            
+        }
+        
         //1. 必须初始化
         CHCNetSDK.NET_DVR_Init();
         //2. 配置透传报警信息类型 （可选）
@@ -291,16 +317,17 @@ public class SuperBrain(
         else if (result_1.Result == "no" && result_2.Result == "no")
             type = EnumAlarmType.均未穿戴;
         //告警去重
-        if ((int)type == PreviousType)
+        int idx = channel - 33 >= Mytimers.Length ? 0 : channel - 33;
+        if ((int)type == PreviousType[idx])
         {
-            Console.WriteLine($"检测到重复告警{type.ToString()}");
+            Console.WriteLine($"通道{idx}检测到重复告警{type.ToString()}");
             return true;
         }
         else
         {
-            PreviousType = (int)type;
-            Mytimer.Stop();
-            Mytimer.Start();
+            PreviousType[idx] = (int)type;
+            Mytimers[idx].Stop();
+            Mytimers[idx].Start();
         }
         //保存图片
         strTime = $"{strTimeYear}-{strTimeMonth}-{strTimeDay}_{strTimeHour}-{strTimeMinute}-{strTimeSecond}-{strTimeMiliSecond}";

@@ -6,7 +6,7 @@
           xmlns:converters="clr-namespace:RailwayMonitorClient.Converters"
           Title="设备管理"
           Height="600"
-          Width="900"
+          Width="1200"
           WindowStartupLocation="CenterScreen">
 
     <hc:Window.Resources>
@@ -51,7 +51,7 @@
 
                 <!-- 设备名称 -->
                 <DataGridTextColumn Header="设备名称" Binding="{Binding Name}" Width="120"/>
-
+                <DataGridTextColumn Header="监控顺位" Binding="{Binding Index}" Width="120"/>
                 <!-- IP地址 -->
                 <DataGridTextColumn Header="IP地址" Binding="{Binding Ip}" Width="120"/>
 
@@ -75,7 +75,7 @@
                 </DataGridTemplateColumn>
 
                 <!-- 创建时间 -->
-                <DataGridTextColumn Header="创建时间" Binding="{Binding CreateDate, StringFormat=yyyy-MM-dd HH:mm}" Width="120"/>
+                <DataGridTextColumn Header="创建时间" Binding="{Binding CreateDate, StringFormat=yyyy-MM-dd HH:mm}" Width="140"/>
 
                 <!-- 操作列 -->
                 <DataGridTemplateColumn Header="操作" Width="200">

@@ -12,6 +12,8 @@ public class DeviceUpdateDto
 
     [DefaultValue("")] 
     public string Name { get; set; }
+    
+    public int Index { get; set; }
     [DefaultValue("")]
     public string Ip { get; set; }
     [DefaultValue(0)] 

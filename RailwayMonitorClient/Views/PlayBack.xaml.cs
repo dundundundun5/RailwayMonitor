@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Forms;
 using RailwayAlarmBackend.Sdks;
-using Microsoft.Extensions.Configuration;
 
 namespace RailwayMonitorClient.Views;
 
@@ -15,10 +14,12 @@ public partial class PlayBack : HandyControl.Controls.Window
     private Recorder? _recorder;
     private List<string> _deviceList;
     private List<string> _ips;
-    public PlayBack()
+    private MainWindow _mainWindow;
+
+    public PlayBack(MainWindow mainWindow)
     {
         InitializeComponent();
-        InitializeRecorder();
+        _mainWindow = mainWindow;
         InitializeDateTimeControls();
         Loaded += PlayBack_Loaded;
     }
@@ -28,72 +29,38 @@ public partial class PlayBack : HandyControl.Controls.Window
     /// </summary>
     private void PlayBack_Loaded(object sender, RoutedEventArgs e)
     {
-        // 在后台线程中自动登录并加载设备列表
-        Task.Run(async () => await AutoLoginAndLoadDevices());
-        
+        // 使用主窗口的录像机数据
+        LoadDevicesFromMainWindow();
     }
 
     /// <summary>
-    /// 自动登录并加载设备列表
+    /// 从主窗口加载设备列表
     /// </summary>
-    private async Task AutoLoginAndLoadDevices()
+    private void LoadDevicesFromMainWindow()
     {
         try
         {
-            // 从appsettings.json获取RecorderIpAddress
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
+            // 从主窗口获取录像机数据
+            _recorder = _mainWindow.GetRecorder();
+            _deviceList = _mainWindow.GetDeviceList();
+            _ips = _mainWindow.GetIpList();
 
-            var recorderIpAddress = configuration["RecorderIpAddress"];
-
-            if (string.IsNullOrEmpty(recorderIpAddress))
+            if (_mainWindow.IsRecorderInitialized())
             {
                 Dispatcher.Invoke(() =>
                 {
-                    TbLoginStatus.Text = "配置文件中未找到RecorderIpAddress";
-                    TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
-                });
-                return;
-            }
-
-            // 解析IP地址和端口信息，格式：192.168.18.37:8000
-            string ipAddress = recorderIpAddress;
-            ushort port = 8000; // 默认端口8000
-
-            if (recorderIpAddress.Contains(":"))
-            {
-                var parts = recorderIpAddress.Split(':');
-                if (parts.Length == 2 && ushort.TryParse(parts[1], out ushort parsedPort))
-                {
-                    ipAddress = parts[0]; // 提取IP地址部分
-                    port = parsedPort; // 提取端口号
-                }
-            }
-
-            // 创建录像机实例
-            _recorder = new Recorder(ipAddress, port);
-
-            // 登录设备
-            var result = _recorder.Login();
-
-            if (string.IsNullOrEmpty(result))
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    TbLoginStatus.Text = $"自动登录成功: {ipAddress}:{port}";
+                    TbLoginStatus.Text = "录像机已初始化，使用主窗口数据";
                     TbLoginStatus.Foreground = System.Windows.Media.Brushes.Green;
                 });
 
-                // 获取关联设备列表
+                // 加载设备列表到UI
                 LoadAssociatedDevices();
             }
             else
             {
                 Dispatcher.Invoke(() =>
                 {
-                    TbLoginStatus.Text = $"自动登录失败: {result}";
+                    TbLoginStatus.Text = "录像机未初始化，请稍后重试";
                     TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
                 });
             }
@@ -102,7 +69,7 @@ public partial class PlayBack : HandyControl.Controls.Window
         {
             Dispatcher.Invoke(() =>
             {
-                TbLoginStatus.Text = $"自动登录异常: {ex.Message}";
+                TbLoginStatus.Text = $"加载设备列表失败: {ex.Message}";
                 TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
             });
         }
@@ -112,16 +79,6 @@ public partial class PlayBack : HandyControl.Controls.Window
         }
     }
 
-    /// <summary>
-    /// 初始化录像机实例
-    /// </summary>
-    private void InitializeRecorder()
-    {
-        // 创建默认的录像机实例
-        _recorder = new Recorder("", 0);
-        _deviceList = new List<string>();
-        _ips = new List<string>();
-    }
 
     /// <summary>
     /// 初始化日期时间控件
@@ -147,18 +104,6 @@ public partial class PlayBack : HandyControl.Controls.Window
     {
         try
         {
-            if (_recorder == null)
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    System.Windows.MessageBox.Show("录像机实例未初始化", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
-                return;
-            }
-
-
-            _recorder.GetAssociatedIpList(ref _ips, ref _deviceList);
-
             // 调试信息：检查获取到的数据
             System.Diagnostics.Debug.WriteLine($"获取到 {_ips?.Count ?? 0} 个IP地址");
             System.Diagnostics.Debug.WriteLine($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
@@ -186,7 +131,7 @@ public partial class PlayBack : HandyControl.Controls.Window
         {
             Dispatcher.Invoke(() =>
             {
-                System.Windows.MessageBox.Show($"获取设备列表失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show($"加载设备列表失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             });
         }
     }
