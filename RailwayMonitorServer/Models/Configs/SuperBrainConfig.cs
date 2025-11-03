@@ -26,4 +26,6 @@ public class SuperBrainConfig
     public string Password { get; set; }
     
     public string ImageFolder { get; set; }
+    
+    public int AlarmInterval { get; set; }
 }

@@ -18,9 +18,10 @@
             <!-- 设备名称 -->
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="设备名称" FontWeight="Bold" Margin="0,0,0,5"/>
-                <hc:TextBox x:Name="TbName"
-                           Text="{Binding DeviceName, Mode=TwoWay}"
-                           hc:InfoElement.Placeholder="请输入设备名称"/>
+                <ComboBox x:Name="CbDeviceName"
+                         ItemsSource="{Binding DeviceNameList}"
+                         SelectedValue="{Binding SelectedDeviceName, Mode=TwoWay}"
+                         SelectedIndex="0"/>
             </StackPanel>
 
             <!-- IP地址 -->

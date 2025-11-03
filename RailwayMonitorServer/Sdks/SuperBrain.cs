@@ -2,8 +2,10 @@
 using System.Text;
 using HK.Net.Core;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Tls;
 using RailwayAlarmBackend.Interfaces;
 using RailwayAlarmBackend.Models.Enums;
+using Timer = System.Timers.Timer;
 
 namespace RailwayAlarmBackend.Sdks;
 
@@ -20,7 +22,8 @@ public class SuperBrain(
     string username,
     string password,
     string alarmImageFolder,
-    IAlarmTraceService? alarmTraceService = null)
+    IAlarmTraceService? alarmTraceService = null,
+    int second = 60)
     : IDisposable
 {
     ~SuperBrain()
@@ -39,7 +42,8 @@ public class SuperBrain(
     private string Port { get; set; } = port;
     private string Username { get; set; } = username;
     private string Password { get; set; } = password;
-
+    private static int PreviousType = -1;
+    private System.Timers.Timer Mytimer { get; set; } = new Timer(second * 1000);
     private CHCNetSDK.NET_DVR_PICCFG_V40 ChannelImageInfo { get; set; }
     private CHCNetSDK.NET_DVR_IPPARACFG_V40 IpConfigInfo { get; set; }
     private CHCNetSDK.NET_DVR_GET_STREAM_UNION StreamConfigInfo { get; set; }
@@ -91,18 +95,14 @@ public class SuperBrain(
             Marshal.FreeHGlobal(pOutputXml.lpStatusBuffer);
             return outXml;
     }
-    
-    
+
+
     public string Error()
     {
-        int code = (int) CHCNetSDK.NET_DVR_GetLastError();
+        int code = (int)CHCNetSDK.NET_DVR_GetLastError();
         return $"错误码={code}, 错误描述={ErrorCode.GetDescription(code)}";
     }
-    
-    
-    
-    
-    
+
     /// 1 初始化
     /// 2 设置回调函数
     /// 3 登录
@@ -110,6 +110,11 @@ public class SuperBrain(
     /// <exception cref="Exception"></exception>
     public void Login()
     {
+        Mytimer.AutoReset = false;
+        Mytimer.Elapsed += (sender, args) =>
+        {
+            PreviousType = -1;
+        };
         //1. 必须初始化
         CHCNetSDK.NET_DVR_Init();
         //2. 配置透传报警信息类型 （可选）
@@ -232,7 +237,7 @@ public class SuperBrain(
     }
     private bool SuperBrainAlarmCallBack(int lCommand, ref CHCNetSDK.NET_DVR_ALARMER pAlarmer, IntPtr pAlarmInfo, uint dwBufLen, IntPtr pUser)
     {
-        _dbSemaphore.Wait(1500);
+        _dbSemaphore.Wait(1200);
         //设备支持AI开放平台接入，处理媒体类型是 实时视频流
         if (lCommand != CHCNetSDK.COMM_UPLOAD_AIOP_VIDEO)
             return false;
@@ -285,7 +290,18 @@ public class SuperBrain(
             type = EnumAlarmType.未穿反光衣;
         else if (result_1.Result == "no" && result_2.Result == "no")
             type = EnumAlarmType.均未穿戴;
-        
+        //告警去重
+        if ((int)type == PreviousType)
+        {
+            Console.WriteLine($"检测到重复告警{type.ToString()}");
+            return true;
+        }
+        else
+        {
+            PreviousType = (int)type;
+            Mytimer.Stop();
+            Mytimer.Start();
+        }
         //保存图片
         strTime = $"{strTimeYear}-{strTimeMonth}-{strTimeDay}_{strTimeHour}-{strTimeMinute}-{strTimeSecond}-{strTimeMiliSecond}";
         string filename = $"{strIP}_{channel}_{nameof(type)}_{strTime}.jpg";

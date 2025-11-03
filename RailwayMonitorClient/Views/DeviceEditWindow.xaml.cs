@@ -37,13 +37,28 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
 
     public string WindowTitle => _isEditMode ? "编辑设备" : "添加设备";
 
-    private string _deviceName = string.Empty;
-    public string DeviceName
+    public string[] DeviceNameList => new[]
     {
-        get => _deviceName;
+        "01号点位",
+        "02号点位",
+        "03号点位",
+        "04号点位",
+        "05号点位",
+        "06号点位",
+        "07号点位",
+        "08号点位",
+        "09号点位",
+        "10号点位",
+        "11号球机"
+    };
+
+    private string _selectedDeviceName = "01号点位";
+    public string SelectedDeviceName
+    {
+        get => _selectedDeviceName;
         set
         {
-            _deviceName = value;
+            _selectedDeviceName = value;
             OnPropertyChanged();
         }
     }
@@ -161,7 +176,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
             // 如果是编辑模式，填充数据
             if (_isEditMode && _originalDevice != null)
             {
-                DeviceName = _originalDevice.Name;
+                SelectedDeviceName = _originalDevice.Name;
                 DeviceIp = _originalDevice.Ip;
                 DevicePort = _originalDevice.Port;
                 DeviceUsername = _originalDevice.Username;
@@ -173,7 +188,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
         catch (Exception ex)
         {
             HandyControl.Controls.MessageBox.Error(ex.Message, "初始化失败");
-        }
+       }
     }
 
     #endregion
@@ -184,7 +199,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
     /// 测试连接按钮点击事件
     /// </summary>
     private async void BtnTestConnection_Click(object sender, RoutedEventArgs e)
-    {
+    { 
         if (string.IsNullOrWhiteSpace(DeviceIp) || string.IsNullOrWhiteSpace(DeviceUsername) || string.IsNullOrWhiteSpace(DevicePassword))
         {
             HandyControl.Controls.MessageBox.Warning("请填写完整的设备信息", "提示");
@@ -234,7 +249,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
                 var updateDto = new DeviceUpdateDto
                 {
                     Id = _originalDevice.Id,
-                    Name = DeviceName,
+                    Name = SelectedDeviceName,
                     Ip = DeviceIp,
                     Port = DevicePort,
                     Username = DeviceUsername,
@@ -260,7 +275,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
                 // 创建设备
                 var createDto = new DeviceCreateDto
                 {
-                    Name = DeviceName,
+                    Name = SelectedDeviceName,
                     Ip = DeviceIp,
                     Port = DevicePort,
                     Username = DeviceUsername,
@@ -306,10 +321,10 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
     /// </summary>
     private bool ValidateInput()
     {
-        if (string.IsNullOrWhiteSpace(DeviceName))
+        if (string.IsNullOrWhiteSpace(SelectedDeviceName))
         {
-            HandyControl.Controls.MessageBox.Warning("请输入设备名称", "提示");
-            TbName.Focus();
+            HandyControl.Controls.MessageBox.Warning("请选择设备名称", "提示");
+            CbDeviceName.Focus();
             return false;
         }
 
@@ -317,7 +332,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
         {
             HandyControl.Controls.MessageBox.Warning("请输入IP地址", "提示");
             TbIp.Focus();
-            return false;
+           return false;
         }
 
         if (DevicePort <= 0 || DevicePort > 65535)
@@ -326,7 +341,7 @@ public partial class DeviceEditWindow : HandyControl.Controls.Window, INotifyPro
             TbPort.Focus();
             return false;
         }
-
+ 
         if (string.IsNullOrWhiteSpace(DeviceUsername))
         {
             HandyControl.Controls.MessageBox.Warning("请输入用户名", "提示");

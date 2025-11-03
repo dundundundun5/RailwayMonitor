@@ -68,7 +68,7 @@ namespace RailwayMonitorClient.Views
             for (int i = 0; i < TOTAL_CELLS; i++)
             {
                 _pictureBoxHandles[i] = _pictureBoxes[i].Handle;
-                _aliases[i] = $"摄像头 {i + 1}";
+                _aliases[i] = $"监控窗口 {i + 1}";
 
                 // 设置ToolTip
                 var toolTip = new ToolTip

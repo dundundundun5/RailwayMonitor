@@ -22,6 +22,7 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.18"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.10" />
         <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.0-preview" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
@@ -101,6 +102,10 @@
       <None Remove="Logs\log-20251028.txt" />
       <None Remove="alarmTraceImage\test_alarm_20251029152331052.jpg" />
       <None Remove="Logs\log-20251031.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Configuration.Abstractions" />
     </ItemGroup>
 
 </Project>

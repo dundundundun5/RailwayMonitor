@@ -41,9 +41,9 @@ public class SuperBrainHostService : BackgroundService
             // 使用作用域获取IAlarmTraceService
             using var scope = _serviceScopeFactory.CreateScope();
             var alarmTraceService = scope.ServiceProvider.GetRequiredService<IAlarmTraceService>();
-
+            
             // 创建SuperBrain实例
-            _superBrain = new SuperBrain(ip: _config.Ip, port: _config.Port, username: _config.Username, password: _config.Password, alarmImageFolder: _config.ImageFolder, alarmTraceService: alarmTraceService);
+            _superBrain = new SuperBrain(ip: _config.Ip, port: _config.Port, username: _config.Username, password: _config.Password, alarmImageFolder: _config.ImageFolder, alarmTraceService: alarmTraceService, _config.AlarmInterval);
 
             _logger.LogInformation("正在连接超脑: {Ip}:{Port}", _config.Ip, _config.Port);
 
