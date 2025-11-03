@@ -131,7 +131,7 @@ public class SuperBrain(
     /// <exception cref="Exception"></exception>
     public void Login()
     {
-        for(int i = 0; i <= Mytimers.Length; i++)
+        for(int i = 0; i < Mytimers.Length; i++)
         {
             Mytimers[i].AutoReset = false;
             Mytimers[i].Elapsed += (sender, args) =>
@@ -316,6 +316,8 @@ public class SuperBrain(
             type = EnumAlarmType.未穿反光衣;
         else if (result_1.Result == "no" && result_2.Result == "no")
             type = EnumAlarmType.均未穿戴;
+        if (type == EnumAlarmType.均穿戴)
+            return true;
         //告警去重
         int idx = channel - 33 >= Mytimers.Length ? 0 : channel - 33;
         if ((int)type == PreviousType[idx])
