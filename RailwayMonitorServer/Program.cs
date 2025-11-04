@@ -34,16 +34,37 @@ builder.Services.AddControllers();
 
 // 配置Entity Framework - 之前的问题：缺少DbContext注册，导致服务无法获取数据库连接
 // 修复前：DataContext没有在DI容器中注册，DeviceTypeService无法获取有效的DbContext实例
-builder.Services.AddDbContext<DataContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DevConnection")!, //现场是 DefaultConnection
-        new MySqlServerVersion(new Version(8, 0, 35)), //TODO: 现场是5,7,29
-        mysqlOptions => mysqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 10,
-            maxRetryDelay: TimeSpan.FromSeconds(3),
-            errorNumbersToAdd: null
-        )
-    ));
+var offline = builder.Configuration.GetValue<bool>("Offline", false);
+
+if (offline)
+{
+    builder.Services.AddDbContext<DataContext>(options =>
+        options.UseMySql(
+            builder.Configuration.GetConnectionString("DefaultConnection")!, //现场是 DefaultConnection
+            new MySqlServerVersion(new Version(5, 7, 29)), // 修正为实际的MySQL版本
+            mysqlOptions => mysqlOptions
+                .EnableRetryOnFailure(
+                    maxRetryCount: 10,
+                    maxRetryDelay: TimeSpan.FromSeconds(3),
+                    errorNumbersToAdd: null
+                )
+        ));
+}
+else
+{
+    builder.Services.AddDbContext<DataContext>(options =>
+        options.UseMySql(
+            builder.Configuration.GetConnectionString("DevConnection")!, //现场是 DefaultConnection
+            new MySqlServerVersion(new Version(8, 0, 35)), // 修正为实际的MySQL版本
+            mysqlOptions => mysqlOptions
+                .EnableRetryOnFailure(
+                    maxRetryCount: 10,
+                    maxRetryDelay: TimeSpan.FromSeconds(3),
+                    errorNumbersToAdd: null
+                )
+        ));
+}
+
 
 
 
