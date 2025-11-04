@@ -1,7 +1,6 @@
-using System;
-using System.Collections.Generic;
+
 using System.Windows;
-using System.Windows.Forms;
+using System.Windows.Controls;
 using RailwayAlarmBackend.Sdks;
 
 namespace RailwayMonitorClient.Views;
@@ -15,14 +14,22 @@ public partial class PlayBack : HandyControl.Controls.Window
     private List<string> _deviceList;
     private List<string> _ips;
     private MainWindow _mainWindow;
-
+    private bool Pause = false;
     public PlayBack(MainWindow mainWindow)
     {
         InitializeComponent();
         _mainWindow = mainWindow;
         InitializeDateTimeControls();
+        DataContext = this;
         Loaded += PlayBack_Loaded;
     }
+
+    public string[] PlaySpeed { get; set; } = 
+    [
+        "0.5倍速",
+        "1倍速",
+        "2倍速"
+    ];
 
     /// <summary>
     /// 窗口加载完成事件
@@ -183,7 +190,12 @@ public partial class PlayBack : HandyControl.Controls.Window
             
             // 开始回放（使用选中的通道）
             _recorder.StartPlayback(handle, startTime, endTime, channel);
-
+            Dispatcher.Invoke(() =>
+            {
+                BtnPause.IsEnabled = true;
+                CmbPlay.IsEnabled = true;
+                BtnStartPlayback.IsEnabled = false;
+            });
             // System.Windows.MessageBox.Show($"回放已开始: {selectedDevice} (通道{channel})", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
@@ -209,6 +221,15 @@ public partial class PlayBack : HandyControl.Controls.Window
 
             // 清空PictureBox
             PictureBoxPlayback.Image = null;
+            Dispatcher.Invoke(() =>
+            {
+                CmbPlay.IsEnabled = false;
+                CmbPlay.SelectedIndex = 1;
+                BtnPause.IsEnabled = false;
+                BtnPause.Content = "暂停";
+                BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
+                BtnStartPlayback.IsEnabled = true;
+            });
 
             // System.Windows.MessageBox.Show("回放已停止", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -267,5 +288,70 @@ public partial class PlayBack : HandyControl.Controls.Window
         {
             // 忽略清理时的异常
         }
+    }
+
+   
+
+    private void BtnPause_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            if (Pause)
+            {
+                _recorder.Play();
+                Pause = false;
+                Dispatcher.Invoke(() => {
+                    BtnPause.Content = "暂停";
+                    BtnPause.Style = (System.Windows.Style)FindResource("ButtonWarning");
+                    CmbPlay.IsEnabled = true;
+                });
+                
+            }
+            else
+            {
+                _recorder.Pause();
+                Pause = true;
+                Dispatcher.Invoke(() => {
+                    BtnPause.Content = "播放";
+                    BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
+                    CmbPlay.IsEnabled = false;
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+        
+    }
+
+    
+    
+
+    private void CmbPlay_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        try
+        {
+            var value = Dispatcher.Invoke(() => CmbPlay.SelectedIndex) ;
+            switch (value)
+            {
+                case 0:
+                    _recorder.SlowPlay();
+                    break;
+                case 1:
+                    _recorder.NormalPlay();
+                    break;
+                case 2:
+                    _recorder.FastPlay();
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+        
     }
 }

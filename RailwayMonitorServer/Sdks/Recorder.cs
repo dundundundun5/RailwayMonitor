@@ -14,6 +14,10 @@ public class Recorder : IDisposable
     private CHCNetSDK.NET_DVR_PICCFG_V40 ChannelImageInfo { get; set; }
     private CHCNetSDK.NET_DVR_IPPARACFG_V40 IpConfigInfo { get; set; }
     private CHCNetSDK.NET_DVR_GET_STREAM_UNION StreamConfigInfo { get; set; }
+    
+    private bool m_bPause = false;
+    private bool m_bReverse = false;
+    private bool m_bSound = false;
     private uint DigitalChannelTotalNumber { get; set; } = 0;
     public string Ip { get; set; } //设备IP地址或者域名
     public ushort Port { get; set; }//设备服务端口号
@@ -219,8 +223,123 @@ public class Recorder : IDisposable
         // VideoPlayWnd.Invalidate();//刷新窗口    
    
     }
-    
-    
+
+    public void Play()
+    {
+        uint iOutValue = 0;
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYRESTART, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            throw new Exception(Error());
+            return;
+        }
+        m_bPause = false;
+    }
+     public void Pause()
+    {
+        uint iOutValue = 0;
+       
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYPAUSE, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            throw new Exception(Error());
+            return;
+        }
+        m_bPause = true;
+       
+    }
+    public void Reverse()
+    {
+        uint iOutValue = 0;
+        if (!m_bReverse)
+        {
+            if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAY_REVERSE, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+            {
+                throw new Exception(Error());
+                return;
+            }
+            m_bReverse = true;
+            // btnReverse.Text = "Forward";
+            // labelReverse.Text = "切换为正放";
+        }
+        else
+        {
+            if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAY_FORWARD, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+            {
+                throw new Exception(Error());
+                return;
+            }
+            m_bReverse = false;
+            // btnReverse.Text = "Reverse";
+            // labelReverse.Text = "切换为倒放";       
+        }
+
+    }
+    public void OpenSound()
+    {
+        uint iOutValue = 0;
+        if (!m_bSound)
+        {
+            if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYSTARTAUDIO, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+            {
+                throw new Exception(Error());
+                return;
+            }
+            m_bSound = true;
+            // btnSound.Text = "Stop";
+            // labelSound.Text = "关闭声音";
+        }
+        else
+        {
+            if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYSTOPAUDIO, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+            {
+                throw new Exception(Error());
+                return;
+            }
+            m_bSound = false;
+            // btnSound.Text = "Sound";
+            // labelSound.Text = "打开声音";
+        }
+    }
+    public void FastPlay()
+    {
+        NormalPlay();
+        uint iOutValue = 0;
+
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYFAST, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            throw new Exception(Error());
+            return;
+        }
+    }
+    public void SlowPlay()
+    {
+        NormalPlay();
+        uint iOutValue = 0;
+
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYSLOW, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            throw new Exception(Error());
+            return;
+        }
+    }
+    private void FramePlay()
+    {
+        uint iOutValue = 0;
+
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYFRAME, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            throw new Exception(Error());
+            return;
+        }
+    }
+    public void NormalPlay()
+    {
+        uint iOutValue = 0;
+        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYNORMAL, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        {
+            throw new Exception(Error());
+            return;
+        }
+    }
     
     public string Error()
     {

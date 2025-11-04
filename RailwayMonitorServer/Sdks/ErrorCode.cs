@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace RailwayAlarmBackend.Sdks;
 
 public static class ErrorCode
