@@ -11,6 +11,10 @@
         <ApplicationIcon>monitor.ico</ApplicationIcon>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DebugType>none</DebugType>
+    </PropertyGroup>
+
     <ItemGroup>
       <None Remove="Resources\kobe.jpg" />
       <None Include="appsettings.json">
@@ -21,16 +25,14 @@
     <ItemGroup>
       <PackageReference Include="Flurl.Http" Version="4.0.2" />
       <PackageReference Include="HandyControl" Version="3.6.0-rc3" />
+      <PackageReference Include="HK.Net.Core" Version="1.0.1" />
+      <PackageReference Include="HK.Net.Runtime.Win64" Version="1.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.10" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.0-rc.1.25451.107" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0-rc.1.25451.107" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0-rc.1.25451.107" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0-rc.1.25451.107" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\RailwayMonitorServer\RailwayMonitorServer.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,6 +46,108 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\RailwayMonitorServer\Interfaces\IAlarmTraceService.cs">
+        <Link>Interfaces\IAlarmTraceService.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Interfaces\IDeviceService.cs">
+        <Link>Interfaces\IDeviceService.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\AlarmTraceHandleDto.cs">
+        <Link>Dtos\AlarmTraceHandleDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\AlarmTraceQueryDto.cs">
+        <Link>Dtos\AlarmTraceQueryDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\BaseResponse.cs">
+        <Link>Dtos\BaseResponse.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\DeviceCreateDto.cs">
+        <Link>Dtos\DeviceCreateDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\DeviceLoginDto.cs">
+        <Link>Dtos\DeviceLoginDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\DeviceQueryDto.cs">
+        <Link>Dtos\DeviceQueryDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\DeviceUpdateDto.cs">
+        <Link>Dtos\DeviceUpdateDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\EnumResponse.cs">
+        <Link>Dtos\EnumResponse.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\PageRequest.cs">
+        <Link>Dtos\PageRequest.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\PageResponse.cs">
+        <Link>Dtos\PageResponse.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Dtos\TestAlarmDto.cs">
+        <Link>Dtos\TestAlarmDto.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Entities\AlarmTrace.cs">
+        <Link>Entities\AlarmTrace.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Entities\Device.cs">
+        <Link>Entities\Device.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Entities\Page.cs">
+        <Link>Entities\Page.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumAlarmStatus.cs">
+        <Link>Enums\EnumAlarmStatus.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumAlarmType.cs">
+        <Link>Enums\EnumAlarmType.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumBlockMode.cs">
+        <Link>Enums\EnumBlockMode.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumChannel.cs">
+        <Link>Enums\EnumChannel.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumDeviceType.cs">
+        <Link>Enums\EnumDeviceType.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumLinkMode.cs">
+        <Link>Enums\EnumLinkMode.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumStatus.cs">
+        <Link>Enums\EnumStatus.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Enums\EnumStreamType.cs">
+        <Link>Enums\EnumStreamType.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Utils\EnumResponseUtil.cs">
+        <Link>Utils\EnumResponseUtil.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Utils\ResponseUtil.cs">
+        <Link>Utils\ResponseUtil.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Models\Utils\SuperBrainUtil.cs">
+        <Link>Utils\SuperBrainUtil.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Sdks\Camera.cs">
+        <Link>Sdks\Camera.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Sdks\ErrorCode.cs">
+        <Link>Sdks\ErrorCode.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Sdks\Recorder.cs">
+        <Link>Sdks\Recorder.cs</Link>
+      </Compile>
+      <Compile Include="..\RailwayMonitorServer\Sdks\SuperBrain.cs">
+        <Link>Sdks\SuperBrain.cs</Link>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\RailwayMonitorServer\Sdks\超脑AIOP报文.json">
+        <Link>Sdks\超脑AIOP报文.json</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

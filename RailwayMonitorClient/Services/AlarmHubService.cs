@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-using System.Windows;
 using Microsoft.AspNetCore.SignalR.Client;
 using RailwayAlarmBackend.Models.Entities;
 

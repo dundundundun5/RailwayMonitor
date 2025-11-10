@@ -115,12 +115,9 @@ Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseRouting();
 
@@ -144,5 +141,13 @@ app.MapControllers();
 
 // 映射SignalR Hub路由
 app.MapHub<AlarmTraceHub>("/alarmHub");
-// 显式指定端口
-app.Run("http://localhost:8081");
+
+// 仅在非IIS环境下显式指定端口
+if (app.Environment.IsDevelopment())
+{
+    app.Run("http://localhost:8081");
+}
+else
+{
+    app.Run();
+}
