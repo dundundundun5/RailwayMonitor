@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
+using Serilog;
 
 namespace RailwayMonitorClient;
 
@@ -15,24 +15,39 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // 初始化Serilog日志
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.Console()
+            .WriteTo.File("Logs/app-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
         // UI thread exceptions
         DispatcherUnhandledException += (s, args) =>
         {
-            MessageBox.Show($"图形界面报错: {args.Exception.Message}");
+            Log.Error(args.Exception, "图形界面报错: {ErrorMessage}", args.Exception.Message);
             args.Handled = true;
         };
 
         // All unhandled exceptions
         AppDomain.CurrentDomain.UnhandledException += (s, args) =>
         {
-            MessageBox.Show($"报错: {(args.ExceptionObject as Exception)?.Message}");
+            var exception = args.ExceptionObject as Exception;
+            Log.Error(exception, "未处理异常: {ErrorMessage}", exception?.Message);
         };
 
         // Task exceptions
         TaskScheduler.UnobservedTaskException += (s, args) =>
         {
-            MessageBox.Show($"线程报错: {args.Exception.Message}");
+            Log.Error(args.Exception, "线程报错: {ErrorMessage}", args.Exception.Message);
             args.SetObserved();
         };
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        // 确保日志被正确关闭
+        Log.CloseAndFlush();
+        base.OnExit(e);
     }
 }

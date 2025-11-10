@@ -39,6 +39,10 @@
     <ItemGroup>
       <Content Remove="Resources\SuperBrainModelInfo.json" />
       <Content Remove="Resources\SuperBrainModelResponse.json" />
+      <Content Include="..\README.md">
+        <Link>README.md</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Update="HCNetSDKCom\AnalyzeData.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -104,6 +108,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Sqls\device.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="alarmTraceImage\laoda.jpg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
