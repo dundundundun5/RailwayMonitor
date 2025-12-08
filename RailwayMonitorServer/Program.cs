@@ -55,7 +55,7 @@ else
     builder.Services.AddDbContext<DataContext>(options =>
         options.UseMySql(
             builder.Configuration.GetConnectionString("DevConnection")!, //现场是 DefaultConnection
-            new MySqlServerVersion(new Version(8, 0, 35)), // 修正为实际的MySQL版本
+            new MySqlServerVersion(new Version(5, 7, 29)), // 修正为实际的MySQL版本
             mysqlOptions => mysqlOptions
                 .EnableRetryOnFailure(
                     maxRetryCount: 10,
