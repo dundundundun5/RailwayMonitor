@@ -1,4 +1,82 @@
 ﻿# 部署
+1. 创建了依赖注入配置
+   (DependencyInjection.cs)
+
+-
+使用Microsoft.Extensions.Hosting创建Host
+- 配置了appsettings.json加载
+- 注册了DbContext（使用MySQL连接）
+- 注册了服务：IDeviceService和IAlarmTrace
+  Service
+- 注册了所有窗口类
+
+2. 修改了App.xaml.cs
+
+- 在构造函数中创建Host
+- 在OnStartup中启动Host并获取MainWindow
+- 在OnExit中正确关闭Host
+
+3. 修改了窗口类
+
+- MainWindow.xaml.cs: 通过构造函数接收IDe
+  viceService和IConfiguration
+- DeviceManagement.xaml.cs:
+  通过构造函数接收IDeviceService
+- DeviceEditWindow.xaml.cs:
+  通过构造函数接收IDeviceService
+
+4. 更新了窗口创建代码
+
+- 修改了DeviceManagement中创建DeviceEditW
+  indow的代码，传递_deviceService
+
+关键特点：
+
+1. 与后端风格一致：使用Microsoft.Extensio
+   ns.DependencyInjection，与你的ASP.NET
+   Core后端保持一致
+2. 配置集中管理：所有配置在DependencyInje
+   ction.cs中统一管理
+3. 自动解析：窗口的依赖项会自动通过构造函
+   数注入
+4. 生命周期管理：使用Host管理应用生命周期
+
+使用方法：
+
+现在你可以在任何窗口的构造函数中声明需要
+的服务，例如：
+public MyWindow(IDeviceService
+deviceService, IAlarmTraceService
+alarmTraceService)
+{
+// 服务会自动注入
+}
+
+注意事项：
+
+1. 确保已安装必要的NuGet包：
+   -
+   Microsoft.Extensions.DependencyInjection
+   - Microsoft.Extensions.Hosting
+2. 如果还有其他服务需要注册，只需在Depend
+   encyInjection.cs的ConfigureServices方法中
+   添加
+3. 窗口的注册方式：
+   - AddSingleton: 单例，整个应用只有一个
+   实例（如MainWindow）
+   - AddTransient:
+   每次请求都创建新实例（如对话框窗口）
+
+现在你的WPF项目就有了完整的依赖注入支持，
+与后端ASP.NET
+Core项目保持一致的架构风格。
+
+是的，需要修改App.xaml！我看到第6行有Star
+tupUri="MainWindow.xaml"，这表示WPF会直接
+启动MainWindow。但是我们现在使用依赖注入
+，需要在App.xaml.cs中手动创建和显示MainWi
+ndow。
+
 
 ## 文件配置
 1. 后端 Offline -> true， 表示本地
