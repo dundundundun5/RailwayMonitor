@@ -95,18 +95,12 @@ public class AlarmTraceService(DataContext context, ILogger<AlarmTraceService> l
     
     public async Task PushAlarmTraceAsync(AlarmTrace alarmTrace)
     {
-        try
-        {
-            logger.LogInformation("推送告警数据到WebSocket客户端: {AlarmType} - {DeviceIp}", alarmTrace.AlarmType, alarmTrace.DeviceIp);
-            
-            AlarmReceived?.Invoke(alarmTrace);
+        logger.LogInformation("告警弹窗: {AlarmType} - {DeviceIp}", alarmTrace.AlarmType, alarmTrace.DeviceIp);
+        
+        AlarmReceived?.Invoke(alarmTrace);
 
-            logger.LogInformation("告警数据推送成功，告警ID: {Id}", alarmTrace.Id);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "推送告警数据到WebSocket客户端时发生异常");
-        }
+        logger.LogInformation("告警弹窗成功，告警ID: {Id}", alarmTrace.Id);
+        
     }
 
 }

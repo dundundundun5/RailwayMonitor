@@ -59,6 +59,9 @@
 
     <ItemGroup>
       <None Remove="alarmTraceImage\laoda.jpg" />
+      <Content Include="..\README.md">
+        <Link>README.md</Link>
+      </Content>
       <Content Include="alarmTraceImage\laoda.jpg">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

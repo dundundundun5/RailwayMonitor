@@ -7,7 +7,8 @@
              xmlns:wfh="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="400"
-             Background="#2D3748">
+             Background="#2D3748"
+            >
 
     <UserControl.Resources>
         <!-- 灰色机械风格样式 -->
@@ -26,7 +27,6 @@
             <Setter Property="CornerRadius" Value="4" />
             <Setter Property="Margin" Value="5" />
         </Style>
-
         <Style x:Key="PictureBoxContainerStyle" TargetType="Border">
             <Setter Property="Background" Value="#1A202C" />
             <Setter Property="BorderBrush" Value="#4A5568" />
@@ -34,18 +34,9 @@
             <Setter Property="Margin" Value="2" />
             <Setter Property="Cursor" Value="Hand" />
         </Style>
-
-        <Style x:Key="AliasToolTipStyle" TargetType="ToolTip">
-            <Setter Property="Background" Value="#2D3748" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="BorderBrush" Value="#718096" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="FontSize" Value="12" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-        </Style>
     </UserControl.Resources>
 
-    <Border Style="{StaticResource MechanicalBorderStyle}">
+    <Border Style="{StaticResource MechanicalBorderStyle}" >
         <Grid x:Name="MainGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -124,7 +115,7 @@
                     <wf:PictureBox x:Name="PictureBox23" SizeMode="Zoom" BackColor="LightGray"/>
                 </WindowsFormsHost>
             </Border>
-        </Grid>
+        </Grid >
     </Border>
 
 </UserControl>

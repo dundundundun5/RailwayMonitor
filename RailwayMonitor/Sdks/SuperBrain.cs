@@ -85,14 +85,16 @@ public class SuperBrain(
     public void Login()
     {
         for(int i = 0; i < Mytimers.Length; i++)
-        {
             Mytimers[i].AutoReset = false;
-            Mytimers[i].Elapsed += (sender, args) =>
-            {
-                PreviousType[i] = -1;
-            };
-            
-        }
+        
+        Mytimers[0].Elapsed += (sender, args) => { PreviousType[0] = -1; };
+        Mytimers[1].Elapsed += (sender, args) => { PreviousType[1] = -1; };
+        Mytimers[2].Elapsed += (sender, args) => { PreviousType[2] = -1; };
+        Mytimers[3].Elapsed += (sender, args) => { PreviousType[3] = -1; };
+        Mytimers[4].Elapsed += (sender, args) => { PreviousType[4] = -1; };
+        Mytimers[5].Elapsed += (sender, args) => { PreviousType[5] = -1; };
+        Mytimers[6].Elapsed += (sender, args) => { PreviousType[6] = -1; };
+        Mytimers[7].Elapsed += (sender, args) => { PreviousType[7] = -1; };
         
         //1. 必须初始化
         CHCNetSDK.NET_DVR_Init();
@@ -200,14 +202,12 @@ public class SuperBrain(
             type = EnumAlarmType.均未穿戴;
         if (!recognizeHat)
         {
-            if (type is EnumAlarmType.未戴安全帽)
+            if (type is EnumAlarmType.未戴安全帽 or EnumAlarmType.均穿戴)
                 return true;
             if (type is EnumAlarmType.均未穿戴 or EnumAlarmType.未穿反光衣)
                 type = EnumAlarmType.未穿反光衣;
         }
         
-        if (type == EnumAlarmType.均穿戴)
-            return true;
         
         
         //告警去重

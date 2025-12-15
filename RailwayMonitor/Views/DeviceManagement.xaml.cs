@@ -23,19 +23,11 @@ public partial class DeviceManagement : HandyControl.Controls.Window
     /// </summary>
     private async Task LoadDevicesAsync()
     {
-        try
-        {
-            TbStatus.Text = "正在加载设备列表...";
+        TbStatus.Text = "正在加载设备列表...";
 
-            var response = await _deviceService.GetAllDevicesByQueryAsync(new DeviceQueryDto());
-            DgDevices.ItemsSource = response;
-            TbStatus.Text = $"共加载 {response.Count} 个设备";
-        }
-        catch (Exception ex)
-        {
-            TbStatus.Text = $"加载失败: {ex.Message}";
-            HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
-        }
+        var response = await _deviceService.GetAllDevicesByQueryAsync(new DeviceQueryDto());
+        DgDevices.ItemsSource = response;
+        TbStatus.Text = $"共加载 {response.Count} 个设备";
     }
 
     /// <summary>
@@ -85,20 +77,10 @@ public partial class DeviceManagement : HandyControl.Controls.Window
             var device = DgDevices.Items.Cast<Device>().FirstOrDefault(d => d.Id == deviceId);
             if (device != null)
             {
-                try
-                {
-                    
-                    var newStatus = device.Enabled == (int)EnumStatus.启用 ? (int)EnumStatus.停用 : (int)EnumStatus.启用;
-                    
-                    await _deviceService.UpdateDeviceStatusAsync(deviceId, newStatus);
-                    await LoadDevicesAsync();
-                    
-                   
-                }
-                catch (Exception ex)
-                {
-                    HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
-                }
+                var newStatus = device.Enabled == (int)EnumStatus.启用 ? (int)EnumStatus.停用 : (int)EnumStatus.启用;
+                
+                await _deviceService.UpdateDeviceStatusAsync(deviceId, newStatus);
+                await LoadDevicesAsync();
             }
         }
     }
@@ -116,19 +98,8 @@ public partial class DeviceManagement : HandyControl.Controls.Window
                 var result = HandyControl.Controls.MessageBox.Ask($"确定要删除设备 '{device.Name}' 吗？", "确认删除");
                 if (result == MessageBoxResult.Yes)
                 {
-                    try
-                    {
-                        await _deviceService.DeleteDeviceAsync(deviceId);
-
-                        
-                        await LoadDevicesAsync();
-                       
-                       
-                    }
-                    catch (Exception ex)
-                    {
-                        HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
-                    }
+                    await _deviceService.DeleteDeviceAsync(deviceId);
+                    await LoadDevicesAsync();
                 }
             }
         }

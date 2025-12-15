@@ -5,7 +5,7 @@
           xmlns:converters="clr-namespace:RailwayMonitorClient.Converters"
           Title="告警通知"
           Height="400"
-          Width="700"
+          Width="400"
           WindowStyle="None"
           AllowsTransparency="True"
           Background="Transparent"
@@ -68,7 +68,7 @@
                 </Border>
 
                 <!-- 告警信息 - 右侧信息栏 -->
-                <StackPanel Grid.Column="1" Orientation="Vertical" Width="200">
+                <StackPanel Grid.Column="1" Orientation="Vertical" Width="100">
                     <!-- 告警类型 -->
                     <Border Background="#FFF0F0F0" CornerRadius="4" Padding="10,8" Margin="0,0,0,10">
                         <StackPanel Orientation="Vertical">

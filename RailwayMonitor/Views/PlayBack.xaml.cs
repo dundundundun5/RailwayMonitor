@@ -45,44 +45,29 @@ public partial class PlayBack : HandyControl.Controls.Window
     /// </summary>
     private void LoadDevicesFromMainWindow()
     {
-        try
-        {
-            // 从主窗口获取录像机数据
-            _recorder = _mainWindow.GetRecorder();
-            _deviceList = _mainWindow.GetDeviceList();
-            _ips = _mainWindow.GetIpList();
+        // 从主窗口获取录像机数据
+        _recorder = _mainWindow.GetRecorder();
+        _deviceList = _mainWindow.GetDeviceList();
+        _ips = _mainWindow.GetIpList();
 
-            if (_mainWindow.IsRecorderInitialized())
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    TbLoginStatus.Text = "录像机已初始化，使用主窗口数据";
-                    TbLoginStatus.Foreground = System.Windows.Media.Brushes.Green;
-                });
-
-                // 加载设备列表到UI
-                LoadAssociatedDevices();
-            }
-            else
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    TbLoginStatus.Text = "录像机未初始化，请稍后重试";
-                    TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
-                });
-            }
-        }
-        catch (Exception ex)
+        if (_mainWindow.IsRecorderInitialized())
         {
             Dispatcher.Invoke(() =>
             {
-                TbLoginStatus.Text = $"加载设备列表失败: {ex.Message}";
+                TbLoginStatus.Text = "录像机已初始化，使用主窗口数据";
+                TbLoginStatus.Foreground = System.Windows.Media.Brushes.Green;
+            });
+
+            // 加载设备列表到UI
+            LoadAssociatedDevices();
+        }
+        else
+        {
+            Dispatcher.Invoke(() =>
+            {
+                TbLoginStatus.Text = "录像机未初始化，请稍后重试";
                 TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
             });
-        }
-        finally
-        {
-            Dispatcher.Invoke(() => { CmbDevices.IsEnabled = true; });
         }
     }
 
@@ -109,38 +94,24 @@ public partial class PlayBack : HandyControl.Controls.Window
     /// </summary>
     private void LoadAssociatedDevices()
     {
-        try
+        // 使用Dispatcher更新UI
+        Dispatcher.Invoke(() =>
         {
-            // 调试信息：检查获取到的数据
-            System.Diagnostics.Debug.WriteLine($"获取到 {_ips?.Count ?? 0} 个IP地址");
-            System.Diagnostics.Debug.WriteLine($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
+            // 直接使用设备名称列表
+            CmbDevices.ItemsSource = _deviceList;
 
-            // 使用Dispatcher更新UI
-            Dispatcher.Invoke(() =>
+            System.Diagnostics.Debug.WriteLine($"加载了 {_deviceList?.Count ?? 0} 个设备名称");
+
+            if (_deviceList?.Count > 0)
             {
-                // 直接使用设备名称列表
-                CmbDevices.ItemsSource = _deviceList;
-
-                System.Diagnostics.Debug.WriteLine($"加载了 {_deviceList?.Count ?? 0} 个设备名称");
-
-                if (_deviceList?.Count > 0)
-                {
-                    CmbDevices.SelectedIndex = 0;
-                    System.Diagnostics.Debug.WriteLine("已设置下拉框选中第一项");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("设备列表为空，无法设置选中项");
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            Dispatcher.Invoke(() =>
+                CmbDevices.SelectedIndex = 0;
+                System.Diagnostics.Debug.WriteLine("已设置下拉框选中第一项");
+            }
+            else
             {
-                System.Windows.MessageBox.Show($"加载设备列表失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            });
-        }
+                System.Diagnostics.Debug.WriteLine("设备列表为空，无法设置选中项");
+            }
+        });
     }
 
     /// <summary>
@@ -150,14 +121,12 @@ public partial class PlayBack : HandyControl.Controls.Window
     {
         if (_ips == null || _ips.Count == 0)
         {
-            System.Windows.MessageBox.Show("没有可用的设备列表", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         // 检查是否有选中的设备
         if (CmbDevices.SelectedIndex < 0)
         {
-            System.Windows.MessageBox.Show("请先选择设备", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
@@ -176,32 +145,26 @@ public partial class PlayBack : HandyControl.Controls.Window
             return;
         }
 
-        try
+      
+        if (_recorder == null)
         {
-            if (_recorder == null)
-            {
-                System.Windows.MessageBox.Show("录像机实例未初始化", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            // 获取PictureBox的句柄
-            var handle = PictureBoxPlayback.Handle;
-
-            
-            // 开始回放（使用选中的通道）
-            _recorder.StartPlayback(handle, startTime, endTime, channel);
-            Dispatcher.Invoke(() =>
-            {
-                BtnPause.IsEnabled = true;
-                CmbPlay.IsEnabled = true;
-                BtnStartPlayback.IsEnabled = false;
-            });
-            // System.Windows.MessageBox.Show($"回放已开始: {selectedDevice} (通道{channel})", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (Exception ex)
+
+        // 获取PictureBox的句柄
+        var handle = PictureBoxPlayback.Handle;
+
+        
+        // 开始回放（使用选中的通道）
+        _recorder.StartPlayback(handle, startTime, endTime, channel);
+        Dispatcher.Invoke(() =>
         {
-            System.Windows.MessageBox.Show($"开始回放失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+            BtnPause.IsEnabled = true;
+            CmbPlay.IsEnabled = true;
+            BtnStartPlayback.IsEnabled = false;
+        });
+        
+        
     }
 
     /// <summary>
@@ -209,34 +172,26 @@ public partial class PlayBack : HandyControl.Controls.Window
     /// </summary>
     private void BtnStopPlayback_Click(object sender, RoutedEventArgs e)
     {
-        try
+        if (_recorder == null)
         {
-            if (_recorder == null)
-            {
-                System.Windows.MessageBox.Show("录像机实例未初始化", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            _recorder.StopPlayback();
-
-            // 清空PictureBox
-            PictureBoxPlayback.Image = null;
-            Dispatcher.Invoke(() =>
-            {
-                CmbPlay.IsEnabled = false;
-                CmbPlay.SelectedIndex = 1;
-                BtnPause.IsEnabled = false;
-                BtnPause.Content = "暂停";
-                BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
-                BtnStartPlayback.IsEnabled = true;
-            });
-
-            // System.Windows.MessageBox.Show("回放已停止", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
         }
-        catch (Exception ex)
+
+        _recorder.StopPlayback();
+
+        // 清空PictureBox
+        PictureBoxPlayback.Image = null;
+        Dispatcher.Invoke(() =>
         {
-            System.Windows.MessageBox.Show($"停止回放失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+            CmbPlay.IsEnabled = false;
+            CmbPlay.SelectedIndex = 1;
+            BtnPause.IsEnabled = false;
+            BtnPause.Content = "暂停";
+            BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
+            BtnStartPlayback.IsEnabled = true;
+        });
+            
+        
     }
 
     /// <summary>
@@ -275,53 +230,40 @@ public partial class PlayBack : HandyControl.Controls.Window
     private void Window_Closed(object sender, EventArgs e)
     {
         // 停止回放并清理资源
-        try
-        {
-            _recorder?.StopPlayback();
+        _recorder?.StopPlayback();
 
-            // 清空PictureBox
-            PictureBoxPlayback.Image = null;
+        // 清空PictureBox
+        PictureBoxPlayback.Image = null;
 
-            _recorder?.Dispose();
-        }
-        catch
-        {
-            // 忽略清理时的异常
-        }
+        _recorder?.Dispose();
     }
 
    
 
     private void BtnPause_Click(object sender, RoutedEventArgs e)
     {
-        try
+        if (Pause)
         {
-            if (Pause)
-            {
-                _recorder.Play();
-                Pause = false;
-                Dispatcher.Invoke(() => {
-                    BtnPause.Content = "暂停";
-                    BtnPause.Style = (System.Windows.Style)FindResource("ButtonWarning");
-                    CmbPlay.IsEnabled = true;
-                });
-                
-            }
-            else
-            {
-                _recorder.Pause();
-                Pause = true;
-                Dispatcher.Invoke(() => {
-                    BtnPause.Content = "播放";
-                    BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
-                    CmbPlay.IsEnabled = false;
-                });
-            }
+            _recorder.Play();
+            Pause = false;
+            Dispatcher.Invoke(() => {
+                BtnPause.Content = "暂停";
+                BtnPause.Style = (System.Windows.Style)FindResource("ButtonWarning");
+                CmbPlay.IsEnabled = true;
+            });
+            
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine(ex);
+            _recorder.Pause();
+            Pause = true;
+            Dispatcher.Invoke(() => {
+                BtnPause.Content = "播放";
+                BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
+                CmbPlay.IsEnabled = false;
+            });
         }
+    
         
     }
 
@@ -330,28 +272,20 @@ public partial class PlayBack : HandyControl.Controls.Window
 
     private void CmbPlay_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        try
+        var value = Dispatcher.Invoke(() => CmbPlay.SelectedIndex) ;
+        switch (value)
         {
-            var value = Dispatcher.Invoke(() => CmbPlay.SelectedIndex) ;
-            switch (value)
-            {
-                case 0:
-                    _recorder.SlowPlay();
-                    break;
-                case 1:
-                    _recorder.NormalPlay();
-                    break;
-                case 2:
-                    _recorder.FastPlay();
-                    break;
-                default:
-                    break;
+            case 0:
+                _recorder.SlowPlay();
+                break;
+            case 1:
+                _recorder.NormalPlay();
+                break;
+            case 2:
+                _recorder.FastPlay();
+                break;
+            default:
+                break;
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
-        
     }
 }

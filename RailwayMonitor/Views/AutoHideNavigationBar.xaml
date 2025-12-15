@@ -86,6 +86,7 @@
                     Margin="0,0,10,0"
                     Width="60"
                     Height="36"
+                    Visibility="Collapsed"
                     />
 
             <Button x:Name="BtnMinimize"

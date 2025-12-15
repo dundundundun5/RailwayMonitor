@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Windows;
 using RailwayMonitorClient.Converters;
 using RailwayMonitorClient.Interfaces;
@@ -40,33 +38,28 @@ public partial class AlarmDetailWindow : HandyControl.Controls.Window
         {
             if (viewModel.SelectedAlarmStatus == 0)
             {
-                // System.Windows.MessageBox.Show("请先选择处理状态", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                
                 return;
             }
 
-            try
+           
+            var handleDto = new AlarmTraceHandleDto
             {
-                var handleDto = new AlarmTraceHandleDto
-                {
-                    Id = _alarmTrace.Id,
-                    AlarmHandleStatus = viewModel.SelectedAlarmStatus
-                };
+                Id = _alarmTrace.Id,
+                AlarmHandleStatus = viewModel.SelectedAlarmStatus
+            };
 
-                await _alarmTraceService.HandleAlarmTraceAsync(handleDto);
+            await _alarmTraceService.HandleAlarmTraceAsync(handleDto);
+            
+            
+
+            // 更新本地数据
+            _alarmTrace.AlarmStatus = viewModel.SelectedAlarmStatus;
+
+            // 关闭窗口
+            Close();
                 
-                System.Windows.MessageBox.Show("处理成功", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // 更新本地数据
-                _alarmTrace.AlarmStatus = viewModel.SelectedAlarmStatus;
-
-                // 关闭窗口
-                Close();
-                
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"处理预警时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            
         }
     }
 }

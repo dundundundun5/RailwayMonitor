@@ -4,7 +4,6 @@ using RailwayMonitorClient.Interfaces;
 using RailwayMonitorClient.Models.Entities;
 using RailwayMonitorClient.Models.Enums;
 using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace RailwayMonitorClient.Views;
@@ -48,8 +47,7 @@ public partial class AutoHideNavigationBar : UserControl
     {
         var mainWindow = Window.GetWindow(this) as MainWindow;
         if (mainWindow == null)
-        {
-            System.Windows.MessageBox.Show("无法获取主窗口引用", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+        { 
             return;
         }
 
@@ -76,7 +74,6 @@ public partial class AutoHideNavigationBar : UserControl
     {
         if (_deviceService == null)
         {
-            MessageBox.Show("设备服务未初始化", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
 
@@ -139,9 +136,7 @@ public partial class AutoHideNavigationBar : UserControl
             UpdateDate = DateTime.Now
         };
 
-        // await alarmTraceService.AddAlarmTraceAsync(testAlarm);
-        await _alarmTraceService.PushAlarmTraceAsync(testAlarm);
-        // NavigationRequested?.Invoke("Settings");
+        await _alarmTraceService.AddAlarmTraceAsync(testAlarm);
     }
 
     private void BtnRefreshMonitor_Click(object sender, RoutedEventArgs e)

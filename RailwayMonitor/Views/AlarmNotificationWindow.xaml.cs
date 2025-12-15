@@ -124,32 +124,26 @@ public partial class AlarmNotificationWindow : HandyControl.Controls.Window
         {
             if (viewModel.SelectedAlarmStatus == 0)
             {
-                System.Windows.MessageBox.Show("请先选择处理状态", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            try
-            {
+          
                 
-                var handleDto = new AlarmTraceHandleDto
-                {
-                    Id = _alarmTrace.Id,
-                    AlarmHandleStatus = viewModel.SelectedAlarmStatus
-                };
-
-                await _alarmTraceService.HandleAlarmTraceAsync(handleDto);
-              
-
-                // 停止定时器
-                _timer.Stop();
-
-                // 关闭窗口
-                Close();
-            }
-            catch (Exception ex)
+            var handleDto = new AlarmTraceHandleDto
             {
-                System.Windows.MessageBox.Show($"处理预警时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                Id = _alarmTrace.Id,
+                AlarmHandleStatus = viewModel.SelectedAlarmStatus
+            };
+
+            await _alarmTraceService.HandleAlarmTraceAsync(handleDto);
+          
+
+            // 停止定时器
+            _timer.Stop();
+
+            // 关闭窗口
+            Close();
+            
         }
     }
 

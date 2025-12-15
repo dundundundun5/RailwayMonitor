@@ -1,8 +1,11 @@
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using RailwayMonitorClient.Models.Entities;
 using RailwayMonitorClient.Sdks;
 using Color = System.Windows.Media.Color;
+using Size = System.Drawing.Size;
 using ToolTip = System.Windows.Controls.ToolTip;
 using WinForms = System.Windows.Forms;
 using WinInput = System.Windows.Input;
@@ -24,6 +27,7 @@ namespace RailwayMonitorClient.Views
         // 别名数组
         private string[] _aliases;
 
+        private List<Device> _devices;
         // 容器数组
         private Border[] _containers;
 
@@ -33,11 +37,11 @@ namespace RailwayMonitorClient.Views
 
         public Camera Camera { get; set; }
 
-        public LiveView()
+        public LiveView(List<Device> devices)
         {
             InitializeComponent();
             InitializeArrays();
-            SetupEventHandlers();
+            _devices = devices;
         }
 
         /// <summary>
@@ -51,25 +55,59 @@ namespace RailwayMonitorClient.Views
             _pictureBoxes = new PictureBox[TOTAL_CELLS];
 
             // 初始化容器和PictureBox引用
-            _containers[0] = Container00; _pictureBoxes[0] = PictureBox00;
-            _containers[1] = Container01; _pictureBoxes[1] = PictureBox01;
-            _containers[2] = Container02; _pictureBoxes[2] = PictureBox02;
-            _containers[3] = Container03; _pictureBoxes[3] = PictureBox03;
-            _containers[4] = Container10; _pictureBoxes[4] = PictureBox10;
-            _containers[5] = Container11; _pictureBoxes[5] = PictureBox11;
-            _containers[6] = Container12; _pictureBoxes[6] = PictureBox12;
-            _containers[7] = Container13; _pictureBoxes[7] = PictureBox13;
-            _containers[8] = Container20; _pictureBoxes[8] = PictureBox20;
-            _containers[9] = Container21; _pictureBoxes[9] = PictureBox21;
-            _containers[10] = Container22; _pictureBoxes[10] = PictureBox22;
-            _containers[11] = Container23; _pictureBoxes[11] = PictureBox23;
+            _containers[0] = Container00; 
+            _pictureBoxes[0] = PictureBox00;
+            PictureBox00.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 0);
+            
+            _containers[1] = Container01; 
+            _pictureBoxes[1] = PictureBox01;
+            PictureBox01.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 1);
+            
+            _containers[2] = Container02; 
+            _pictureBoxes[2] = PictureBox02;
+            PictureBox02.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 2);
+            
+            _containers[3] = Container03; 
+            _pictureBoxes[3] = PictureBox03;
+            PictureBox03.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 3);
+            
+            _containers[4] = Container10; 
+            _pictureBoxes[4] = PictureBox10;
+            PictureBox10.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 4);
+            
+            _containers[5] = Container11; 
+            _pictureBoxes[5] = PictureBox11;
+            PictureBox11.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 5);
+            
+            _containers[6] = Container12; 
+            _pictureBoxes[6] = PictureBox12;
+            PictureBox12.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 6);
+            
+            _containers[7] = Container13; 
+            _pictureBoxes[7] = PictureBox13;
+            PictureBox13.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 7);
+            
+            _containers[8] = Container20; 
+            _pictureBoxes[8] = PictureBox20;
+            PictureBox20.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 8);
+            
+            _containers[9] = Container21; 
+            _pictureBoxes[9] = PictureBox21;
+            PictureBox21.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 9);
+            
+            _containers[10] = Container22; 
+            _pictureBoxes[10] = PictureBox22;
+            PictureBox22.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 10);
+            
+            _containers[11] = Container23; 
+            _pictureBoxes[11] = PictureBox23;
+            PictureBox23.MouseDoubleClick += (s, e) => PictureBoxClick(s, e, 11);
 
             // 初始化句柄和别名
             for (int i = 0; i < TOTAL_CELLS; i++)
             {
                 _pictureBoxHandles[i] = _pictureBoxes[i].Handle;
                 _aliases[i] = $"监控窗口 {i + 1}";
-
                 // 设置ToolTip
                 var toolTip = new ToolTip
                 {
@@ -79,45 +117,7 @@ namespace RailwayMonitorClient.Views
                 _containers[i].ToolTip = toolTip;
             }
         }
-
-        /// <summary>
-        /// 设置事件处理器
-        /// </summary>
-        private void SetupEventHandlers()
-        {
-            for (int i = 0; i < TOTAL_CELLS; i++)
-            {
-                int index = i; // 捕获当前索引
-                _containers[i].MouseEnter += (s, e) => OnContainerMouseEnter(s, e, index);
-                _containers[i].MouseLeave += OnContainerMouseLeave;
-            }
-        }
-
-
-        /// <summary>
-        /// 容器鼠标进入事件
-        /// </summary>
-        private void OnContainerMouseEnter(object sender, WinInput.MouseEventArgs e, int index)
-        {
-            var container = sender as Border;
-            if (container != null)
-            {
-                container.Background = new SolidColorBrush(Color.FromRgb(74, 85, 104));
-            }
-        }
-
-        /// <summary>
-        /// 容器鼠标离开事件
-        /// </summary>
-        private void OnContainerMouseLeave(object sender, WinInput.MouseEventArgs e)
-        {
-            var container = sender as Border;
-            if (container != null )
-            {
-                container.Background = new SolidColorBrush(Color.FromRgb(26, 32, 44));
-            }
-        }
-
+        
 
 
         /// <summary>
@@ -137,72 +137,23 @@ namespace RailwayMonitorClient.Views
         {
             return _pictureBoxHandles.ToArray();
         }
-
-        /// <summary>
-        /// 设置指定索引的别名
-        /// </summary>
-        public void SetAlias(int index, string alias)
-        {
-            if (index >= 0 && index < TOTAL_CELLS)
-            {
-                _aliases[index] = alias;
-
-                // 更新ToolTip
-                var container = _containers[index];
-                var toolTip = container.ToolTip as ToolTip;
-                if (toolTip != null)
-                {
-                    toolTip.Content = alias;
-                }
-            }
-        }
-
-        /// <summary>
-        /// 获取指定索引的别名
-        /// </summary>
-        public string GetAlias(int index)
-        {
-            if (index >= 0 && index < TOTAL_CELLS)
-                return _aliases[index];
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// 获取所有别名数组
-        /// </summary>
-        public string[] GetAliases()
-        {
-            return _aliases.ToArray();
-        }
-
-        /// <summary>
-        /// 设置所有别名
-        /// </summary>
-        public void SetAliases(string[] aliases)
-        {
-            if (aliases.Length == TOTAL_CELLS)
-            {
-                for (int i = 0; i < TOTAL_CELLS; i++)
-                {
-                    SetAlias(i, aliases[i]);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 获取视频面板的句柄（兼容旧版本）
-        /// </summary>
-        public IntPtr GetVideoHandle()
-        {
-            return PictureBox00.Handle;
-        }
-
+        
         /// <summary>
         /// 清理资源
         /// </summary>
         public void Cleanup()
         {
             // 清理资源逻辑
+        }
+        
+        private void PictureBoxClick(object? sender, MouseEventArgs e, int index)
+        {
+            if (index >= _devices.Count)
+                return;
+            Device selectedDevice = _devices[index];
+            var fullScreen = new FullScreenWindow(selectedDevice);
+            fullScreen.Show();
+            Console.WriteLine($"Picturebox {index} double click");
         }
     }
 }

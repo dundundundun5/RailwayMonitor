@@ -176,37 +176,31 @@ public partial class DeviceEditWindow :  INotifyPropertyChanged
 
     private async Task InitializeDataAsync()
     {
-        try
+        // 加载设备类型
+        var typesResponse = EnumResponseUtil.ToList<EnumDeviceType>();
+        
+        DeviceTypes = new ObservableCollection<EnumResponse>(typesResponse);
+        
+
+        // 加载通道
+        var channelsResponse = EnumResponseUtil.ToList<EnumChannel>();
+        
+        Channels = new ObservableCollection<EnumResponse>(channelsResponse);
+        
+
+        // 如果是编辑模式，填充数据
+        if (_isEditMode && _originalDevice != null)
         {
-            // 加载设备类型
-            var typesResponse = EnumResponseUtil.ToList<EnumDeviceType>();
-            
-            DeviceTypes = new ObservableCollection<EnumResponse>(typesResponse);
-            
-
-            // 加载通道
-            var channelsResponse = EnumResponseUtil.ToList<EnumChannel>();
-            
-            Channels = new ObservableCollection<EnumResponse>(channelsResponse);
-            
-
-            // 如果是编辑模式，填充数据
-            if (_isEditMode && _originalDevice != null)
-            {
-                SelectedDeviceName = _originalDevice.Name;
-                SelectedDeviceIndex = _originalDevice.Index;
-                DeviceIp = _originalDevice.Ip;
-                DevicePort = _originalDevice.Port;
-                DeviceUsername = _originalDevice.Username;
-                DevicePassword = _originalDevice.Password;
-                SelectedDeviceType = _originalDevice.Type;
-                SelectedChannel = _originalDevice.Channel;
-            }
+            SelectedDeviceName = _originalDevice.Name;
+            SelectedDeviceIndex = _originalDevice.Index;
+            DeviceIp = _originalDevice.Ip;
+            DevicePort = _originalDevice.Port;
+            DeviceUsername = _originalDevice.Username;
+            DevicePassword = _originalDevice.Password;
+            SelectedDeviceType = _originalDevice.Type;
+            SelectedChannel = _originalDevice.Channel;
         }
-        catch (Exception ex)
-        {
-            HandyControl.Controls.MessageBox.Error(ex.Message, "初始化失败");
-       }
+        
     }
 
     #endregion
@@ -226,58 +220,53 @@ public partial class DeviceEditWindow :  INotifyPropertyChanged
         if (!ValidateInput())
             return;
 
-        try
+       
+        if (_isEditMode && _originalDevice != null)
         {
-            if (_isEditMode && _originalDevice != null)
+            // 更新设备
+            var updateDto = new Device()
             {
-                // 更新设备
-                var updateDto = new Device()
-                {
-                    Id = _originalDevice.Id,
-                    Name = SelectedDeviceName,
-                    Index = SelectedDeviceIndex,
-                    Ip = DeviceIp,
-                    Port = DevicePort,
-                    Username = DeviceUsername,
-                    Password = DevicePassword,
-                    Type = SelectedDeviceType,
-                    Channel = SelectedChannel
-                };
+                Id = _originalDevice.Id,
+                Name = SelectedDeviceName,
+                Index = SelectedDeviceIndex,
+                Ip = DeviceIp,
+                Port = DevicePort,
+                Username = DeviceUsername,
+                Password = DevicePassword,
+                Type = SelectedDeviceType,
+                Channel = SelectedChannel
+            };
 
-                await _deviceService.UpdateDeviceAsync(updateDto);
-                
-                DialogResult = true;
-                Close();
-                
-                
-            }
-            else
-            {
-                // 创建设备
-                var newDevice = new Device
-                {
-                    Name = SelectedDeviceName,
-                    Index = SelectedDeviceIndex,
-                    Ip = DeviceIp,
-                    Port = DevicePort,
-                    Username = DeviceUsername,
-                    Password = DevicePassword,
-                    Type = SelectedDeviceType,
-                    Channel = SelectedChannel
-                };
-
-                await _deviceService.AddDeviceAsync(newDevice);
-                
-                // HandyControl.Controls.MessageBox.Success("设备创建成功", "成功");
-                DialogResult = true;
-                Close();
-               
-            }
+            await _deviceService.UpdateDeviceAsync(updateDto);
+            
+            DialogResult = true;
+            Close();
+            
+            
         }
-        catch (Exception ex)
+        else
         {
-            HandyControl.Controls.MessageBox.Error(ex.Message, "操作失败");
+            // 创建设备
+            var newDevice = new Device
+            {
+                Name = SelectedDeviceName,
+                Index = SelectedDeviceIndex,
+                Ip = DeviceIp,
+                Port = DevicePort,
+                Username = DeviceUsername,
+                Password = DevicePassword,
+                Type = SelectedDeviceType,
+                Channel = SelectedChannel
+            };
+
+            await _deviceService.AddDeviceAsync(newDevice);
+            
+            DialogResult = true;
+            Close();
+           
         }
+        
+        
     }
 
     /// <summary>
@@ -300,35 +289,30 @@ public partial class DeviceEditWindow :  INotifyPropertyChanged
     {
         if (string.IsNullOrWhiteSpace(SelectedDeviceName))
         {
-            HandyControl.Controls.MessageBox.Warning("请输入设备名称", "提示");
             TbDeviceName.Focus();
             return false;
         }
 
         if (string.IsNullOrWhiteSpace(DeviceIp))
         {
-            HandyControl.Controls.MessageBox.Warning("请输入IP地址", "提示");
             TbIp.Focus();
            return false;
         }
 
         if (DevicePort <= 0 || DevicePort > 65535)
         {
-            HandyControl.Controls.MessageBox.Warning("请输入有效的端口号(1-65535)", "提示");
             TbPort.Focus();
             return false;
         }
  
         if (string.IsNullOrWhiteSpace(DeviceUsername))
         {
-            HandyControl.Controls.MessageBox.Warning("请输入用户名", "提示");
             TbUsername.Focus();
             return false;
         }
 
         if (string.IsNullOrWhiteSpace(DevicePassword))
         {
-            HandyControl.Controls.MessageBox.Warning("请输入密码", "提示");
             TbPassword.Focus();
             return false;
         }

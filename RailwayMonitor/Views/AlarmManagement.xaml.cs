@@ -9,7 +9,6 @@ using RailwayMonitorClient.Models.Dtos;
 using RailwayMonitorClient.Models.Entities;
 using RailwayMonitorClient.Models.Enums;
 using RailwayMonitorClient.Models.Utils;
-using RailwayMonitorClient.Services;
 using Button = System.Windows.Controls.Button;
 
 namespace RailwayMonitorClient.Views;
@@ -43,38 +42,30 @@ public partial class AlarmManagement : HandyControl.Controls.Window
     /// </summary>
     private async Task LoadAlarmData()
     {
-        try
+        TbStatus.Text = "正在加载数据...";
+
+        var queryDto = new AlarmTraceQueryDto
         {
-            TbStatus.Text = "正在加载数据...";
+            PageIndex = _currentPage,
+            PageSize = _pageSize
+        };
 
-            var queryDto = new AlarmTraceQueryDto
-            {
-                PageIndex = _currentPage,
-                PageSize = _pageSize
-            };
-
-            var alarmTracePage = await _alarmTraceService.GetAlarmTracePageAsync(queryDto);
+        var alarmTracePage = await _alarmTraceService.GetAlarmTracePageAsync(queryDto);
 
 
-            var alarmTraces = alarmTracePage.Data;
+        var alarmTraces = alarmTracePage.Data;
 
-            // 转换图片路径并添加显示属性
-            var displayAlarms = alarmTraces.Select(alarm => new DisplayAlarmTrace(alarm)).ToList();
+        // 转换图片路径并添加显示属性
+        var displayAlarms = alarmTraces.Select(alarm => new DisplayAlarmTrace(alarm)).ToList();
 
-            DgAlarms.ItemsSource = displayAlarms;
+        DgAlarms.ItemsSource = displayAlarms;
 
-            _totalCount = (int)alarmTracePage.TotalCount;
-            _totalPages = (int)Math.Ceiling((double)_totalCount / _pageSize);
+        _totalCount = (int)alarmTracePage.TotalCount;
+        _totalPages = (int)Math.Ceiling((double)_totalCount / _pageSize);
 
-            UpdatePageInfo();
-            TbStatus.Text = $"共 {_totalCount} 条记录，当前第 {_currentPage} 页";
-            
-        }
-        catch (Exception ex)
-        {
-            TbStatus.Text = "加载数据时发生错误";
-            System.Windows.MessageBox.Show($"加载预警数据时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UpdatePageInfo();
+        TbStatus.Text = $"共 {_totalCount} 条记录，当前第 {_currentPage} 页";
+       
     }
 
     /// <summary>
@@ -163,29 +154,20 @@ public partial class AlarmManagement : HandyControl.Controls.Window
                 var comboBox = FindChild<System.Windows.Controls.ComboBox>(dataGridRow, "CmbAlarmStatus");
                 if (comboBox?.SelectedValue is int selectedStatus)
                 {
-                    try
+                   
+                    var handleDto = new AlarmTraceHandleDto
                     {
-                        var handleDto = new AlarmTraceHandleDto
-                        {
-                            Id = alarmId,
-                            AlarmHandleStatus = selectedStatus
-                        };
+                        Id = alarmId,
+                        AlarmHandleStatus = selectedStatus
+                    };
 
-                        await _alarmTraceService.HandleAlarmTraceAsync(handleDto);
+                    await _alarmTraceService.HandleAlarmTraceAsync(handleDto);
 
-                        
-                        // System.Windows.MessageBox.Show("处理成功", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                        await LoadAlarmData(); // 刷新数据
+                    
+                   
+                    await LoadAlarmData(); // 刷新数据
                        
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Windows.MessageBox.Show($"处理预警时发生错误：{ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("请先选择处理状态", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+                   
                 }
             }
         }

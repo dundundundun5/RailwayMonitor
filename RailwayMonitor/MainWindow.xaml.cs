@@ -52,20 +52,17 @@ public partial class MainWindow
         Configuration = configuration;
         CHCNetSDK.NET_DVR_Init();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
+        // 初始化录像机
+        Task.Run(async () => await InitializeRecorderAsync());
         // 使用HTTP方式初始化摄像头窗口
         Task.Run(async () =>
         {
-            await InitializeCameraWindowsWithHttp();
+            await InitializeCameraWindows();
             // 摄像头窗口初始化完成后启动预览
             StartPreviewAll();
             // 启用刷新监控按钮
             Dispatcher.Invoke(() => NavigationBar.EnableRefreshMonitorButton());
         });
-
-        // 初始化录像机
-        Task.Run(async () => await InitializeRecorderAsync());
-        // 注册Loaded事件，在窗口完全加载后执行初始化
       
     }
     
@@ -90,17 +87,11 @@ public partial class MainWindow
     /// </summary>
     private void ShowAlarmNotification(AlarmTrace alarmTrace)
     {
-        try
-        {
-            var notificationWindow = new AlarmNotificationWindow(alarmTrace, _alarmTraceService);
-            notificationWindow.Show();
+       
+        var notificationWindow = new AlarmNotificationWindow(alarmTrace, _alarmTraceService);
+        notificationWindow.Show();
 
-            Console.WriteLine($"收到告警推送: {alarmTrace.AlarmType} - {alarmTrace.DeviceIp}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"显示告警通知失败: {ex.Message}");
-        }
+        Console.WriteLine($"收到告警推送: {alarmTrace.AlarmType} - {alarmTrace.DeviceIp}");
     }
     
     
@@ -110,66 +101,57 @@ public partial class MainWindow
     /// <summary>
     /// 通过HTTP动态查询后端设备列表初始化摄像头窗口
     /// </summary>
-    private async Task InitializeCameraWindowsWithHttp()
+    private async Task InitializeCameraWindows()
     {
         _cameraData = new List<CameraWindowData>();
-
-        try
-        {
             
-            var queryDto = new DeviceQueryDto { HasChannel = true };
+        var queryDto = new DeviceQueryDto { HasChannel = true };
 
-            var devices = await _deviceService.GetAllDevicesByQueryAsync(queryDto);
-            
-            devices = devices
-                .Where(d => d.Enabled == 1 && !string.IsNullOrEmpty(d.Ip))
-                .OrderBy(d => d.Index)
-                .ToList();
+        var devices = await _deviceService.GetAllDevicesByQueryAsync(queryDto);
+        
+        devices = devices
+            .Where(d => d.Enabled == 1 && !string.IsNullOrEmpty(d.Ip))
+            .OrderBy(d => d.Index)
+            .ToList();
 
-                // 在UI线程中创建和添加控件
-                await Dispatcher.InvokeAsync(() =>
+            // 在UI线程中创建和添加控件
+            await Dispatcher.InvokeAsync(() =>
+            {
+                // 创建一个LiveView控件来容纳所有摄像头
+                var liveView = new LiveView(devices);
+
+                // 设置LiveView填充整个剩余空间
+                Grid.SetRow(liveView, 1);
+                Grid.SetColumn(liveView, 0);
+                Grid.SetColumnSpan(liveView, 4);
+                // 添加到主网格
+                MainGrid.Children.Add(liveView);
+                for (int i = 0; i < devices.Count && i < 12; i++) // 最多显示12个摄像头
                 {
-                    // 创建一个LiveView控件来容纳所有摄像头
-                    var liveView = new LiveView();
+                    var device = devices[i];
 
-                    // 设置LiveView填充整个剩余空间
-                    Grid.SetRow(liveView, 1);
-                    Grid.SetColumn(liveView, 0);
-                    Grid.SetColumnSpan(liveView, 4);
-
-                    // 添加到主网格
-                    MainGrid.Children.Add(liveView);
-
-                    for (int i = 0; i < devices.Count && i < 12; i++) // 最多显示12个摄像头
+                    // 计算实际通道号
+                    int actualChannel = device.Channel;
+                    if (device.Type != (int)EnumDeviceType.摄像机)
                     {
-                        var device = devices[i];
-
-                        // 计算实际通道号
-                        int actualChannel = device.Channel;
-                        if (device.Type != (int)EnumDeviceType.摄像机)
-                        {
-                            // 录像机和超脑的通道号需要+32，第一个数字通道是33
-                            actualChannel = device.Channel + 32;
-                        }
-
-                        _cameraData.Add(new CameraWindowData
-                        {
-                            CameraWindow = liveView,
-                            IpAddress = device.Ip,
-                            Channel = actualChannel,
-                            Index = i,
-                            Port = (ushort)device.Port
-                        });
+                        // 录像机和超脑的通道号需要+32，第一个数字通道是33
+                        actualChannel = device.Channel + 32;
                     }
+                    
+                    _cameraData.Add(new CameraWindowData
+                    {
+                        CameraWindow = liveView,
+                        IpAddress = device.Ip,
+                        Channel = actualChannel,
+                        Index = i,
+                        Port = (ushort)device.Port
+                    });
+                }
 
-                    Console.WriteLine($"成功加载 {_cameraData.Count} 个摄像头");
-                });
+                Console.WriteLine($"成功加载 {_cameraData.Count} 个摄像头");
+            });
             
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"HTTP获取设备列表异常: {ex.Message}");
-        }
+      
     }
 
 
@@ -180,40 +162,31 @@ public partial class MainWindow
     /// </summary>
     private async Task StartCameraPreviewAsync(LiveView control, string ip, int channel, int cameraIndex, ushort port = 8000)
     {
-        try
+       
+        // 在UI线程中获取PictureBox句柄
+        IntPtr handle = await Dispatcher.InvokeAsync(() => control.GetPictureBoxHandle(cameraIndex));
+        if (handle == IntPtr.Zero)
+            return;
+
+        Camera camera = new Camera(cameraIpAddress: ip, port: port, realPlayHandle: handle);
+
+        // 在UI线程中设置相机服务
+        await Dispatcher.InvokeAsync(() =>
         {
-            // 在UI线程中获取PictureBox句柄
-            IntPtr handle = await Dispatcher.InvokeAsync(() => control.GetPictureBoxHandle(cameraIndex));
-            if (handle == IntPtr.Zero)
-                return;
+            control.Camera = camera;
+        });
 
-            Camera camera = new Camera(cameraIpAddress: ip, port: port, realPlayHandle: handle);
+        // 登录和启动预览可以在后台线程执行
+        camera.Login();
+        camera.StartPreview(channel: channel, streamType:EnumStreamType.子码流, linkMode:EnumLinkMode.RTSP);
 
-            // 在UI线程中设置相机服务
-            await Dispatcher.InvokeAsync(() =>
-            {
-                control.Camera = camera;
-            });
-
-            // 登录和启动预览可以在后台线程执行
-            camera.Login();
-            camera.StartPreview(channel: channel, streamType:EnumStreamType.子码流, linkMode:EnumLinkMode.RTSP);
-
-            // 在UI线程中设置别名
-            await Dispatcher.InvokeAsync(() =>
-            {
-                Console.WriteLine($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
-                control.SetAlias(cameraIndex, $"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
-            });
-        }
-        catch (Exception ex)
+        // 在UI线程中设置别名
+        await Dispatcher.InvokeAsync(() =>
         {
-            // 在UI线程中显示错误信息
-            await Dispatcher.InvokeAsync(() =>
-            {
-                MessageBox.Show($"摄像头 {cameraIndex + 1} 初始化失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            });
-        }
+            Console.WriteLine($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
+        });
+        
+        
     }
     
 
@@ -305,8 +278,6 @@ public partial class MainWindow
     /// </summary>
     private void RefreshMonitor()
     {
-        try
-        {
             Console.WriteLine("开始刷新监控...");
 
             // 停止所有预览
@@ -330,29 +301,23 @@ public partial class MainWindow
             // 重新初始化摄像头窗口
             Task.Run(async () =>
             {
-                await InitializeCameraWindowsWithHttp();
+                await InitializeCameraWindows();
                 // 摄像头窗口初始化完成后启动预览
                 StartPreviewAll();
             });
 
             Console.WriteLine("监控刷新完成");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"刷新监控失败: {ex.Message}");
-            MessageBox.Show($"刷新监控失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        
     }
 
-    #region 录像机管理
+    
 
     /// <summary>
     /// 初始化录像机
     /// </summary>
     private async Task InitializeRecorderAsync()
     {
-        try
-        {
+       
             // 从appsettings.json获取RecorderIpAddress
             var recorderIpAddress = Configuration["RecorderIpAddress"];
 
@@ -396,11 +361,6 @@ public partial class MainWindow
             {
                 Console.WriteLine($"录像机自动登录失败: {result}");
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"录像机初始化异常: {ex.Message}");
-        }
     }
 
     /// <summary>
@@ -408,24 +368,19 @@ public partial class MainWindow
     /// </summary>
     private void LoadAssociatedDevices()
     {
-        try
+    
+        if (_recorder == null)
         {
-            if (_recorder == null)
-            {
-                Console.WriteLine("录像机实例未初始化");
-                return;
-            }
-
-            _recorder.GetAssociatedIpList(ref _ips, ref _deviceList);
-
-            // 调试信息：检查获取到的数据
-            Console.WriteLine($"获取到 {_ips?.Count ?? 0} 个IP地址");
-            Console.WriteLine($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
+            Console.WriteLine("录像机实例未初始化");
+            return;
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"获取设备列表失败: {ex.Message}");
-        }
+
+        _recorder.GetAssociatedIpList(ref _ips, ref _deviceList);
+
+        // 调试信息：检查获取到的数据
+        Console.WriteLine($"获取到 {_ips?.Count ?? 0} 个IP地址");
+        Console.WriteLine($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
+        
     }
 
     /// <summary>
@@ -459,6 +414,5 @@ public partial class MainWindow
     {
         return _isRecorderInitialized;
     }
-
-    #endregion
+    
 }
