@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using RailwayMonitorClient.Contexts;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Contexts;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
 
-namespace RailwayMonitorClient.Services;
+namespace RailwayMonitor.Services;
 
 public class DeviceService(DataContext context, ILogger<DeviceService> logger) : IDeviceService
 {

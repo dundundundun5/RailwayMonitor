@@ -1,9 +1,8 @@
-
 using System.Windows;
 using System.Windows.Controls;
-using RailwayMonitorClient.Sdks;
+using RailwayMonitor.Sdks;
 
-namespace RailwayMonitorClient.Views;
+namespace RailwayMonitor.Views;
 
 /// <summary>
 /// PlayBack.xaml 的交互逻辑

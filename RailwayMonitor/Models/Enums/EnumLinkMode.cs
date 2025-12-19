@@ -1,4 +1,4 @@
-﻿namespace RailwayMonitorClient.Models.Enums;
+﻿namespace RailwayMonitor.Models.Enums;
 
 public enum EnumLinkMode
 {

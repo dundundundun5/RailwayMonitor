@@ -1,4 +1,4 @@
-namespace RailwayMonitorClient.Sdks;
+namespace RailwayMonitor.Sdks;
 
 public static class ErrorCode
 {

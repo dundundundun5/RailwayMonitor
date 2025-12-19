@@ -1,11 +1,11 @@
 using System.Windows;
-using RailwayMonitorClient.Converters;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Enums;
-using RailwayMonitorClient.Models.Utils;
+using RailwayMonitor.Converters;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Enums;
+using RailwayMonitor.Models.Utils;
 
-namespace RailwayMonitorClient.Views;
+namespace RailwayMonitor.Views;
 
 /// <summary>
 /// AlarmDetailWindow.xaml 的交互逻辑

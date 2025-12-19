@@ -1,9 +1,9 @@
 using System.Windows;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Sdks;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
+using RailwayMonitor.Sdks;
 
-namespace RailwayMonitorClient.Views
+namespace RailwayMonitor.Views
 {
     /// <summary>
     /// 全屏监控窗口

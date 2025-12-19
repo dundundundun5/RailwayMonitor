@@ -2,11 +2,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Configs;
-using RailwayMonitorClient.Sdks;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Configs;
+using RailwayMonitor.Sdks;
 
-namespace RailwayMonitorClient.Services;
+namespace RailwayMonitor.Services;
 
 /// <summary>
 /// SuperBrain托管服务

@@ -1,11 +1,9 @@
-using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Models.Enums;
 using Application = System.Windows.Application;
 
-namespace RailwayMonitorClient.Converters;
+namespace RailwayMonitor.Converters;
 
 /// <summary>
 /// 启用状态转状态文本转换器

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace RailwayMonitorClient.Models.Dtos;
+namespace RailwayMonitor.Models.Dtos;
 
 public class TestAlarmDto
 {

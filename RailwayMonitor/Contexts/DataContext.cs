@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RailwayMonitorClient.Models.Entities;
+using RailwayMonitor.Models.Entities;
 
-namespace RailwayMonitorClient.Contexts;
+namespace RailwayMonitor.Contexts;
 
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {

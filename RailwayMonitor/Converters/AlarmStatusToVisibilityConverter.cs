@@ -1,9 +1,8 @@
-using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace RailwayMonitorClient.Converters;
+namespace RailwayMonitor.Converters;
 
 /// <summary>
 /// 预警状态到可见性转换器

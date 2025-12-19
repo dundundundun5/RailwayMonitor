@@ -1,4 +1,4 @@
-﻿namespace RailwayMonitorClient.Models.Utils;
+﻿namespace RailwayMonitor.Models.Utils;
 
 public static class SuperBrainUtil
 {

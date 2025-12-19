@@ -1,6 +1,6 @@
-﻿using RailwayMonitorClient.Models.Dtos;
+﻿using RailwayMonitor.Models.Dtos;
 
-namespace RailwayMonitorClient.Models.Utils;
+namespace RailwayMonitor.Models.Utils;
 
 public class EnumResponseUtil
 {

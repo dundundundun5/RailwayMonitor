@@ -1,4 +1,4 @@
-namespace RailwayMonitorClient.Models.Configs;
+namespace RailwayMonitor.Models.Configs;
 
 /// <summary>
 /// 超脑配置

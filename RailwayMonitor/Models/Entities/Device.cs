@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RailwayMonitorClient.Models.Entities;
+namespace RailwayMonitor.Models.Entities;
 [Table("device")]
 public class Device
 {

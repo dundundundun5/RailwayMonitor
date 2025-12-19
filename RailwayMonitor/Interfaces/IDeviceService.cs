@@ -1,7 +1,7 @@
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Entities;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Entities;
 
-namespace RailwayMonitorClient.Interfaces;
+namespace RailwayMonitor.Interfaces;
 
 /// <summary>
 /// 设备服务接口

@@ -1,9 +1,8 @@
-using System;
 using System.Globalization;
 using System.Windows.Data;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Models.Enums;
 
-namespace RailwayMonitorClient.Converters;
+namespace RailwayMonitor.Converters;
 
 /// <summary>
 /// 设备类型转换器

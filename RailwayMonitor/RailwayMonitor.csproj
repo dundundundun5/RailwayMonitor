@@ -9,7 +9,6 @@
         <UseWindowsForms>True</UseWindowsForms>
         <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
         <ApplicationIcon>monitor.ico</ApplicationIcon>
-        <RootNamespace>RailwayMonitorClient</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -59,6 +58,9 @@
 
     <ItemGroup>
       <None Remove="alarmTraceImage\laoda.jpg" />
+      <Content Include="..\.gitignore">
+        <Link>.gitignore</Link>
+      </Content>
       <Content Include="..\README.md">
         <Link>README.md</Link>
       </Content>

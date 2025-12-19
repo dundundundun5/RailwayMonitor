@@ -1,4 +1,4 @@
-<hc:Window x:Class="RailwayMonitorClient.Views.PlayBack"
+<hc:Window x:Class="RailwayMonitor.Views.PlayBack"
           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
           xmlns:hc="https://handyorg.github.io/handycontrol"

@@ -1,9 +1,8 @@
-using System;
 using System.Globalization;
 using System.Windows.Data;
 using Microsoft.Extensions.Configuration;
 
-namespace RailwayMonitorClient.Converters;
+namespace RailwayMonitor.Converters;
 
 /// <summary>
 /// 通道号到点位名称转换器

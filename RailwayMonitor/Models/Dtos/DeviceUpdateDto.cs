@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Models.Enums;
 
-namespace RailwayMonitorClient.Models.Dtos;
+namespace RailwayMonitor.Models.Dtos;
 
 public class DeviceUpdateDto
 {

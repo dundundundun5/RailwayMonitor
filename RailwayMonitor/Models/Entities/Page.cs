@@ -1,4 +1,4 @@
-﻿namespace RailwayMonitorClient.Models.Entities;
+﻿namespace RailwayMonitor.Models.Entities;
 
 public class Page<T>
 {

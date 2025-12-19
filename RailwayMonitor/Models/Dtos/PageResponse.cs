@@ -1,6 +1,6 @@
-﻿using RailwayMonitorClient.Models.Entities;
+﻿using RailwayMonitor.Models.Entities;
 
-namespace RailwayMonitorClient.Models.Dtos;
+namespace RailwayMonitor.Models.Dtos;
 
 public class PageResponse<T> : Page<T>
 {

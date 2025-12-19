@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace RailwayMonitorClient.Converters;
+namespace RailwayMonitor.Converters;
 
 public static class PathConverter
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace RailwayMonitorClient.Models.Dtos;
+namespace RailwayMonitor.Models.Dtos;
 
 public class AlarmTraceHandleDto
 {

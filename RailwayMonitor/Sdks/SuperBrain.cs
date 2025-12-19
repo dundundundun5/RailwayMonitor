@@ -3,11 +3,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using HK.Net.Core;
 using Newtonsoft.Json;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Enums;
 using Timer = System.Timers.Timer;
 
-namespace RailwayMonitorClient.Sdks;
+namespace RailwayMonitor.Sdks;
 
 class CheckResult
 {

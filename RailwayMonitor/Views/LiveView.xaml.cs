@@ -1,16 +1,11 @@
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Sdks;
-using Color = System.Windows.Media.Color;
-using Size = System.Drawing.Size;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Sdks;
 using ToolTip = System.Windows.Controls.ToolTip;
 using WinForms = System.Windows.Forms;
-using WinInput = System.Windows.Input;
 
-namespace RailwayMonitorClient.Views
+namespace RailwayMonitor.Views
 {
     /// <summary>
     /// LiveView控件 - 3行4列PictureBox，支持别名显示

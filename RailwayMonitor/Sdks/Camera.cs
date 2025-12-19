@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using HK.Net.Core;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Models.Enums;
 
-namespace RailwayMonitorClient.Sdks;
+namespace RailwayMonitor.Sdks;
 /// <summary>
 /// 相机接口
 /// InitializeSdk(程序启动) => Login => Dispose => CleanUpSdk(程序结束)

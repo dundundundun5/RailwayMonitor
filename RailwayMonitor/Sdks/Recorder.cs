@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using HK.Net.Core;
 
-namespace RailwayMonitorClient.Sdks;
+namespace RailwayMonitor.Sdks;
 public class Recorder : IDisposable
 {
     private Int32 UserId { get; set; }= -1;

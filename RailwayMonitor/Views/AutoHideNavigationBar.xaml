@@ -1,8 +1,7 @@
-<UserControl x:Class="RailwayMonitorClient.Views.AutoHideNavigationBar"
+<UserControl x:Class="RailwayMonitor.Views.AutoHideNavigationBar"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:views="clr-namespace:RailwayMonitorClient.Views"
              Height="60"
              Background="#1E1E1E">
 

@@ -1,11 +1,11 @@
 using System.Windows;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
 using Button = System.Windows.Controls.Button;
 
-namespace RailwayMonitorClient.Views;
+namespace RailwayMonitor.Views;
 
 public partial class DeviceManagement : HandyControl.Controls.Window
 {

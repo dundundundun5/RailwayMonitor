@@ -3,16 +3,15 @@ using System.Windows;
 using System.Windows.Controls;
 using HK.Net.Core;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Models.Enums;
-using RailwayMonitorClient.Sdks;
-using RailwayMonitorClient.Views;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
+using RailwayMonitor.Sdks;
+using RailwayMonitor.Views;
 using MessageBox = System.Windows.MessageBox;
 
-namespace RailwayMonitorClient;
+namespace RailwayMonitor;
 
 /// <summary>
 /// 摄像头窗口数据模型

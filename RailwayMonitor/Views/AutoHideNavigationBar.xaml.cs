@@ -1,12 +1,11 @@
 using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Models.Enums;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
 using Application = System.Windows.Application;
 using UserControl = System.Windows.Controls.UserControl;
 
-namespace RailwayMonitorClient.Views;
+namespace RailwayMonitor.Views;
 
 /// <summary>
 /// 导航栏

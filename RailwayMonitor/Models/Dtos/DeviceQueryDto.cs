@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace RailwayMonitorClient.Models.Dtos;
+namespace RailwayMonitor.Models.Dtos;
 
 public class DeviceQueryDto
 {

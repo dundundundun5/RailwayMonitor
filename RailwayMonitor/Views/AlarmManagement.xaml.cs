@@ -1,17 +1,16 @@
-
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Models.Enums;
-using RailwayMonitorClient.Models.Utils;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
+using RailwayMonitor.Models.Utils;
 using Button = System.Windows.Controls.Button;
 
-namespace RailwayMonitorClient.Views;
+namespace RailwayMonitor.Views;
 
 /// <summary>
 /// AlarmManagement.xaml 的交互逻辑

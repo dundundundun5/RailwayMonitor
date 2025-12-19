@@ -1,4 +1,4 @@
-namespace RailwayMonitorClient.Models.Dtos;
+namespace RailwayMonitor.Models.Dtos;
 
 /// <summary>
 /// 全局API返回结果

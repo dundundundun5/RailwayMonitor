@@ -2,13 +2,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Models.Dtos;
-using RailwayMonitorClient.Models.Entities;
-using RailwayMonitorClient.Models.Enums;
-using RailwayMonitorClient.Models.Utils;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Models.Dtos;
+using RailwayMonitor.Models.Entities;
+using RailwayMonitor.Models.Enums;
+using RailwayMonitor.Models.Utils;
 
-namespace RailwayMonitorClient.Views;
+namespace RailwayMonitor.Views;
 
 public partial class DeviceEditWindow :  INotifyPropertyChanged
 {

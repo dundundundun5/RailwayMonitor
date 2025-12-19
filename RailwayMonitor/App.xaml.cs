@@ -1,17 +1,15 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Application = System.Windows.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RailwayMonitorClient.Contexts;
-using RailwayMonitorClient.Interfaces;
-using RailwayMonitorClient.Services;
+using RailwayMonitor.Contexts;
+using RailwayMonitor.Interfaces;
+using RailwayMonitor.Services;
 using Serilog;
+using Application = System.Windows.Application;
 
-namespace RailwayMonitorClient;
+namespace RailwayMonitor;
 
 /// <summary>
 /// Interaction logic for App.xaml

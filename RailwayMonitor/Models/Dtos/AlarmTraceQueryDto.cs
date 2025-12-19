@@ -1,4 +1,4 @@
-﻿namespace RailwayMonitorClient.Models.Dtos;
+﻿namespace RailwayMonitor.Models.Dtos;
 
 public class AlarmTraceQueryDto: PageRequest
 {
