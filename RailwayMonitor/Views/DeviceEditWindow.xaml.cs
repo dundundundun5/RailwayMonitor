@@ -234,7 +234,8 @@ public partial class DeviceEditWindow :  INotifyPropertyChanged
                 Username = DeviceUsername,
                 Password = DevicePassword,
                 Type = SelectedDeviceType,
-                Channel = SelectedChannel
+                Channel = SelectedChannel,
+                UpdateDate = DateTime.Now
             };
 
             await _deviceService.UpdateDeviceAsync(updateDto);
@@ -256,7 +257,10 @@ public partial class DeviceEditWindow :  INotifyPropertyChanged
                 Username = DeviceUsername,
                 Password = DevicePassword,
                 Type = SelectedDeviceType,
-                Channel = SelectedChannel
+                Channel = SelectedChannel,
+                Enabled = (int) EnumStatus.启用,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now
             };
 
             await _deviceService.AddDeviceAsync(newDevice);

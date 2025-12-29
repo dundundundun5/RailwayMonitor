@@ -122,10 +122,16 @@ public partial class App : Application
             Log.Error(args.Exception, "UI报错: {ErrorMessage}", args.Exception.Message);
             args.Handled = true;
         };
+        TaskScheduler.UnobservedTaskException += (s, args) =>
+        {
+            Log.Error(args.Exception, "UI报错: {ErrorMessage}", args.Exception.Message);
+            args.SetObserved();
+        };
 
         // All unhandled exceptions
         AppDomain.CurrentDomain.UnhandledException += (s, args) =>
         {
+            
             var exception = args.ExceptionObject as Exception;
             Log.Error(exception, "未处理异常: {ErrorMessage}", exception?.Message);
         };

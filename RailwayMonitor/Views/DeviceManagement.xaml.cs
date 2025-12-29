@@ -96,7 +96,7 @@ public partial class DeviceManagement : HandyControl.Controls.Window
             if (device != null)
             {
                 var result = HandyControl.Controls.MessageBox.Ask($"确定要删除设备 '{device.Name}' 吗？", "确认删除");
-                if (result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.OK)
                 {
                     await _deviceService.DeleteDeviceAsync(deviceId);
                     await LoadDevicesAsync();

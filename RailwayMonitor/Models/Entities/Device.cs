@@ -26,7 +26,7 @@ public class Device
     [Column("channel")]
     public int Channel { get; set; }
     [Column("enabled")]
-    public int Enabled { get; set; }
+    public int Enabled { get; set; } 
     [Column("create_date")]
     public DateTime CreateDate { get; set; }
     [Column("update_date")]

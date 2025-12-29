@@ -69,4 +69,11 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="create.sql" />
+      <Resource Include="create.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
 </Project>

@@ -11,6 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Title="监控" Height="1080" Width="1920"
         >
+    
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

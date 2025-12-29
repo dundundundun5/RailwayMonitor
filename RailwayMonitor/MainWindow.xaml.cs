@@ -9,6 +9,7 @@ using RailwayMonitor.Models.Entities;
 using RailwayMonitor.Models.Enums;
 using RailwayMonitor.Sdks;
 using RailwayMonitor.Views;
+using Serilog;
 using MessageBox = System.Windows.MessageBox;
 
 namespace RailwayMonitor;
@@ -56,11 +57,14 @@ public partial class MainWindow
         // 使用HTTP方式初始化摄像头窗口
         Task.Run(async () =>
         {
-            await InitializeCameraWindows();
-            // 摄像头窗口初始化完成后启动预览
-            StartPreviewAll();
-            // 启用刷新监控按钮
-            Dispatcher.Invoke(() => NavigationBar.EnableRefreshMonitorButton());
+            
+                await InitializeCameraWindows();
+                // 摄像头窗口初始化完成后启动预览
+                StartPreviewAll();
+                // 启用刷新监控按钮
+                Dispatcher.Invoke(() => NavigationBar.EnableRefreshMonitorButton());
+            
+            
         });
       
     }
@@ -161,29 +165,33 @@ public partial class MainWindow
     /// </summary>
     private async Task StartCameraPreviewAsync(LiveView control, string ip, int channel, int cameraIndex, ushort port = 8000)
     {
+        try
+        {
+            // 在UI线程中获取PictureBox句柄
+            IntPtr handle = await Dispatcher.InvokeAsync(() => control.GetPictureBoxHandle(cameraIndex));
+            if (handle == IntPtr.Zero)
+                return;
+
+            Camera camera = new Camera(cameraIpAddress: ip, port: port, realPlayHandle: handle);
+
+            // 在UI线程中设置相机服务
+            await Dispatcher.InvokeAsync(() => { control.Camera = camera; });
+
+            // 登录和启动预览可以在后台线程执行
+            camera.Login();
+            camera.StartPreview(channel: channel, streamType: EnumStreamType.子码流, linkMode: EnumLinkMode.RTSP);
+
+            // 在UI线程中设置别名
+            await Dispatcher.InvokeAsync(() =>
+            {
+                Console.WriteLine($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.Error("顺位{index}实时预览异常 {ErrorMessage}", cameraIndex,ex.Message);
+        }
        
-        // 在UI线程中获取PictureBox句柄
-        IntPtr handle = await Dispatcher.InvokeAsync(() => control.GetPictureBoxHandle(cameraIndex));
-        if (handle == IntPtr.Zero)
-            return;
-
-        Camera camera = new Camera(cameraIpAddress: ip, port: port, realPlayHandle: handle);
-
-        // 在UI线程中设置相机服务
-        await Dispatcher.InvokeAsync(() =>
-        {
-            control.Camera = camera;
-        });
-
-        // 登录和启动预览可以在后台线程执行
-        camera.Login();
-        camera.StartPreview(channel: channel, streamType:EnumStreamType.子码流, linkMode:EnumLinkMode.RTSP);
-
-        // 在UI线程中设置别名
-        await Dispatcher.InvokeAsync(() =>
-        {
-            Console.WriteLine($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
-        });
         
         
     }
@@ -277,6 +285,8 @@ public partial class MainWindow
     /// </summary>
     private void RefreshMonitor()
     {
+        try
+        {
             Console.WriteLine("开始刷新监控...");
 
             // 停止所有预览
@@ -306,10 +316,15 @@ public partial class MainWindow
             });
 
             Console.WriteLine("监控刷新完成");
-        
+
+        }
+        catch (Exception ex)
+        {
+            
+        }
     }
 
-    
+
 
     /// <summary>
     /// 初始化录像机

@@ -1,8 +1,4 @@
 bin/
 obj/
 /packages/
-riderModule.iml
-/_ReSharper.Caches/
 .idea
-RailwayAlarmBackend/1tree.zip
-RailwayAlarmBackend/设备登录demo.zip

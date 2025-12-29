@@ -53,7 +53,7 @@ public partial class PlayBack : HandyControl.Controls.Window
         {
             Dispatcher.Invoke(() =>
             {
-                TbLoginStatus.Text = "录像机已初始化，使用主窗口数据";
+                TbLoginStatus.Text = "";
                 TbLoginStatus.Foreground = System.Windows.Media.Brushes.Green;
             });
 
@@ -64,7 +64,7 @@ public partial class PlayBack : HandyControl.Controls.Window
         {
             Dispatcher.Invoke(() =>
             {
-                TbLoginStatus.Text = "录像机未初始化，请稍后重试";
+                TbLoginStatus.Text = "录像机登录失败，检查录像机的IP端口";
                 TbLoginStatus.Foreground = System.Windows.Media.Brushes.Red;
             });
         }
