@@ -93,7 +93,6 @@
                 Height="36"
                 Margin="0,0,10,0"
                 Style="{StaticResource ButtonCustom}"
-                Visibility="Collapsed"
                 Width="60"
                 x:Name="BtnSettings" />
 

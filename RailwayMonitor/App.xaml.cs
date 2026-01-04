@@ -131,7 +131,6 @@ public partial class App : Application
         // All unhandled exceptions
         AppDomain.CurrentDomain.UnhandledException += (s, args) =>
         {
-            
             var exception = args.ExceptionObject as Exception;
             Log.Error(exception, "未处理异常: {ErrorMessage}", exception?.Message);
         };
@@ -145,6 +144,7 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
+        
         // 确保日志被正确关闭
         Log.CloseAndFlush();
 

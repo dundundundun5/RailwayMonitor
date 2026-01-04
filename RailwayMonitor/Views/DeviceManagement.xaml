@@ -53,17 +53,10 @@
             Grid.Row="1"
             IsReadOnly="True"
             SelectionMode="Single"
-            hc:DataGridAttach.ShowRowNumber="True"
+            hc:DataGridAttach.ShowRowNumber="False"
             x:Name="DgDevices">
 
             <DataGrid.Columns>
-                <!--  设备ID  -->
-                <DataGridTextColumn
-                    Binding="{Binding Id}"
-                    Header="ID"
-                    Visibility="Collapsed"
-                    Width="60" />
-
                 <!--  设备名称  -->
                 <DataGridTextColumn
                     Binding="{Binding Name}"
