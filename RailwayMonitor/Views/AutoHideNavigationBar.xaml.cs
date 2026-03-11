@@ -120,7 +120,7 @@ public partial class AutoHideNavigationBar : UserControl
     {
         string deviceIp = "192.168.100.19";
         int channel = 34;
-        int alarmType = 1;
+        int alarmType = 2;
        
         // 创建测试告警数据
         var testAlarm = new AlarmTrace
@@ -129,7 +129,7 @@ public partial class AutoHideNavigationBar : UserControl
             SuperBrainChannel = channel,
             AlarmType = alarmType,
             AlarmDate = DateTime.Now,
-            ImagePath = $@"alarmTraceImage\laoda.jpg",
+            ImagePath = $@"alarmTraceImage\traffic-train.png",
             AlarmStatus = (int)EnumAlarmStatus.未处理,
             CreateDate = DateTime.Now,
             UpdateDate = DateTime.Now

@@ -113,8 +113,6 @@ namespace RailwayMonitor.Views
             }
         }
         
-
-
         /// <summary>
         /// 获取指定索引的PictureBox句柄
         /// </summary>
@@ -123,14 +121,6 @@ namespace RailwayMonitor.Views
             if (index >= 0 && index < TOTAL_CELLS)
                 return _pictureBoxHandles[index];
             return IntPtr.Zero;
-        }
-
-        /// <summary>
-        /// 获取所有PictureBox句柄数组
-        /// </summary>
-        public IntPtr[] GetPictureBoxHandles()
-        {
-            return _pictureBoxHandles.ToArray();
         }
         
         /// <summary>

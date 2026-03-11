@@ -53,7 +53,7 @@ public partial class MainWindow
         CHCNetSDK.NET_DVR_Init();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         // 初始化录像机
-        Task.Run(async () => await InitializeRecorderAsync());
+        Task.Run(InitializeRecorderAsync);
         // 使用HTTP方式初始化摄像头窗口
         Task.Run(async () =>
         {
@@ -329,7 +329,7 @@ public partial class MainWindow
     /// <summary>
     /// 初始化录像机
     /// </summary>
-    private async Task InitializeRecorderAsync()
+    private void InitializeRecorderAsync()
     {
        
             // 从appsettings.json获取RecorderIpAddress
