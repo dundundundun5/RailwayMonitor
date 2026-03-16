@@ -53,7 +53,9 @@ public partial class MainWindow
         CHCNetSDK.NET_DVR_Init();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         // 初始化录像机
-        Task.Run(InitializeRecorderAsync);
+        Thread.Sleep(5000);
+        InitializeRecorderAsync();
+        Thread.Sleep(5000);
         // 使用HTTP方式初始化摄像头窗口
         Task.Run(async () =>
         {

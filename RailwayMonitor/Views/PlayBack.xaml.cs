@@ -22,12 +22,17 @@ public partial class PlayBack : HandyControl.Controls.Window
         DataContext = this;
         Loaded += PlayBack_Loaded;
     }
-
-    public string[] PlaySpeed { get; set; } = 
+    
+    
+    public string[] PlaySpeed  => 
     [
         "0.5倍速",
         "1倍速",
-        "2倍速"
+        "2倍速",
+        "4倍速",
+        "8倍速",
+        "16倍速",
+        "32倍速"
     ];
 
     /// <summary>
@@ -175,11 +180,6 @@ public partial class PlayBack : HandyControl.Controls.Window
         {
             return;
         }
-
-        _recorder.StopPlayback();
-
-        // 清空PictureBox
-        PictureBoxPlayback.Image = null;
         Dispatcher.Invoke(() =>
         {
             CmbPlay.IsEnabled = false;
@@ -189,6 +189,10 @@ public partial class PlayBack : HandyControl.Controls.Window
             BtnPause.Style = (System.Windows.Style)FindResource("ButtonInfo");
             BtnStartPlayback.IsEnabled = true;
         });
+        _recorder.StopPlayback();
+        // 清空PictureBox
+        PictureBoxPlayback.Image = null;
+        
             
         
     }
@@ -281,7 +285,19 @@ public partial class PlayBack : HandyControl.Controls.Window
                 _recorder.NormalPlay();
                 break;
             case 2:
-                _recorder.FastPlay();
+                _recorder.FastPlay(2);
+                break;
+            case 3:
+                _recorder.FastPlay(4);
+                break;
+            case 4:
+                _recorder.FastPlay(8);
+                break;
+            case 5:
+                _recorder.FastPlay(16);
+                break;
+            case 6:
+                _recorder.FastPlay(32);
                 break;
             default:
                 break;

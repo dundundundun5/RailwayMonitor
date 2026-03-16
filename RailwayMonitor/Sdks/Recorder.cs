@@ -297,16 +297,18 @@ public class Recorder : IDisposable
             // labelSound.Text = "打开声音";
         }
     }
-    public void FastPlay()
+    public void FastPlay(int i = 2)
     {
         NormalPlay();
         uint iOutValue = 0;
-
-        if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYFAST, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+        for (var j = 1; j != i; j*=2)
         {
-            throw new Exception(Error());
-            return;
+            if (!CHCNetSDK.NET_DVR_PlayBackControl_V40(m_lPlayHandle, CHCNetSDK.NET_DVR_PLAYFAST, IntPtr.Zero, 0, IntPtr.Zero, ref iOutValue))
+            {
+                throw new Exception(Error());
+            }
         }
+        
     }
     public void SlowPlay()
     {
