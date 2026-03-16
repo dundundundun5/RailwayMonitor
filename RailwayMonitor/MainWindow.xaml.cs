@@ -82,7 +82,7 @@ public partial class MainWindow
         // 在UI线程中显示通知
         Dispatcher.Invoke(() =>
         {
-            Console.WriteLine($"收到告警{alarmTrace.AlarmDate}");
+            Log.Information($"收到告警{alarmTrace.AlarmDate}");
             ShowAlarmNotification(alarmTrace);
         });
     }
@@ -96,7 +96,7 @@ public partial class MainWindow
         var notificationWindow = new AlarmNotificationWindow(alarmTrace, _alarmTraceService);
         notificationWindow.Show();
 
-        Console.WriteLine($"收到告警推送: {alarmTrace.AlarmType} - {alarmTrace.DeviceIp}");
+        Log.Information($"收到告警推送: {alarmTrace.AlarmType} - {alarmTrace.DeviceIp}");
     }
     
     
@@ -153,7 +153,7 @@ public partial class MainWindow
                     });
                 }
 
-                Console.WriteLine($"成功加载 {_cameraData.Count} 个摄像头");
+                Log.Information($"成功加载 {_cameraData.Count} 个摄像头");
             });
             
       
@@ -186,7 +186,7 @@ public partial class MainWindow
             // 在UI线程中设置别名
             await Dispatcher.InvokeAsync(() =>
             {
-                Console.WriteLine($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
+                Log.Information($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
             });
         }
         catch (Exception ex)
@@ -203,7 +203,7 @@ public partial class MainWindow
     {
         if (_cameraData == null || _cameraData.Count == 0)
         {
-            Console.WriteLine("没有可用的摄像头数据，跳过预览启动");
+            Log.Information("没有可用的摄像头数据，跳过预览启动");
             return;
         }
 
@@ -230,7 +230,7 @@ public partial class MainWindow
     {
         if (_cameraData == null || _cameraData.Count == 0)
         {
-            Console.WriteLine("没有正在预览的摄像头");
+            Log.Information("没有正在预览的摄像头");
             return;
         }
 
@@ -246,12 +246,12 @@ public partial class MainWindow
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"停止摄像头预览异常: {ex.Message}");
+                    Log.Information($"停止摄像头预览异常: {ex.Message}");
                 }
             }
         }
 
-        Console.WriteLine("已停止所有摄像头预览");
+        Log.Information("已停止所有摄像头预览");
     }
 
     private void NavigationBar_NavigationRequested(string page)
@@ -289,7 +289,7 @@ public partial class MainWindow
     {
         try
         {
-            Console.WriteLine("开始刷新监控...");
+            Log.Information("开始刷新监控...");
 
             // 停止所有预览
             StopAllPreviews();
@@ -317,7 +317,7 @@ public partial class MainWindow
                 StartPreviewAll();
             });
 
-            Console.WriteLine("监控刷新完成");
+            Log.Information("监控刷新完成");
 
         }
         catch (Exception ex)
@@ -335,27 +335,16 @@ public partial class MainWindow
     {
        
             // 从appsettings.json获取RecorderIpAddress
-            var recorderIpAddress = Configuration["RecorderIpAddress"];
+            var recorderIpPort = Configuration["RecorderIpAddress"];
 
-            if (string.IsNullOrEmpty(recorderIpAddress))
+            if (string.IsNullOrEmpty(recorderIpPort))
             {
-                Console.WriteLine("配置文件中未找到RecorderIpAddress");
+                Log.Error("配置文件中未找到RecorderIpAddress");
                 return;
             }
 
-            // 解析IP地址和端口信息，格式：192.168.18.37:8000
-            string ipAddress = recorderIpAddress;
-            ushort port = 8000; // 默认端口8000
-
-            if (recorderIpAddress.Contains(":"))
-            {
-                var parts = recorderIpAddress.Split(':');
-                if (parts.Length == 2 && ushort.TryParse(parts[1], out ushort parsedPort))
-                {
-                    ipAddress = parts[0]; // 提取IP地址部分
-                    port = parsedPort; // 提取端口号
-                }
-            }
+            var ipAddress = recorderIpPort.Split(":")[0];
+            var port = ushort.Parse(recorderIpPort.Split(":")[1]);
 
             // 创建录像机实例
             _recorder = new Recorder(ipAddress, port);
@@ -364,10 +353,10 @@ public partial class MainWindow
 
             // 登录设备
             var result = _recorder.Login();
-
+            
             if (string.IsNullOrEmpty(result))
             {
-                Console.WriteLine($"录像机自动登录成功: {ipAddress}:{port}");
+                Log.Information($"录像机自动登录成功: {ipAddress}:{port}");
 
                 // 获取关联设备列表
                 LoadAssociatedDevices();
@@ -375,7 +364,7 @@ public partial class MainWindow
             }
             else
             {
-                Console.WriteLine($"录像机自动登录失败: {result}");
+                Log.Information($"录像机自动登录失败: {result}");
             }
     }
 
@@ -387,15 +376,42 @@ public partial class MainWindow
     
         if (_recorder == null)
         {
-            Console.WriteLine("录像机实例未初始化");
+            Log.Information("录像机实例未初始化");
             return;
         }
 
         _recorder.GetAssociatedIpList(ref _ips, ref _deviceList);
-
+        List<RecorderItem> items = new List<RecorderItem>();
+        for (int i = 0; i < _ips.Count; i++)
+        {
+            items.Add(new RecorderItem()
+            {
+                Ip = _ips[i],
+                Name = _deviceList[i]
+            });
+        }
+        items.Sort(((itemA, itemB) =>
+        {
+            try
+            {
+                int a = int.Parse(itemA.Name.Split("号")[0]);
+                int b = int.Parse(itemB.Name.Split("号")[0]);
+                return a.CompareTo(b);
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }));
+        _ips = items.Select(a => a.Ip).ToList();
+        _deviceList = items.Select(a => a.Name).ToList();
+        
+        
+        
+        
         // 调试信息：检查获取到的数据
-        Console.WriteLine($"获取到 {_ips?.Count ?? 0} 个IP地址");
-        Console.WriteLine($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
+        Log.Information($"获取到 {_ips?.Count ?? 0} 个IP地址");
+        Log.Information($"获取到 {_deviceList?.Count ?? 0} 个设备名称");
         
     }
 
