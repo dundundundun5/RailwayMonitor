@@ -12,6 +12,7 @@ public partial class PlayBack : HandyControl.Controls.Window
     private Recorder? _recorder;
     private List<string> _deviceList;
     private List<string> _ips;
+    private List<int> _channels;
     private MainWindow _mainWindow;
     private bool Pause = false;
     public PlayBack(MainWindow mainWindow)
@@ -53,6 +54,7 @@ public partial class PlayBack : HandyControl.Controls.Window
         _recorder = _mainWindow.GetRecorder();
         _deviceList = _mainWindow.GetDeviceList();
         _ips = _mainWindow.GetIpList();
+        _channels = _mainWindow.GetChannelList();
 
         if (_mainWindow.IsRecorderInitialized())
         {
@@ -137,7 +139,8 @@ public partial class PlayBack : HandyControl.Controls.Window
         // 使用选中的设备进行回放
         var selectedIndex = CmbDevices.SelectedIndex;
         var selectedDevice = _deviceList[selectedIndex];
-        var channel = (uint)(selectedIndex + 1); // 通道号 = 索引 + 1
+        
+        var channel = (uint) _channels[selectedIndex]; // 通道号 = 索引 + 1
 
         // 获取时间范围
         var startTime = GetStartDateTime();

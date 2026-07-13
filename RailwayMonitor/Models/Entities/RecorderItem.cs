@@ -4,4 +4,6 @@ public class RecorderItem
 {
     public string Ip { get; set; }
     public string Name { get; set; }
+    
+    public int Channel { get; set; }
 }

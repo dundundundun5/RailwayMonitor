@@ -40,6 +40,7 @@ public partial class MainWindow
     private Recorder? _recorder;
     private List<string> _deviceList;
     private List<string> _ips;
+    private List<int> _channels;
     private bool _isRecorderInitialized = false;
 
     public MainWindow(IDeviceService deviceService, IAlarmTraceService alarmTraceService,IConfiguration configuration)
@@ -379,7 +380,7 @@ public partial class MainWindow
             Log.Information("录像机实例未初始化");
             return;
         }
-
+        
         _recorder.GetAssociatedIpList(ref _ips, ref _deviceList);
         List<RecorderItem> items = new List<RecorderItem>();
         for (int i = 0; i < _ips.Count; i++)
@@ -387,7 +388,8 @@ public partial class MainWindow
             items.Add(new RecorderItem()
             {
                 Ip = _ips[i],
-                Name = _deviceList[i]
+                Name = _deviceList[i],
+                Channel = i + 1
             });
         }
         items.Sort(((itemA, itemB) =>
@@ -403,8 +405,12 @@ public partial class MainWindow
                 return 0;
             }
         }));
+        Log.Information(string.Join(",", _ips));
         _ips = items.Select(a => a.Ip).ToList();
+        
+        Log.Information(string.Join(",", _deviceList));
         _deviceList = items.Select(a => a.Name).ToList();
+        _channels = items.Select(a => a.Channel).ToList();
         
         
         
@@ -437,6 +443,11 @@ public partial class MainWindow
     public List<string>? GetIpList()
     {
         return _ips;
+    }
+
+    public List<int> GetChannelList()
+    {
+        return _channels;
     }
 
     /// <summary>
