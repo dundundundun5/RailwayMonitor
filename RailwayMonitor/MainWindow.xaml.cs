@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,10 @@ public class CameraWindowData
 {
     public LiveView CameraWindow { get; set; }
     public string IpAddress { get; set; }
+    
+    public string Username { get; set; }
+    
+    public string Password { get; set; }
     public int Channel { get; set; }
     public ushort Port { get; set; }
     public int Index { get; set; }
@@ -34,7 +39,7 @@ public partial class MainWindow
     public static IConfiguration Configuration { get; set; }
     private List<CameraWindowData> _cameraData;
     private readonly IDeviceService _deviceService;
-
+    private List<string> CameraIpList;
     private readonly IAlarmTraceService _alarmTraceService;
     // 录像机管理相关属性
     private Recorder? _recorder;
@@ -42,7 +47,7 @@ public partial class MainWindow
     private List<string> _ips;
     private List<int> _channels;
     private bool _isRecorderInitialized = false;
-
+    private System.Threading.Timer _pingTimer;
     public MainWindow(IDeviceService deviceService, IAlarmTraceService alarmTraceService,IConfiguration configuration)
     {
         InitializeComponent();
@@ -54,21 +59,25 @@ public partial class MainWindow
         CHCNetSDK.NET_DVR_Init();
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         // 初始化录像机
-        Thread.Sleep(5000);
+        Thread.Sleep(3000);
         InitializeRecorderAsync();
-        Thread.Sleep(5000);
+        Thread.Sleep(3000);
         // 使用HTTP方式初始化摄像头窗口
         Task.Run(async () =>
         {
-            
-                await InitializeCameraWindows();
-                // 摄像头窗口初始化完成后启动预览
-                StartPreviewAll();
-                // 启用刷新监控按钮
-                Dispatcher.Invoke(() => NavigationBar.EnableRefreshMonitorButton());
-            
-            
+            await InitializeCameraWindows();
+            // 摄像头窗口初始化完成后启动预览
+            StartPreviewAll();
+            // 启用刷新监控按钮
+            Dispatcher.Invoke(() => NavigationBar.EnableRefreshMonitorButton());
         });
+        CameraIpList = configuration.GetSection("CameraIpList").GetChildren().Select(a => a.Value).ToList();
+        _pingTimer = new System.Threading.Timer(
+            callback: _ => PingAllDevice(),
+            state: null,
+            dueTime: TimeSpan.FromSeconds(30),      // 立即执行第一次
+            period: TimeSpan.FromSeconds(30)  // 每30秒执行一次
+        );
       
     }
     
@@ -148,6 +157,8 @@ public partial class MainWindow
                     {
                         CameraWindow = liveView,
                         IpAddress = device.Ip,
+                        Username = device.Username,
+                        Password = device.Password,
                         Channel = actualChannel,
                         Index = i,
                         Port = (ushort)device.Port
@@ -166,7 +177,7 @@ public partial class MainWindow
     /// <summary>
     /// 异步启动摄像头预览（线程安全版本）
     /// </summary>
-    private async Task StartCameraPreviewAsync(LiveView control, string ip, int channel, int cameraIndex, ushort port = 8000)
+    private async Task StartCameraPreviewAsync(LiveView control, string ip, int channel, int cameraIndex, ushort port, string username, string password)
     {
         try
         {
@@ -175,7 +186,7 @@ public partial class MainWindow
             if (handle == IntPtr.Zero)
                 return;
 
-            Camera camera = new Camera(cameraIpAddress: ip, port: port, realPlayHandle: handle);
+            Camera camera = new Camera(cameraIpAddress: ip, userName: username, password: password, port: port,  realPlayHandle: handle);
 
             // 在UI线程中设置相机服务
             await Dispatcher.InvokeAsync(() => { control.Camera = camera; });
@@ -184,11 +195,11 @@ public partial class MainWindow
             camera.Login();
             camera.StartPreview(channel: channel, streamType: EnumStreamType.子码流, linkMode: EnumLinkMode.RTSP);
 
-            // 在UI线程中设置别名
+          // 在UI线程中设置别名
             await Dispatcher.InvokeAsync(() =>
             {
                 Log.Information($"摄像头 {cameraIndex + 1} - {ip}:{port} (通道{channel})");
-            });
+              });
         }
         catch (Exception ex)
         {
@@ -219,7 +230,7 @@ public partial class MainWindow
             if (cameraData.IpAddress != null)
             {
                 // 在后台线程中执行摄像头初始化
-                await StartCameraPreviewAsync(cameraData.CameraWindow, cameraData.IpAddress, cameraData.Channel, cameraData.Index, cameraData.Port);
+                await StartCameraPreviewAsync(cameraData.CameraWindow, cameraData.IpAddress, cameraData.Channel, cameraData.Index, cameraData.Port, cameraData.Username, cameraData.Password);
             }
         });
     }
@@ -283,9 +294,63 @@ public partial class MainWindow
         }
     }
 
-    /// <summary>
-    /// 刷新监控 - 停止预览并重新初始化摄像头窗口
-    /// </summary>
+    private void PingAllDevice()
+    {
+        bool oneCameraOffline = false;
+        List<string> allIp = [];
+        foreach (var camera in _cameraData)
+        {
+            allIp.Add(camera.IpAddress);
+            break;
+        }
+        if (!string.IsNullOrEmpty(RecorderIp))
+            allIp.Add(RecorderIp);
+        allIp.AddRange(CameraIpList);
+        
+        foreach (var ip in CameraIpList)
+        {
+            if (!Ping(ip))
+            {
+                oneCameraOffline = true;
+                Log.Information("IP - {} ping质量小于等于 8/10", ip);
+                break;
+            }
+        }
+        if (oneCameraOffline)
+        {
+            Log.Information("执行刷新监控逻辑");
+            RefreshMonitor();
+        }
+            
+    }
+    private bool Ping(string ip, int timeout = 1000)
+    {
+        int successCount = 0;
+        const int totalCount = 10;
+    
+        using var ping = new Ping();
+    
+        for (int i = 0; i < totalCount; i++)
+        {
+            try
+            {
+                var reply = ping.Send(ip, timeout);
+                if (reply.Status == IPStatus.Success)
+                {
+                    successCount++;
+                }
+            }
+            catch
+            {
+                // Ping 失败，不计数
+            }
+        }
+    
+        // 成功次数 > 7 返回 true，否则 false
+        return successCount >= 8;
+    }
+    
+    
     private void RefreshMonitor()
     {
         try
@@ -327,7 +392,7 @@ public partial class MainWindow
         }
     }
 
-
+    private string RecorderIp = string.Empty;
 
     /// <summary>
     /// 初始化录像机
@@ -345,6 +410,7 @@ public partial class MainWindow
             }
 
             var ipAddress = recorderIpPort.Split(":")[0];
+            RecorderIp = ipAddress;
             var port = ushort.Parse(recorderIpPort.Split(":")[1]);
 
             // 创建录像机实例

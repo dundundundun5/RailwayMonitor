@@ -23,7 +23,7 @@ public class Camera : IDisposable
     private string str;
     private CHCNetSDK.REALDATACALLBACK RealData = null;
     
-    public Camera(string cameraIpAddress, string userName = "admin", string password = "11111111a" , ushort port = 8000, IntPtr realPlayHandle = -1, EnumDeviceType deviceType = EnumDeviceType.摄像机)
+    public Camera(string cameraIpAddress, string userName, string password, ushort port = 8000, IntPtr realPlayHandle = -1, EnumDeviceType deviceType = EnumDeviceType.摄像机)
     {
         CameraIpAddress = cameraIpAddress;
         RealPlayHandle = realPlayHandle;

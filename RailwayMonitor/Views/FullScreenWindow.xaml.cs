@@ -20,6 +20,8 @@ namespace RailwayMonitor.Views
             (
                 cameraIpAddress: device.Ip,
                 port: (ushort)device.Port,
+                userName: device.Username,
+                password: device.Password,
                 realPlayHandle: FullScreenPictureBox.Handle
             );
             StartCameraPreview();
